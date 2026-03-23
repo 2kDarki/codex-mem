@@ -1,5 +1,5 @@
 /**
- * Claude-mem MCP Search Server - Thin HTTP Wrapper
+ * Codex-mem MCP Search Server - Thin HTTP Wrapper
  *
  * Refactored from 2,718 lines to ~600-800 lines
  * Delegates all business logic to Worker HTTP API at localhost:37777
@@ -345,7 +345,7 @@ NEVER fetch full details without filtering first. 10x token savings.`,
 // Create the MCP server
 const server = new Server(
   {
-    name: 'claude-mem',
+    name: 'codex-mem',
     version: packageVersion,
   },
   {
@@ -429,7 +429,7 @@ async function main() {
   // Start the MCP server
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  logger.info('SYSTEM', 'Claude-mem search server started');
+  logger.info('SYSTEM', 'codex-mem search server started');
 
   // Start parent heartbeat to detect orphaned MCP servers
   startParentHeartbeat();

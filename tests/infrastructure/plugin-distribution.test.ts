@@ -22,15 +22,16 @@ describe('Plugin Distribution - Skills', () => {
 
   it('should have valid YAML frontmatter with name and description', () => {
     const content = readFileSync(skillPath, 'utf-8');
+    const normalizedContent = content.replace(/\r\n/g, '\n');
 
     // Must start with YAML frontmatter
-    expect(content.startsWith('---\n')).toBe(true);
+    expect(normalizedContent.startsWith('---\n')).toBe(true);
 
     // Extract frontmatter
-    const frontmatterEnd = content.indexOf('\n---\n', 4);
+    const frontmatterEnd = normalizedContent.indexOf('\n---\n', 4);
     expect(frontmatterEnd).toBeGreaterThan(0);
 
-    const frontmatter = content.slice(4, frontmatterEnd);
+    const frontmatter = normalizedContent.slice(4, frontmatterEnd);
     expect(frontmatter).toContain('name:');
     expect(frontmatter).toContain('description:');
   });
@@ -85,7 +86,7 @@ describe('Plugin Distribution - hooks.json Integrity', () => {
   it('should include CLAUDE_PLUGIN_ROOT fallback in all hook commands (#1215)', () => {
     const hooksPath = path.join(projectRoot, 'plugin/hooks/hooks.json');
     const parsed = JSON.parse(readFileSync(hooksPath, 'utf-8'));
-    const expectedFallbackPath = '$HOME/.claude/plugins/marketplaces/thedotmack/plugin';
+    const expectedFallbackPath = '$HOME/.Codex/plugins/marketplaces/thedotmack/plugin';
 
     for (const [eventName, matchers] of Object.entries(parsed.hooks)) {
       for (const matcher of matchers as any[]) {
