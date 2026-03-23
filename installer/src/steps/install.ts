@@ -164,4 +164,8 @@ export async function runInstallation(selectedIDEs: IDE[]): Promise<void> {
     p.log.info('Cursor hook configuration will be available after first launch.');
     p.log.info('Run: claude-mem cursor-setup (coming soon)');
   }
+  if (selectedIDEs.includes('codex')) {
+    p.log.info('Codex transcript configuration will be available after installation.');
+    p.log.info('Run: codex-mem codex init');
+  }
 }

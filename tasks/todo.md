@@ -9,8 +9,8 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Establish Codex-first defaults and compatibility boundaries
 - [x] Add Codex-first settings/data-dir behavior with backward compatibility
 - [x] Promote Codex transcript ingestion from sidecar support to primary runtime path
-- [ ] Expose Codex-facing product/install surface instead of Claude-only surface
-- [ ] Add tests that lock in Codex defaults, transcript config, and installer behavior
+- [x] Expose Codex-facing product/install surface instead of Claude-only surface
+- [x] Add tests that lock in Codex defaults, transcript config, and installer behavior
 - [x] Verify changed tests pass
 - [ ] Update this tasklist with implementation notes and follow-up work
 
@@ -30,10 +30,10 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 
 ### Phase 3: Installer and UX
 
-- [ ] Add Codex as a first-class installer target
-- [ ] Update installer summaries and next steps to describe Codex usage
-- [ ] Move installer defaults toward Codex-first naming and paths
-- [ ] Add tests for installer-facing Codex behavior where practical
+- [x] Add Codex as a first-class installer target
+- [x] Update installer summaries and next steps to describe Codex usage
+- [x] Move installer defaults toward Codex-first naming and paths
+- [x] Add tests for installer-facing Codex behavior where practical
 
 ### Phase 4: Product Surface Follow-Up
 
@@ -48,4 +48,5 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Switched transcript watcher defaults to `.Codex-mem` paths while keeping Codex session and `~/.codex/AGENTS.md` targets.
 - Added `CODEX_MEM_*` alias support in `SettingsDefaultsManager` for env vars and settings files.
 - Default settings now prefer `.Codex-mem` storage and `codex-mem` app naming.
+- Added installer product-surface helpers so Codex appears as a first-class target, default installer data goes to `~/.Codex-mem`, and completion messaging points users toward `codex-mem codex init`.
 - Remaining work is mostly installer, packaging, docs, and broader user-facing rename coverage.

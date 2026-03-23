@@ -1,16 +1,13 @@
 import * as p from '@clack/prompts';
+import { INSTALLER_IDE_OPTIONS } from '../utils/product-surface.js';
 
-export type IDE = 'claude-code' | 'cursor';
+export type IDE = 'codex' | 'claude-code' | 'cursor';
 
 export async function runIdeSelection(): Promise<IDE[]> {
   const result = await p.multiselect({
     message: 'Which IDEs do you use?',
-    options: [
-      { value: 'claude-code' as const, label: 'Claude Code', hint: 'recommended' },
-      { value: 'cursor' as const, label: 'Cursor' },
-      // Windsurf coming soon - not yet selectable
-    ],
-    initialValues: ['claude-code'],
+    options: INSTALLER_IDE_OPTIONS,
+    initialValues: ['codex'],
     required: true,
   });
 
@@ -21,6 +18,9 @@ export async function runIdeSelection(): Promise<IDE[]> {
 
   const selectedIDEs = result as IDE[];
 
+  if (selectedIDEs.includes('codex')) {
+    p.log.info('Codex: Transcript-based memory will be configured.');
+  }
   if (selectedIDEs.includes('claude-code')) {
     p.log.info('Claude Code: Plugin will be registered via marketplace.');
   }

@@ -1,5 +1,6 @@
 import * as p from '@clack/prompts';
 import pc from 'picocolors';
+import { DEFAULT_CODEX_MEM_DATA_DIR } from '../utils/product-surface.js';
 
 export interface SettingsConfig {
   workerPort: string;
@@ -28,7 +29,7 @@ export async function runSettingsConfiguration(): Promise<SettingsConfig> {
   if (useDefaults) {
     return {
       workerPort: '37777',
-      dataDir: '~/.claude-mem',
+      dataDir: DEFAULT_CODEX_MEM_DATA_DIR,
       contextObservations: '50',
       logLevel: 'INFO',
       pythonVersion: '3.13',
@@ -53,8 +54,8 @@ export async function runSettingsConfiguration(): Promise<SettingsConfig> {
 
   const dataDir = await p.text({
     message: 'Data directory:',
-    defaultValue: '~/.claude-mem',
-    placeholder: '~/.claude-mem',
+    defaultValue: DEFAULT_CODEX_MEM_DATA_DIR,
+    placeholder: DEFAULT_CODEX_MEM_DATA_DIR,
   });
   if (p.isCancel(dataDir)) { p.cancel('Installation cancelled.'); process.exit(0); }
 

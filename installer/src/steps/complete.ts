@@ -3,6 +3,7 @@ import pc from 'picocolors';
 import type { ProviderConfig } from './provider.js';
 import type { SettingsConfig } from './settings.js';
 import type { IDE } from './ide-selection.js';
+import { buildNextStepsLines, getIDELabels } from '../utils/product-surface.js';
 
 function getProviderLabel(config: ProviderConfig): string {
   switch (config.provider) {
@@ -13,15 +14,6 @@ function getProviderLabel(config: ProviderConfig): string {
     case 'openrouter':
       return `OpenRouter (${config.model ?? 'xiaomi/mimo-v2-flash:free'})`;
   }
-}
-
-function getIDELabels(ides: IDE[]): string {
-  return ides.map((ide) => {
-    switch (ide) {
-      case 'claude-code': return 'Claude Code';
-      case 'cursor': return 'Cursor';
-    }
-  }).join(', ');
 }
 
 export function runCompletion(
@@ -39,18 +31,17 @@ export function runCompletion(
 
   p.note(summaryLines.join('\n'), 'Configuration Summary');
 
-  const nextStepsLines: string[] = [];
-
-  if (selectedIDEs.includes('claude-code')) {
-    nextStepsLines.push('Open Claude Code and start a conversation — memory is automatic!');
-  }
-  if (selectedIDEs.includes('cursor')) {
-    nextStepsLines.push('Open Cursor — hooks are active in your projects.');
-  }
-  nextStepsLines.push(`View your memories: ${pc.underline(`http://localhost:${settingsConfig.workerPort}`)}`);
-  nextStepsLines.push(`Search past work: use ${pc.bold('/mem-search')} in Claude Code`);
+  const nextStepsLines = buildNextStepsLines(settingsConfig, selectedIDEs).map((line) => {
+    if (line.startsWith('View your memories: http://localhost:')) {
+      return `View your memories: ${pc.underline(`http://localhost:${settingsConfig.workerPort}`)}`;
+    }
+    if (line === 'Run: codex-mem codex init') {
+      return `Run: ${pc.bold('codex-mem codex init')}`;
+    }
+    return line;
+  });
 
   p.note(nextStepsLines.join('\n'), 'Next Steps');
 
-  p.outro(pc.green('claude-mem installed successfully!'));
+  p.outro(pc.green('codex-mem installed successfully!'));
 }
