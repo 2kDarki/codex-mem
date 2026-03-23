@@ -4,7 +4,7 @@
     <picture>
       <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/claude-mem-logo-for-dark-mode.webp">
       <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/claude-mem-logo-for-light-mode.webp">
-      <img src="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/claude-mem-logo-for-light-mode.webp" alt="Claude-Mem" width="400">
+      <img src="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/claude-mem-logo-for-light-mode.webp" alt="Codex-mem" width="400">
     </picture>
   </a>
   <br>
@@ -45,7 +45,7 @@
   <a href="docs/i18n/README.no.md">🇳🇴 Norsk</a>
 </p>
 
-<h4 align="center">Persistent memory compression system built for <a href="https://claude.com/claude-code" target="_blank">Claude Code</a>.</h4>
+<h4 align="center">Persistent memory compression system built for Codex.</h4>
 
 <p align="center">
   <a href="LICENSE">
@@ -81,7 +81,7 @@
         <picture>
           <img
             src="https://raw.githubusercontent.com/thedotmack/claude-mem/main/docs/public/cm-preview.gif"
-            alt="Claude-Mem Preview"
+            alt="Codex-mem Preview"
             width="500"
           >
         </picture>
@@ -120,34 +120,34 @@
 </p>
 
 <p align="center">
-  Claude-Mem seamlessly preserves context across sessions by automatically capturing tool usage observations, generating semantic summaries, and making them available to future sessions. This enables Claude to maintain continuity of knowledge about projects even after sessions end or reconnect.
+  Codex-mem seamlessly preserves context across sessions by automatically capturing tool usage observations, generating semantic summaries, and making them available to future sessions. This enables Codex to maintain continuity of knowledge about projects even after sessions end or reconnect.
 </p>
 
 ---
 
 ## Quick Start
 
-Start a new Claude Code session in the terminal and enter the following commands:
+Install codex-mem globally and set up Codex transcript watching:
 
+```bash
+npm install -g codex-mem
+codex-mem codex init
+codex-mem codex watch
 ```
-/plugin marketplace add thedotmack/claude-mem
 
-/plugin install claude-mem
-```
+Start or resume a Codex session after the watcher is running and context from previous sessions will appear automatically.
 
-Restart Claude Code. Context from previous sessions will automatically appear in new sessions.
-
-> **Note:** Claude-Mem is also published on npm, but `npm install -g claude-mem` installs the **SDK/library only** — it does not register the plugin hooks or set up the worker service. To use Claude-Mem as a plugin, always install via the `/plugin` commands above.
+> **Compatibility note:** `codex-mem` is now Codex-first, but Claude Code and Cursor compatibility paths are still available in this repository.
 
 ### 🦞 OpenClaw Gateway
 
-Install claude-mem as a persistent memory plugin on [OpenClaw](https://openclaw.ai) gateways with a single command:
+Install codex-mem as a persistent memory plugin on [OpenClaw](https://openclaw.ai) gateways with a single command:
 
 ```bash
 curl -fsSL https://install.cmem.ai/openclaw.sh | bash
 ```
 
-The installer handles dependencies, plugin setup, AI provider configuration, worker startup, and optional real-time observation feeds to Telegram, Discord, Slack, and more. See the [OpenClaw Integration Guide](https://docs.claude-mem.ai/openclaw-integration) for details.
+The installer handles dependencies, plugin setup, AI provider configuration, worker startup, and optional real-time observation feeds to Telegram, Discord, Slack, and more. See the [OpenClaw Integration Guide](https://docs.codex-mem.ai/openclaw-integration) for details.
 
 **Key Features:**
 
@@ -155,7 +155,7 @@ The installer handles dependencies, plugin setup, AI provider configuration, wor
 - 📊 **Progressive Disclosure** - Layered memory retrieval with token cost visibility
 - 🔍 **Skill-Based Search** - Query your project history with mem-search skill
 - 🖥️ **Web Viewer UI** - Real-time memory stream at http://localhost:37777
-- 💻 **Claude Desktop Skill** - Search memory from Claude Desktop conversations
+- 💻 **Desktop Skill** - Search memory from desktop conversations
 - 🔒 **Privacy Control** - Use `<private>` tags to exclude sensitive content from storage
 - ⚙️ **Context Configuration** - Fine-grained control over what context gets injected
 - 🤖 **Automatic Operation** - No manual intervention required
@@ -166,35 +166,35 @@ The installer handles dependencies, plugin setup, AI provider configuration, wor
 
 ## Documentation
 
-📚 **[View Full Documentation](https://docs.claude-mem.ai/)** - Browse on official website
+📚 **[View Full Documentation](https://docs.codex-mem.ai/)** - Browse on official website
 
 ### Getting Started
 
-- **[Installation Guide](https://docs.claude-mem.ai/installation)** - Quick start & advanced installation
-- **[Usage Guide](https://docs.claude-mem.ai/usage/getting-started)** - How Claude-Mem works automatically
-- **[Search Tools](https://docs.claude-mem.ai/usage/search-tools)** - Query your project history with natural language
-- **[Beta Features](https://docs.claude-mem.ai/beta-features)** - Try experimental features like Endless Mode
+- **[Installation Guide](https://docs.codex-mem.ai/installation)** - Quick start & advanced installation
+- **[Usage Guide](https://docs.codex-mem.ai/usage/getting-started)** - How codex-mem works automatically
+- **[Search Tools](https://docs.codex-mem.ai/usage/search-tools)** - Query your project history with natural language
+- **[Beta Features](https://docs.codex-mem.ai/beta-features)** - Try experimental features like Endless Mode
 
 ### Best Practices
 
-- **[Context Engineering](https://docs.claude-mem.ai/context-engineering)** - AI agent context optimization principles
-- **[Progressive Disclosure](https://docs.claude-mem.ai/progressive-disclosure)** - Philosophy behind Claude-Mem's context priming strategy
+- **[Context Engineering](https://docs.codex-mem.ai/context-engineering)** - AI agent context optimization principles
+- **[Progressive Disclosure](https://docs.codex-mem.ai/progressive-disclosure)** - Philosophy behind codex-mem's context priming strategy
 
 ### Architecture
 
-- **[Overview](https://docs.claude-mem.ai/architecture/overview)** - System components & data flow
-- **[Architecture Evolution](https://docs.claude-mem.ai/architecture-evolution)** - The journey from v3 to v5
-- **[Hooks Architecture](https://docs.claude-mem.ai/hooks-architecture)** - How Claude-Mem uses lifecycle hooks
-- **[Hooks Reference](https://docs.claude-mem.ai/architecture/hooks)** - 7 hook scripts explained
-- **[Worker Service](https://docs.claude-mem.ai/architecture/worker-service)** - HTTP API & Bun management
-- **[Database](https://docs.claude-mem.ai/architecture/database)** - SQLite schema & FTS5 search
-- **[Search Architecture](https://docs.claude-mem.ai/architecture/search-architecture)** - Hybrid search with Chroma vector database
+- **[Overview](https://docs.codex-mem.ai/architecture/overview)** - System components & data flow
+- **[Architecture Evolution](https://docs.codex-mem.ai/architecture-evolution)** - The journey from v3 to v5
+- **[Hooks Architecture](https://docs.codex-mem.ai/hooks-architecture)** - How codex-mem uses lifecycle hooks
+- **[Hooks Reference](https://docs.codex-mem.ai/architecture/hooks)** - 7 hook scripts explained
+- **[Worker Service](https://docs.codex-mem.ai/architecture/worker-service)** - HTTP API & Bun management
+- **[Database](https://docs.codex-mem.ai/architecture/database)** - SQLite schema & FTS5 search
+- **[Search Architecture](https://docs.codex-mem.ai/architecture/search-architecture)** - Hybrid search with Chroma vector database
 
 ### Configuration & Development
 
-- **[Configuration](https://docs.claude-mem.ai/configuration)** - Environment variables & settings
-- **[Development](https://docs.claude-mem.ai/development)** - Building, testing, contributing
-- **[Troubleshooting](https://docs.claude-mem.ai/troubleshooting)** - Common issues & solutions
+- **[Configuration](https://docs.codex-mem.ai/configuration)** - Environment variables & settings
+- **[Development](https://docs.codex-mem.ai/development)** - Building, testing, contributing
+- **[Troubleshooting](https://docs.codex-mem.ai/troubleshooting)** - Common issues & solutions
 
 ---
 
@@ -209,13 +209,13 @@ The installer handles dependencies, plugin setup, AI provider configuration, wor
 5. **mem-search Skill** - Natural language queries with progressive disclosure
 6. **Chroma Vector Database** - Hybrid semantic + keyword search for intelligent context retrieval
 
-See [Architecture Overview](https://docs.claude-mem.ai/architecture/overview) for details.
+See [Architecture Overview](https://docs.codex-mem.ai/architecture/overview) for details.
 
 ---
 
 ## MCP Search Tools
 
-Claude-Mem provides intelligent memory search through **4 MCP tools** following a token-efficient **3-layer workflow pattern**:
+Codex-mem provides intelligent memory search through **4 MCP tools** following a token-efficient **3-layer workflow pattern**:
 
 **The 3-Layer Workflow:**
 
@@ -224,7 +224,7 @@ Claude-Mem provides intelligent memory search through **4 MCP tools** following 
 3. **`get_observations`** - Fetch full details ONLY for filtered IDs (~500-1,000 tokens/result)
 
 **How It Works:**
-- Claude uses MCP tools to search your memory
+- Codex uses MCP tools to search your memory
 - Start with `search` to get an index of results
 - Use `timeline` to see what was happening around specific observations
 - Use `get_observations` to fetch full details for relevant IDs
@@ -248,22 +248,22 @@ search(query="authentication bug", type="bugfix", limit=10)
 get_observations(ids=[123, 456])
 ```
 
-See [Search Tools Guide](https://docs.claude-mem.ai/usage/search-tools) for detailed examples.
+See [Search Tools Guide](https://docs.codex-mem.ai/usage/search-tools) for detailed examples.
 
 ---
 
 ## Beta Features
 
-Claude-Mem offers a **beta channel** with experimental features like **Endless Mode** (biomimetic memory architecture for extended sessions). Switch between stable and beta versions from the web viewer UI at http://localhost:37777 → Settings.
+Codex-mem offers a **beta channel** with experimental features like **Endless Mode** (biomimetic memory architecture for extended sessions). Switch between stable and beta versions from the web viewer UI at http://localhost:37777 → Settings.
 
-See **[Beta Features Documentation](https://docs.claude-mem.ai/beta-features)** for details on Endless Mode and how to try it.
+See **[Beta Features Documentation](https://docs.codex-mem.ai/beta-features)** for details on Endless Mode and how to try it.
 
 ---
 
 ## System Requirements
 
 - **Node.js**: 18.0.0 or higher
-- **Claude Code**: Latest version with plugin support
+- **Codex**: Latest version with local session history enabled
 - **Bun**: JavaScript runtime and process manager (auto-installed if missing)
 - **uv**: Python package manager for vector search (auto-installed if missing)
 - **SQLite 3**: For persistent storage (bundled)
@@ -283,23 +283,23 @@ Make sure Node.js and npm are installed and added to your PATH. Download the lat
 
 ## Configuration
 
-Settings are managed in `~/.claude-mem/settings.json` (auto-created with defaults on first run). Configure AI model, worker port, data directory, log level, and context injection settings.
+Settings are managed in `~/.Codex-mem/settings.json` (auto-created with defaults on first run). Configure AI model, worker port, data directory, log level, and context injection settings.
 
-See the **[Configuration Guide](https://docs.claude-mem.ai/configuration)** for all available settings and examples.
+See the **[Configuration Guide](https://docs.codex-mem.ai/configuration)** for all available settings and examples.
 
 ---
 
 ## Development
 
-See the **[Development Guide](https://docs.claude-mem.ai/development)** for build instructions, testing, and contribution workflow.
+See the **[Development Guide](https://docs.codex-mem.ai/development)** for build instructions, testing, and contribution workflow.
 
 ---
 
 ## Troubleshooting
 
-If experiencing issues, describe the problem to Claude and the troubleshoot skill will automatically diagnose and provide fixes.
+If experiencing issues, describe the problem to Codex and the troubleshoot skill will automatically diagnose and provide fixes.
 
-See the **[Troubleshooting Guide](https://docs.claude-mem.ai/troubleshooting)** for common issues and solutions.
+See the **[Troubleshooting Guide](https://docs.codex-mem.ai/troubleshooting)** for common issues and solutions.
 
 ---
 
@@ -308,7 +308,7 @@ See the **[Troubleshooting Guide](https://docs.claude-mem.ai/troubleshooting)** 
 Create comprehensive bug reports with the automated generator:
 
 ```bash
-cd ~/.claude/plugins/marketplaces/thedotmack
+cd ~/.Codex/plugins/marketplaces/thedotmack
 npm run bug-report
 ```
 
@@ -322,7 +322,7 @@ Contributions are welcome! Please:
 4. Update documentation
 5. Submit a Pull Request
 
-See [Development Guide](https://docs.claude-mem.ai/development) for contribution workflow.
+See [Development Guide](https://docs.codex-mem.ai/development) for contribution workflow.
 
 ---
 
@@ -356,10 +356,10 @@ See the [LICENSE](LICENSE) file for full details.
 
 ---
 
-**Built with Claude Agent SDK** | **Powered by Claude Code** | **Made with TypeScript**
+**Built with Claude Agent SDK** | **Powered by Codex** | **Made with TypeScript**
 
 ---
 
 ### What About $CMEM?
 
-$CMEM is a solana token created by a 3rd party without Claude-Mem's prior consent, but officially embraced by the creator of Claude-Mem (Alex Newman, @thedotmack). The token acts as a community catalyst for growth and a vehicle for bringing real-time agent data to the developers and knowledge workers that need it most. $CMEM: 2TsmuYUrsctE57VLckZBYEEzdokUF8j8e1GavekWBAGS
+$CMEM is a solana token created by a 3rd party without Codex-mem's prior consent, but officially embraced by the creator of Codex-mem (Alex Newman, @thedotmack). The token acts as a community catalyst for growth and a vehicle for bringing real-time agent data to the developers and knowledge workers that need it most. $CMEM: 2TsmuYUrsctE57VLckZBYEEzdokUF8j8e1GavekWBAGS

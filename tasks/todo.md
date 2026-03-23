@@ -55,4 +55,6 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Renamed the root package surface to `codex-mem`, added a real published `bin`, and introduced a bundled `plugin/scripts/codex-mem.cjs` CLI artifact through the existing build pipeline.
 - Switched package-level sync/log scripts and marketplace sync defaults to Codex plugin/data directories while keeping the underlying Claude plugin manifests untouched for now.
 - Renamed the highest-visibility shipped manifests and help surfaces to `codex-mem`, including marketplace/plugin manifests, hook descriptions, search API help, worker/MCP help text, and Cursor integration guidance.
+- Updated the main README, Cursor hooks guide, and shipped English mode prompts to Codex-first wording, commands, config paths, and context filenames.
+- Added docs/content regression coverage that locks the README, Cursor guide, and English mode prompts to Codex-first product wording.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.
