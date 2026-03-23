@@ -15,7 +15,7 @@ describe('Codex docs and content surfaces', () => {
     const readme = readProjectFile('README.md');
 
     expect(readme).toContain('Persistent memory compression system built for Codex');
-    expect(readme).toContain('npm install -g @2kDarki/codex-mem');
+    expect(readme).toContain('npm install -g @2kdarki/codex-mem');
     expect(readme).toContain('codex-mem codex init');
     expect(readme).toContain('codex-mem codex watch');
     expect(readme).toContain('`~/.Codex-mem/settings.json`');
@@ -60,11 +60,11 @@ describe('Codex docs and content surfaces', () => {
 
     expect(introduction).toContain('# Codex-mem');
     expect(introduction).toContain('Persistent memory compression system for Codex');
-    expect(introduction).toContain('npm install -g @2kDarki/codex-mem');
+    expect(introduction).toContain('npm install -g @2kdarki/codex-mem');
     expect(introduction).toContain('codex-mem codex init');
 
     expect(installation).toContain('Install codex-mem from npm');
-    expect(installation).toContain('npm install -g @2kDarki/codex-mem');
+    expect(installation).toContain('npm install -g @2kdarki/codex-mem');
     expect(installation).toContain('codex-mem codex init');
     expect(installation).toContain('codex-mem codex watch');
     expect(installation).toContain('`~/.Codex-mem/`');

@@ -36,7 +36,7 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 ## Current Slice: Scoped NPM Package
 
 - [x] Add failing coverage for the scoped npm package name and scoped install command snippets
-- [x] Update root package metadata and user-facing npm install commands to `@2kDarki/codex-mem`
+- [x] Update root package metadata and user-facing npm install commands to `@2kdarki/codex-mem`
 - [x] Align the Bun workspace lock metadata with the scoped package name
 - [x] Verify the scoped publish surface with focused tests
 - [x] Record the slice in review notes and commit it with a detailed message
@@ -106,4 +106,4 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Made the compatibility policy explicit in the README and public docs: Codex is now the primary runtime/product surface, while Claude Code and Cursor remain supported compatibility hosts on the same worker/database core, and fixed the stale public `claude-mem cursor install` command to `codex-mem cursor install`.
 - Added a bundled CLI runtime smoke test so the shipped `plugin/scripts/codex-mem.cjs` artifact now proves the Codex-first compatibility matrix in its help output, then verified the final migration state with a broader green test pass spanning docs, installer surfaces, source CLI, built CLI, and Codex transcript watcher end-to-end coverage.
 - The current migration queue is complete; any further cleanup is now optional polish rather than a required Codex-mem cutover item.
-- Switched the npm publish surface from the unscoped `codex-mem` package name to the scoped package `@2kDarki/codex-mem` while keeping the installed CLI command as `codex-mem`, and updated the main npm install snippets so users install the correct registry package.
+- Switched the npm publish surface from the unscoped `codex-mem` package name to the scoped package `@2kdarki/codex-mem` while keeping the installed CLI command as `codex-mem`, and updated the main npm install snippets so users install the correct registry package.

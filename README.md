@@ -130,7 +130,7 @@
 Install codex-mem globally and set up Codex transcript watching:
 
 ```bash
-npm install -g @2kDarki/codex-mem
+npm install -g @2kdarki/codex-mem
 codex-mem codex init
 codex-mem codex watch
 ```
