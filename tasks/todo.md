@@ -20,17 +20,17 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Public docs secondary pages: clean up architecture/overview/history pages where product framing still says Claude-Mem even when describing the current product surface
 - [x] Cursor ancillary docs: update parity/review/supporting docs that still mention `claude-mem-context.mdc` or Claude-first branding
 - [x] Support templates and repo hygiene: finish feature request template and any remaining high-signal support copy
-- [ ] Installer polish: rename remaining installer prompts/help copy that still says `claude-mem installer` or `.claude-mem` in user-visible output
+- [x] Installer polish: rename remaining installer prompts/help copy that still says `claude-mem installer` or `.claude-mem` in user-visible output
 - [ ] Viewer/settings polish: replace remaining visible defaults like OpenRouter app-name placeholders that still show `claude-mem`
 - [ ] Public example/config files: sweep remaining user-copied examples for `.claude-mem` defaults where the runtime is now `.Codex-mem`
 - [ ] Compatibility decision: decide and document whether Claude/Cursor remain supported compatibility hosts or move to a strict Codex-only support stance
 - [ ] Follow-up runtime validation: add any remaining end-to-end coverage needed after the compatibility/support decision lands
 
-## Current Slice: Support Template Cleanup
+## Current Slice: Installer Copy Polish
 
-- [x] Add failing regression coverage for the remaining GitHub support templates that still use generic or legacy wording
-- [x] Implement the minimal template copy updates needed for Codex-mem support surfaces
-- [x] Verify the updated docs/template surfaces with focused tests
+- [x] Add failing regression coverage for the remaining user-visible installer prompts and settings-path copy
+- [x] Implement the minimal installer source and bundled-output updates needed for Codex-first wording
+- [x] Verify the installer surface with focused tests and a rebuilt installer bundle
 - [x] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
@@ -92,4 +92,5 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Updated the secondary architecture/history docs framing (`architecture/overview`, `architecture/database`, `hooks-architecture`, `architecture/search-architecture`, `architecture/worker-service`, and `architecture-evolution`) so the current product description is Codex-first while intentionally preserving deeper historical examples and migration-era commands.
 - Updated the supporting Cursor parity/review docs so they now describe Codex-mem and the generated `codex-mem-context.mdc` rules file consistently with the already-updated primary Cursor setup guides.
 - Updated the GitHub support issue templates so the user-facing bug-report and feature-request copy now names Codex-mem explicitly while preserving the real repository issue URL.
+- Polished the remaining user-visible installer prompts so the banner, install detection message, provider prompt, and Cursor follow-up command are Codex-first in both installer source and the tracked built installer bundle.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.

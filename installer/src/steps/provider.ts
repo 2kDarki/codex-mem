@@ -14,7 +14,7 @@ export interface ProviderConfig {
 
 export async function runProviderConfiguration(): Promise<ProviderConfig> {
   const provider = await p.select({
-    message: 'Which AI provider should claude-mem use for memory compression?',
+    message: 'Which AI provider should codex-mem use for memory compression?',
     options: [
       { value: 'claude' as const, label: 'Claude', hint: 'uses your Claude subscription' },
       { value: 'gemini' as const, label: 'Gemini', hint: 'free tier available' },

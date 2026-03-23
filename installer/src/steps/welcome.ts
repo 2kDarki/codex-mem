@@ -6,18 +6,18 @@ import { expandHome } from '../utils/system.js';
 export type InstallMode = 'fresh' | 'upgrade' | 'configure';
 
 export async function runWelcome(): Promise<InstallMode> {
-  p.intro(pc.bgCyan(pc.black(' claude-mem installer ')));
+  p.intro(pc.bgCyan(pc.black(' codex-mem installer ')));
 
   p.log.info(`Version: 1.0.0`);
   p.log.info(`Platform: ${process.platform} (${process.arch})`);
 
-  const settingsExist = existsSync(expandHome('~/.claude-mem/settings.json'));
+  const settingsExist = existsSync(expandHome('~/.Codex-mem/settings.json'));
   const pluginExist = existsSync(expandHome('~/.claude/plugins/marketplaces/thedotmack/'));
 
   const alreadyInstalled = settingsExist && pluginExist;
 
   if (alreadyInstalled) {
-    p.log.warn('Existing claude-mem installation detected.');
+    p.log.warn('Existing codex-mem installation detected.');
   }
 
   const installMode = await p.select({
