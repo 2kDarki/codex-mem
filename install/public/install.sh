@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# claude-mem installer bootstrap
+# codex-mem installer bootstrap
 # Usage: curl -fsSL https://install.cmem.ai | bash
 #   or:  curl -fsSL https://install.cmem.ai | bash -s -- --provider=gemini --api-key=YOUR_KEY
 
@@ -27,10 +27,10 @@ if [ "$NODE_MAJOR" -lt 18 ]; then
   error "Node.js >= 18 required. Current: v${NODE_VERSION}"
 fi
 
-info "claude-mem installer (Node.js v${NODE_VERSION})"
+info "codex-mem installer (Node.js v${NODE_VERSION})"
 
 # Create temp file for installer
-TMPFILE=$(mktemp "${TMPDIR:-/tmp}/claude-mem-installer.XXXXXX.mjs")
+TMPFILE=$(mktemp "${TMPDIR:-/tmp}/codex-mem-installer.XXXXXX.mjs")
 
 # Cleanup on exit
 cleanup() {

@@ -52,4 +52,19 @@ describe('installer product surface', () => {
     expect(provider).toContain("Which AI provider should codex-mem use for memory compression?");
     expect(install).toContain("Run: codex-mem cursor setup");
   });
+
+  it('keeps the published installer bootstrap assets aligned with Codex defaults', () => {
+    const publicInstallScript = readProjectFile('install/public/install.sh');
+    const publicInstallerBundle = readProjectFile('install/public/installer.js');
+
+    expect(publicInstallScript).toContain('codex-mem installer');
+    expect(publicInstallScript).toContain('codex-mem-installer');
+
+    expect(publicInstallerBundle).toContain('~/.Codex-mem');
+    expect(publicInstallerBundle).toContain('Existing codex-mem installation detected.');
+    expect(publicInstallerBundle).toContain('Which AI provider should codex-mem use for memory compression?');
+    expect(publicInstallerBundle).toContain('Run: codex-mem cursor setup');
+    expect(publicInstallerBundle).toContain('codex-mem installed successfully!');
+    expect(publicInstallerBundle).not.toContain('~/.claude-mem');
+  });
 });

@@ -22,15 +22,15 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Support templates and repo hygiene: finish feature request template and any remaining high-signal support copy
 - [x] Installer polish: rename remaining installer prompts/help copy that still says `claude-mem installer` or `.claude-mem` in user-visible output
 - [x] Viewer/settings polish: replace remaining visible defaults like OpenRouter app-name placeholders that still show `claude-mem`
-- [ ] Public example/config files: sweep remaining user-copied examples for `.claude-mem` defaults where the runtime is now `.Codex-mem`
+- [x] Public example/config files: sweep remaining user-copied examples for `.claude-mem` defaults where the runtime is now `.Codex-mem`
 - [ ] Compatibility decision: decide and document whether Claude/Cursor remain supported compatibility hosts or move to a strict Codex-only support stance
 - [ ] Follow-up runtime validation: add any remaining end-to-end coverage needed after the compatibility/support decision lands
 
-## Current Slice: Viewer/Settings Polish
+## Current Slice: Public Example/Config Files
 
-- [x] Add failing regression coverage for the remaining visible viewer/settings OpenRouter app-name default
-- [x] Implement the minimal viewer/settings updates needed for Codex-first OpenRouter defaults
-- [x] Verify the viewer/settings surface with focused regression coverage
+- [x] Add failing regression coverage for the published installer bootstrap assets that still showed legacy defaults
+- [x] Update the public install bootstrap script and resync the public installer bundle with the Codex-first installer output
+- [x] Verify the public installer assets with focused regression coverage
 - [x] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
@@ -94,4 +94,5 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Updated the GitHub support issue templates so the user-facing bug-report and feature-request copy now names Codex-mem explicitly while preserving the real repository issue URL.
 - Polished the remaining user-visible installer prompts so the banner, install detection message, provider prompt, and Cursor follow-up command are Codex-first in both installer source and the tracked built installer bundle.
 - Polished the remaining visible viewer/settings OpenRouter app-name default so both the shared settings constant and the settings modal fallback/placeholder now show `codex-mem` instead of `claude-mem`.
+- Updated the published `install/public` installer assets so the bootstrap banner, temp filename prefix, and bundled installer payload now match the Codex-first installer source and `.Codex-mem` defaults users actually download.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.
