@@ -1,13 +1,13 @@
 ---
 title: "Architecture Overview"
-description: "System components and data flow in Claude-Mem"
+description: "System components and data flow in Codex-mem"
 ---
 
 # Architecture Overview
 
 ## System Components
 
-Claude-Mem operates as a Claude Code plugin with five core components:
+Codex-mem operates as a Codex-first memory system with compatibility paths for Claude Code and Cursor. Its current architecture has six core components:
 
 1. **Plugin Hooks** - Capture lifecycle events (6 hook files)
 2. **Smart Install** - Cached dependency checker (pre-hook script, runs before context-hook)
@@ -209,7 +209,7 @@ SQLite3 with bun:sqlite driver featuring:
 - FTS5 virtual tables for full-text search
 - SessionStore for CRUD operations
 - SessionSearch for FTS5 queries
-- Location: `~/.claude-mem/claude-mem.db`
+- Location: `~/.Codex-mem/claude-mem.db`
 
 See [Database Architecture](/architecture/database) for schema and FTS5 search.
 

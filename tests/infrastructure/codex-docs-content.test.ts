@@ -117,6 +117,31 @@ describe('Codex docs and content surfaces', () => {
     expect(featureRequest).toContain('https://github.com/thedotmack/claude-mem/issues');
   });
 
+  it('uses codex-first framing in secondary architecture docs', () => {
+    const architectureOverview = readProjectFile('docs/public/architecture/overview.mdx');
+    const databaseArchitecture = readProjectFile('docs/public/architecture/database.mdx');
+    const hooksArchitecture = readProjectFile('docs/public/hooks-architecture.mdx');
+    const searchArchitecture = readProjectFile('docs/public/architecture/search-architecture.mdx');
+    const workerService = readProjectFile('docs/public/architecture/worker-service.mdx');
+    const architectureEvolution = readProjectFile('docs/public/architecture-evolution.mdx');
+
+    expect(architectureOverview).toContain('description: "System components and data flow in Codex-mem"');
+    expect(architectureOverview).toContain('Codex-mem operates as a Codex-first memory system');
+    expect(architectureOverview).toContain('`~/.Codex-mem/claude-mem.db`');
+
+    expect(databaseArchitecture).toContain('Codex-mem uses SQLite 3');
+    expect(databaseArchitecture).toContain('**Path**: `~/.Codex-mem/claude-mem.db`');
+
+    expect(hooksArchitecture).toContain('# How Codex-mem Uses Hooks');
+    expect(hooksArchitecture).toContain('Codex-mem is fundamentally a **hook-driven system**');
+
+    expect(searchArchitecture).toContain('Codex-mem uses an **MCP-based search architecture**');
+    expect(workerService).toContain('Codex-mem processes observations through the Claude Agent SDK');
+
+    expect(architectureEvolution).toContain('description: "How Codex-mem evolved from v3 to v5+"');
+    expect(architectureEvolution).toContain('This is the story of how Codex-mem evolved');
+  });
+
   it('uses codex-mem commands and context file names in the Cursor guide', () => {
     const cursorReadme = readProjectFile('cursor-hooks/README.md');
 
