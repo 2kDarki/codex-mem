@@ -51,18 +51,18 @@ describe('Cursor MCP Configuration', () => {
       expect(existsSync(join(tempDir, '.cursor'))).toBe(true);
     });
 
-    it('adds claude-mem server with correct structure', () => {
+    it('adds codex-mem server with correct structure', () => {
       configureCursorMcp(mcpJsonPath, mcpServerPath);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
 
       expect(config.mcpServers).toBeDefined();
-      expect(config.mcpServers['claude-mem']).toBeDefined();
-      expect(config.mcpServers['claude-mem'].command).toBe('node');
-      expect(config.mcpServers['claude-mem'].args).toEqual([mcpServerPath]);
+      expect(config.mcpServers['codex-mem']).toBeDefined();
+      expect(config.mcpServers['codex-mem'].command).toBe('node');
+      expect(config.mcpServers['codex-mem'].args).toEqual([mcpServerPath]);
     });
 
-    it('preserves existing MCP servers when adding claude-mem', () => {
+    it('preserves existing MCP servers when adding codex-mem', () => {
       // Pre-create config with another server
       mkdirSync(join(tempDir, '.cursor'), { recursive: true });
       const existingConfig = {
@@ -82,10 +82,10 @@ describe('Cursor MCP Configuration', () => {
       // Both servers should exist
       expect(config.mcpServers['other-server']).toBeDefined();
       expect(config.mcpServers['other-server'].command).toBe('python');
-      expect(config.mcpServers['claude-mem']).toBeDefined();
+      expect(config.mcpServers['codex-mem']).toBeDefined();
     });
 
-    it('updates existing claude-mem server path', () => {
+    it('updates existing codex-mem server path', () => {
       // First config
       configureCursorMcp(mcpJsonPath, '/old/path.cjs');
 
@@ -95,7 +95,7 @@ describe('Cursor MCP Configuration', () => {
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
 
-      expect(config.mcpServers['claude-mem'].args).toEqual([newPath]);
+      expect(config.mcpServers['codex-mem'].args).toEqual([newPath]);
     });
 
     it('recovers from corrupt mcp.json', () => {
@@ -107,7 +107,7 @@ describe('Cursor MCP Configuration', () => {
       configureCursorMcp(mcpJsonPath, mcpServerPath);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(config.mcpServers['claude-mem']).toBeDefined();
+      expect(config.mcpServers['codex-mem']).toBeDefined();
     });
 
     it('handles mcp.json with missing mcpServers key', () => {
@@ -118,7 +118,7 @@ describe('Cursor MCP Configuration', () => {
       configureCursorMcp(mcpJsonPath, mcpServerPath);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(config.mcpServers['claude-mem']).toBeDefined();
+      expect(config.mcpServers['codex-mem']).toBeDefined();
     });
   });
 
@@ -167,21 +167,21 @@ describe('Cursor MCP Configuration', () => {
   });
 
   describe('removeMcpConfig', () => {
-    it('removes claude-mem server from config', () => {
+    it('removes codex-mem server from config', () => {
       configureCursorMcp(mcpJsonPath, mcpServerPath);
       removeMcpConfig(mcpJsonPath);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(config.mcpServers['claude-mem']).toBeUndefined();
+      expect(config.mcpServers['codex-mem']).toBeUndefined();
     });
 
-    it('preserves other servers when removing claude-mem', () => {
+    it('preserves other servers when removing codex-mem', () => {
       // Setup: both servers
       mkdirSync(join(tempDir, '.cursor'), { recursive: true });
       const config = {
         mcpServers: {
           'other-server': { command: 'python', args: ['/path.py'] },
-          'claude-mem': { command: 'node', args: ['/mcp.cjs'] }
+          'codex-mem': { command: 'node', args: ['/mcp.cjs'] }
         }
       };
       writeFileSync(mcpJsonPath, JSON.stringify(config));
@@ -190,7 +190,7 @@ describe('Cursor MCP Configuration', () => {
 
       const updated: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
       expect(updated.mcpServers['other-server']).toBeDefined();
-      expect(updated.mcpServers['claude-mem']).toBeUndefined();
+      expect(updated.mcpServers['codex-mem']).toBeUndefined();
     });
 
     it('does nothing if mcp.json does not exist', () => {
@@ -199,7 +199,7 @@ describe('Cursor MCP Configuration', () => {
       expect(existsSync(mcpJsonPath)).toBe(false);
     });
 
-    it('does nothing if claude-mem not in config', () => {
+    it('does nothing if codex-mem not in config', () => {
       mkdirSync(join(tempDir, '.cursor'), { recursive: true });
       const config = {
         mcpServers: {
@@ -213,6 +213,23 @@ describe('Cursor MCP Configuration', () => {
       const updated: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
       expect(updated.mcpServers['other-server']).toBeDefined();
     });
+
+    it('also removes legacy claude-mem server entries during cleanup', () => {
+      mkdirSync(join(tempDir, '.cursor'), { recursive: true });
+      const config = {
+        mcpServers: {
+          'claude-mem': { command: 'node', args: ['/legacy.cjs'] },
+          'other-server': { command: 'python', args: ['/path.py'] }
+        }
+      };
+      writeFileSync(mcpJsonPath, JSON.stringify(config));
+
+      removeMcpConfig(mcpJsonPath);
+
+      const updated: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
+      expect(updated.mcpServers['claude-mem']).toBeUndefined();
+      expect(updated.mcpServers['other-server']).toBeDefined();
+    });
   });
 
   describe('path handling', () => {
@@ -221,7 +238,7 @@ describe('Cursor MCP Configuration', () => {
       configureCursorMcp(mcpJsonPath, pathWithSpaces);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(config.mcpServers['claude-mem'].args).toEqual([pathWithSpaces]);
+      expect(config.mcpServers['codex-mem'].args).toEqual([pathWithSpaces]);
     });
 
     it('handles Windows-style path', () => {
@@ -229,7 +246,7 @@ describe('Cursor MCP Configuration', () => {
       configureCursorMcp(mcpJsonPath, windowsPath);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(config.mcpServers['claude-mem'].args).toEqual([windowsPath]);
+      expect(config.mcpServers['codex-mem'].args).toEqual([windowsPath]);
     });
 
     it('handles path with special characters', () => {
@@ -237,11 +254,11 @@ describe('Cursor MCP Configuration', () => {
       configureCursorMcp(mcpJsonPath, specialPath);
 
       const config: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(config.mcpServers['claude-mem'].args).toEqual([specialPath]);
+      expect(config.mcpServers['codex-mem'].args).toEqual([specialPath]);
 
       // Verify it survives JSON round-trip
       const reread: CursorMcpConfig = JSON.parse(readFileSync(mcpJsonPath, 'utf-8'));
-      expect(reread.mcpServers['claude-mem'].args![0]).toBe(specialPath);
+      expect(reread.mcpServers['codex-mem'].args![0]).toBe(specialPath);
     });
   });
 });

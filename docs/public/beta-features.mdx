@@ -9,7 +9,7 @@ description: "Try experimental features like Endless Mode before they're release
 **Endless Mode is experimental and not included in the stable release.** You must manually switch to the beta branch to try it. The efficiency projections below are based on theoretical modeling, not production measurements. Expect slower performance than standard mode and potential bugs.
 </Warning>
 
-Claude-Mem offers a beta channel for users who want to try experimental features before they're released to the stable channel.
+Codex-mem offers a beta channel for users who want to try experimental features before they're released to the stable channel.
 
 ## Version Channel Switching
 
@@ -17,7 +17,7 @@ You can switch between stable and beta versions directly from the web viewer UI 
 
 ### How to Access
 
-1. Open the Claude-Mem viewer at http://localhost:37777
+1. Open the Codex-mem viewer at http://localhost:37777
 2. Click the **Settings** gear icon in the top-right
 3. Find the **Version Channel** section
 4. Click **Try Beta (Endless Mode)** to switch to beta, or **Switch to Stable** to return
@@ -31,7 +31,7 @@ When switching versions:
 3. **Dependencies reinstall** - `npm install` runs to ensure correct dependencies
 4. **Worker restarts automatically** - The background service restarts with the new version
 
-**Your memory data is always preserved.** The database at `~/.claude-mem/claude-mem.db` is not affected by version switching. All your observations, sessions, and summaries remain intact.
+**Your memory data is always preserved.** The database at `~/.Codex-mem/claude-mem.db` is not affected by version switching. All your observations, sessions, and summaries remain intact.
 
 ### Version Indicators
 
@@ -48,7 +48,7 @@ The flagship experimental feature in beta is **Endless Mode** - a biomimetic mem
 
 ### The Problem Endless Mode Solves
 
-In standard Claude Code sessions:
+In standard Codex sessions:
 
 - Tool outputs (file reads, bash output, search results) accumulate in the context window
 - Each tool can add 1-10k+ tokens to the context
@@ -146,6 +146,6 @@ If you encounter bugs or have feedback about beta features:
 
 ## Next Steps
 
-- [Configuration](configuration) - Customize other Claude-Mem settings
+- [Configuration](configuration) - Customize other Codex-mem settings
 - [Troubleshooting](troubleshooting) - Common issues and solutions
-- [Architecture Overview](architecture/overview) - Understand how Claude-Mem works
+- [Architecture Overview](architecture/overview) - Understand how Codex-mem works

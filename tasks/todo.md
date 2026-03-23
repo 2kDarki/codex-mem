@@ -14,12 +14,12 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Verify changed tests pass
 - [x] Update this tasklist with implementation notes and follow-up work
 
-## Current Slice: End-to-End Codex Transcript Coverage
+## Current Slice: Codex-First Viewer, Cursor Outputs, and Public Docs
 
-- [x] Add watcher-level failing tests for Codex transcript ingestion and state resume behavior
-- [x] Implement the minimal production changes needed for the new end-to-end tests
-- [x] Verify transcript watcher ingestion, AGENTS updates, and state resume behavior with focused tests
-- [x] Record the slice in review notes and commit it with a detailed message
+- [x] Add failing regression coverage for the remaining user-visible Codex branding gaps in Cursor-generated files, viewer shell/header, and selected public docs
+- [x] Implement the minimal production changes needed to satisfy those user-visible regressions while preserving legacy cleanup compatibility
+- [x] Verify the updated Cursor, viewer, and docs surfaces with focused tests
+- [ ] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
 
@@ -68,4 +68,9 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Updated the remaining user-facing Cursor docs bundle to Codex-first commands, paths, and rules filenames, and expanded regression coverage across those setup guides.
 - Added watcher-level end-to-end Codex transcript tests that exercise JSONL ingestion, worker HTTP calls, AGENTS.md updates, and saved-state resume behavior.
 - Fixed a transcript watcher race where overlapping file watch callbacks could re-read the same appended range and replay session-end processing.
+- Renamed the remaining generated Cursor user-facing surfaces to Codex-first names, including `codex-mem-context.mdc`, Codex-mem MDC copy, and the `codex-mem` MCP server key while still cleaning up legacy `claude-mem` MCP entries during removal.
+- Updated the viewer shell title, header branding, and docs link to Codex-first wording without changing the existing asset filenames or GitHub repository target.
+- Cleaned up the selected public docs pages for configuration and beta features so their visible paths, viewer wording, and Codex session guidance align with `.Codex-mem` defaults while preserving the still-current `claude-mem.db` filename where applicable.
+- Corrected Cursor installer guidance so the next-step command matches the shipped CLI (`codex-mem worker start`) and the docs link points at the Codex docs host.
+- Verified the slice with focused Cursor/docs regression tests and a full build of the viewer, worker, MCP server, and `codex-mem` CLI bundle.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.

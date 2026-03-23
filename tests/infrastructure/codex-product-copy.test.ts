@@ -56,9 +56,10 @@ describe('Codex product help surfaces', () => {
     const cursorInstaller = readProjectFile('src/services/integrations/CursorHooksInstaller.ts');
 
     expect(cursorInstaller).toContain('Installing Codex-mem Cursor hooks');
-    expect(cursorInstaller).toContain('Start codex-mem worker: codex-mem start');
+    expect(cursorInstaller).toContain('Start codex-mem worker: codex-mem worker start');
     expect(cursorInstaller).toContain('codex-mem-context.mdc');
     expect(cursorInstaller).toContain('Codex-mem Cursor Integration');
     expect(cursorInstaller).toContain('Usage: codex-mem cursor <command> [options]');
+    expect(cursorInstaller).toContain('https://docs.codex-mem.ai/cursor');
   });
 });

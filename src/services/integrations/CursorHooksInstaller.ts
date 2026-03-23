@@ -372,7 +372,7 @@ Hooks installed to: ${targetDir}/hooks.json
 Using unified CLI: bun worker-service.cjs hook cursor <command>
 
 Next steps:
-  1. Start codex-mem worker: codex-mem start
+  1. Start codex-mem worker: codex-mem worker start
   2. Restart Cursor to load the hooks
   3. Check Cursor Settings → Hooks tab to verify
 
@@ -667,7 +667,7 @@ Examples:
   codex-mem cursor uninstall             # Remove from current project
   codex-mem cursor status                # Check if hooks are installed
 
-For more info: https://docs.claude-mem.ai/cursor
+For more info: https://docs.codex-mem.ai/cursor
       `);
       return 0;
     }

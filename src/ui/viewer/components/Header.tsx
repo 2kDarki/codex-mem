@@ -40,11 +40,11 @@ export function Header({
             </div>
           )}
         </div>
-        <span className="logo-text">claude-mem</span>
+        <span className="logo-text">codex-mem</span>
       </h1>
       <div className="status">
         <a
-          href="https://docs.claude-mem.ai"
+          href="https://docs.codex-mem.ai"
           target="_blank"
           rel="noopener noreferrer"
           className="icon-link"

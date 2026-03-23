@@ -22,6 +22,27 @@ describe('Codex docs and content surfaces', () => {
     expect(readme).not.toContain('Start a new Claude Code session');
   });
 
+  it('uses codex-mem branding in the viewer shell and public docs pages', () => {
+    const viewerTemplate = readProjectFile('src/ui/viewer-template.html');
+    const viewerHeader = readProjectFile('src/ui/viewer/components/Header.tsx');
+    const configurationDoc = readProjectFile('docs/public/configuration.mdx');
+    const betaFeaturesDoc = readProjectFile('docs/public/beta-features.mdx');
+
+    expect(viewerTemplate).toContain('<title>codex-mem viewer</title>');
+    expect(viewerHeader).toContain('<span className="logo-text">codex-mem</span>');
+    expect(viewerHeader).toContain('https://docs.codex-mem.ai');
+
+    expect(configurationDoc).toContain('description: "Environment variables and settings for Codex-mem"');
+    expect(configurationDoc).toContain('Settings are managed in `~/.Codex-mem/settings.json`.');
+    expect(configurationDoc).toContain('| `CLAUDE_MEM_OPENROUTER_APP_NAME`             | `codex-mem`');
+    expect(configurationDoc).toContain('| `CLAUDE_MEM_DATA_DIR`         | `~/.Codex-mem`');
+
+    expect(betaFeaturesDoc).toContain('Codex-mem offers a beta channel');
+    expect(betaFeaturesDoc).toContain('Open the Codex-mem viewer');
+    expect(betaFeaturesDoc).toContain('`~/.Codex-mem/claude-mem.db`');
+    expect(betaFeaturesDoc).toContain('In standard Codex sessions:');
+  });
+
   it('uses codex-mem commands and context file names in the Cursor guide', () => {
     const cursorReadme = readProjectFile('cursor-hooks/README.md');
 
