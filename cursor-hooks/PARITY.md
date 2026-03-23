@@ -1,6 +1,6 @@
-# Feature Parity: Claude-Mem Hooks vs Cursor Hooks
+# Feature Parity: Codex-mem Hooks vs Cursor Hooks
 
-This document compares claude-mem's Claude Code hooks with the Cursor hooks implementation to ensure feature parity.
+This document compares Codex-mem's Claude Code hooks with the Cursor hooks implementation to ensure feature parity.
 
 ## Hook Mapping
 
@@ -40,7 +40,7 @@ This document compares claude-mem's Claude Code hooks with the Cursor hooks impl
 **Status**: ✅ Complete parity via auto-updated rules file
 
 **How it works**:
-- Hook writes context to `.cursor/rules/claude-mem-context.mdc`
+- Hook writes context to `.cursor/rules/codex-mem-context.mdc`
 - File has `alwaysApply: true` frontmatter
 - Cursor auto-includes this rule in all chat sessions
 - Context refreshes on every prompt submission
@@ -122,7 +122,7 @@ This document compares claude-mem's Claude Code hooks with the Cursor hooks impl
 ## Missing Features (Cursor Limitations)
 
 1. ~~**Direct Context Injection**~~: **SOLVED** via auto-updated rules file
-   - Hook writes context to `.cursor/rules/claude-mem-context.mdc`
+   - Hook writes context to `.cursor/rules/codex-mem-context.mdc`
    - Cursor auto-includes rules with `alwaysApply: true`
    - Context refreshes on every prompt
 
@@ -160,7 +160,7 @@ This document compares claude-mem's Claude Code hooks with the Cursor hooks impl
 | Summary Generation | ⚠️ Partial (no transcript) |
 | User Experience | ⚠️ Partial (no SessionStart) |
 
-**Overall**: The Cursor hooks implementation achieves **full functional parity** with claude-mem's Claude Code hooks:
+**Overall**: The Cursor hooks implementation achieves **full functional parity** with Codex-mem's Claude Code hooks:
 - ✅ Session initialization
 - ✅ Context injection (via auto-updated `.cursor/rules/` file)
 - ✅ Observation capture (MCP tools, shell commands, file edits)

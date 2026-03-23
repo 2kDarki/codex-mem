@@ -189,6 +189,19 @@ describe('Codex docs and content surfaces', () => {
     expect(integration).not.toContain('Claude-Mem Worker Service');
   });
 
+  it('uses codex-mem naming in Cursor ancillary docs', () => {
+    const parity = readProjectFile('cursor-hooks/PARITY.md');
+    const review = readProjectFile('cursor-hooks/REVIEW.md');
+
+    expect(parity).toContain('# Feature Parity: Codex-mem Hooks vs Cursor Hooks');
+    expect(parity).toContain('.cursor/rules/codex-mem-context.mdc');
+    expect(parity).toContain("Codex-mem's Claude Code hooks");
+
+    expect(review).toContain('Matches codex-mem hook behavior where possible');
+    expect(review).toContain('Fetches context from codex-mem worker');
+    expect(review).toContain('.cursor/rules/codex-mem-context.mdc');
+  });
+
   it('uses Codex-first observer wording in the shipped English mode prompts', () => {
     const codeMode = readProjectFile('plugin/modes/code.json');
     const emailInvestigationMode = readProjectFile('plugin/modes/email-investigation.json');
