@@ -31,7 +31,7 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Add failing regression coverage for the next high-traffic public docs pages that still present Claude-first wording
 - [x] Implement the minimal docs changes needed for those pages while preserving historically accurate examples where required
 - [x] Verify the updated docs surfaces with focused tests
-- [ ] Record the slice in review notes and commit it with a detailed message
+- [x] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
 
