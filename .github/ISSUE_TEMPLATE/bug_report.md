@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Use the automated bug report tool for best results
+about: Use the automated Codex-mem bug report tool for best results
 title: ''
 labels: 'bug, needs-triage'
 assignees: ''
@@ -15,7 +15,7 @@ assignees: ''
 
 ## ⚡ Quick Bug Report (Recommended)
 
-**Use the automated bug report generator** for comprehensive diagnostics:
+**Use the automated Codex-mem bug report generator** for comprehensive diagnostics:
 
 ```bash
 # Navigate to the plugin directory

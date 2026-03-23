@@ -202,6 +202,16 @@ describe('Codex docs and content surfaces', () => {
     expect(review).toContain('.cursor/rules/codex-mem-context.mdc');
   });
 
+  it('uses codex-mem wording in support issue templates', () => {
+    const bugReport = readProjectFile('.github/ISSUE_TEMPLATE/bug_report.md');
+    const featureRequest = readProjectFile('.github/ISSUE_TEMPLATE/feature_request.md');
+
+    expect(bugReport).toContain('Use the automated Codex-mem bug report tool');
+    expect(bugReport).toContain('**Codex-mem version**:');
+    expect(featureRequest).toContain('Suggest an idea for Codex-mem');
+    expect(featureRequest).toContain('feature-request');
+  });
+
   it('uses Codex-first observer wording in the shipped English mode prompts', () => {
     const codeMode = readProjectFile('plugin/modes/code.json');
     const emailInvestigationMode = readProjectFile('plugin/modes/email-investigation.json');
