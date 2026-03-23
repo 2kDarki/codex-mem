@@ -137,7 +137,7 @@ codex-mem codex watch
 
 Start or resume a Codex session after the watcher is running and context from previous sessions will appear automatically.
 
-> **Compatibility note:** `codex-mem` is now Codex-first, but Claude Code and Cursor compatibility paths are still available in this repository.
+> **Compatibility note:** Codex is the primary runtime and product surface. Claude Code and Cursor remain supported compatibility hosts on the same worker, database, and search pipeline.
 
 ### 🦞 OpenClaw Gateway
 

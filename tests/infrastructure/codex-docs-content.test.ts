@@ -89,6 +89,30 @@ describe('Codex docs and content surfaces', () => {
     expect(transcriptWatchExample).toContain('"stateFile": "~/.Codex-mem/transcript-watch-state.json"');
   });
 
+  it('documents Codex as the primary host while keeping Claude Code and Cursor as compatibility hosts', () => {
+    const readme = readProjectFile('README.md');
+    const introduction = readProjectFile('docs/public/introduction.mdx');
+    const installation = readProjectFile('docs/public/installation.mdx');
+    const gettingStarted = readProjectFile('docs/public/usage/getting-started.mdx');
+    const cursorIndex = readProjectFile('docs/public/cursor/index.mdx');
+
+    expect(readme).toContain('Codex is the primary runtime and product surface.');
+    expect(readme).toContain('Claude Code and Cursor remain supported compatibility hosts');
+
+    expect(introduction).toContain('Codex is the primary runtime for Codex-mem.');
+    expect(introduction).toContain('Claude Code and Cursor remain available as compatibility hosts');
+
+    expect(installation).toContain('Codex is the primary installation path.');
+    expect(installation).toContain('Claude Code and Cursor remain supported compatibility hosts');
+
+    expect(gettingStarted).toContain('Codex is the primary runtime described in this guide.');
+    expect(gettingStarted).toContain('Claude Code and Cursor still use the same worker and database as compatibility hosts.');
+
+    expect(cursorIndex).toContain('Cursor is a supported compatibility host for Codex-mem.');
+    expect(cursorIndex).toContain('codex-mem cursor install');
+    expect(cursorIndex).not.toContain('claude-mem cursor install');
+  });
+
   it('uses codex-first wording in the next high-traffic docs pages', () => {
     const modes = readProjectFile('docs/public/modes.mdx');
     const openRouterProvider = readProjectFile('docs/public/usage/openrouter-provider.mdx');

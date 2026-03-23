@@ -23,14 +23,14 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Installer polish: rename remaining installer prompts/help copy that still says `claude-mem installer` or `.claude-mem` in user-visible output
 - [x] Viewer/settings polish: replace remaining visible defaults like OpenRouter app-name placeholders that still show `claude-mem`
 - [x] Public example/config files: sweep remaining user-copied examples for `.claude-mem` defaults where the runtime is now `.Codex-mem`
-- [ ] Compatibility decision: decide and document whether Claude/Cursor remain supported compatibility hosts or move to a strict Codex-only support stance
+- [x] Compatibility decision: decide and document whether Claude/Cursor remain supported compatibility hosts or move to a strict Codex-only support stance
 - [ ] Follow-up runtime validation: add any remaining end-to-end coverage needed after the compatibility/support decision lands
 
-## Current Slice: Public Example/Config Files
+## Current Slice: Compatibility Decision
 
-- [x] Add failing regression coverage for the published installer bootstrap assets that still showed legacy defaults
-- [x] Update the public install bootstrap script and resync the public installer bundle with the Codex-first installer output
-- [x] Verify the public installer assets with focused regression coverage
+- [x] Add failing regression coverage for the documented compatibility-host policy and public Cursor command surface
+- [x] Document Codex as the primary runtime while keeping Claude Code and Cursor as supported compatibility hosts
+- [x] Verify the policy wording and corrected Cursor command with focused docs regression coverage
 - [x] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
@@ -95,4 +95,5 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Polished the remaining user-visible installer prompts so the banner, install detection message, provider prompt, and Cursor follow-up command are Codex-first in both installer source and the tracked built installer bundle.
 - Polished the remaining visible viewer/settings OpenRouter app-name default so both the shared settings constant and the settings modal fallback/placeholder now show `codex-mem` instead of `claude-mem`.
 - Updated the published `install/public` installer assets so the bootstrap banner, temp filename prefix, and bundled installer payload now match the Codex-first installer source and `.Codex-mem` defaults users actually download.
+- Made the compatibility policy explicit in the README and public docs: Codex is now the primary runtime/product surface, while Claude Code and Cursor remain supported compatibility hosts on the same worker/database core, and fixed the stale public `claude-mem cursor install` command to `codex-mem cursor install`.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.
