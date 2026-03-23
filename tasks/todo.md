@@ -19,7 +19,7 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Add failing regression coverage for the remaining user-visible Codex branding gaps in Cursor-generated files, viewer shell/header, and selected public docs
 - [x] Implement the minimal production changes needed to satisfy those user-visible regressions while preserving legacy cleanup compatibility
 - [x] Verify the updated Cursor, viewer, and docs surfaces with focused tests
-- [ ] Record the slice in review notes and commit it with a detailed message
+- [x] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
 
