@@ -1,10 +1,10 @@
-# Claude-Mem for Cursor (No Claude Code Required)
+# Codex-mem for Cursor (No Codex Required)
 
 > **Persistent AI Memory for Cursor - Zero Cost to Start**
 
 ## Overview
 
-Use claude-mem's persistent memory in Cursor without a Claude Code subscription. Choose between free-tier providers (Gemini, OpenRouter) or paid options.
+Use codex-mem's persistent memory in Cursor without a Codex session. Choose between free-tier providers (Gemini, OpenRouter) or paid options.
 
 **What You Get**:
 - **Persistent memory** that survives across sessions - your AI remembers what it worked on
@@ -12,7 +12,7 @@ Use claude-mem's persistent memory in Cursor without a Claude Code subscription.
 - **Context injection** via `.cursor/rules/` - relevant history included in every chat
 - **Web viewer** at http://localhost:37777 - browse and search your project history
 
-**Why This Matters**: Every Cursor session starts fresh. Claude-mem bridges that gap - your AI agent builds cumulative knowledge about your codebase, decisions, and patterns over time.
+**Why This Matters**: Every Cursor session starts fresh. Codex-mem bridges that gap - your AI agent builds cumulative knowledge about your codebase, decisions, and patterns over time.
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ Use claude-mem's persistent memory in Cursor without a Claude Code subscription.
 - Git
 - PowerShell 5.1+ (included with Windows 10/11)
 
-## Step 1: Clone Claude-Mem
+## Step 1: Clone Codex-mem
 
 ```bash
 # Clone the repository
@@ -46,7 +46,7 @@ bun run build
 
 ## Step 2: Configure Provider (Choose One)
 
-Since you don't have Claude Code, you need to configure an AI provider for claude-mem's summarization engine.
+If you're using Cursor without Codex transcripts, configure an AI provider for codex-mem's summarization engine.
 
 ### Option A: Gemini (Recommended - Free Tier)
 
@@ -54,10 +54,10 @@ Gemini offers 1500 free requests per day, plenty for typical usage.
 
 ```bash
 # Create settings directory
-mkdir -p ~/.claude-mem
+mkdir -p ~/.Codex-mem
 
 # Create settings file
-cat > ~/.claude-mem/settings.json << 'EOF'
+cat > ~/.Codex-mem/settings.json << 'EOF'
 {
   "CLAUDE_MEM_PROVIDER": "gemini",
   "CLAUDE_MEM_GEMINI_API_KEY": "YOUR_GEMINI_API_KEY",
@@ -74,8 +74,8 @@ EOF
 OpenRouter provides access to many models, including free options.
 
 ```bash
-mkdir -p ~/.claude-mem
-cat > ~/.claude-mem/settings.json << 'EOF'
+mkdir -p ~/.Codex-mem
+cat > ~/.Codex-mem/settings.json << 'EOF'
 {
   "CLAUDE_MEM_PROVIDER": "openrouter",
   "CLAUDE_MEM_OPENROUTER_API_KEY": "YOUR_OPENROUTER_API_KEY"
@@ -91,11 +91,11 @@ EOF
 
 ### Option C: Claude API (If You Have API Access)
 
-If you have Anthropic API credits but not a Claude Code subscription:
+If you have Anthropic API credits but not a Codex session:
 
 ```bash
-mkdir -p ~/.claude-mem
-cat > ~/.claude-mem/settings.json << 'EOF'
+mkdir -p ~/.Codex-mem
+cat > ~/.Codex-mem/settings.json << 'EOF'
 {
   "CLAUDE_MEM_PROVIDER": "claude",
   "ANTHROPIC_API_KEY": "YOUR_ANTHROPIC_API_KEY"
@@ -106,11 +106,11 @@ EOF
 ## Step 3: Install Cursor Hooks
 
 ```bash
-# From the claude-mem repo directory (recommended - all projects)
-bun run cursor:install -- user
+# From the codex-mem repo directory (recommended - all projects)
+codex-mem cursor install user
 
 # Or for project-level only:
-bun run cursor:install
+codex-mem cursor install
 ```
 
 This installs:
@@ -121,7 +121,7 @@ This installs:
 ## Step 4: Start the Worker
 
 ```bash
-bun run worker:start
+codex-mem worker start
 ```
 
 The worker runs in the background and handles:
@@ -136,7 +136,7 @@ The worker runs in the background and handles:
 
 2. **Check installation status**:
    ```bash
-   bun run cursor:status
+   codex-mem cursor status
    ```
 
 3. **Verify the worker is running**:
@@ -160,14 +160,14 @@ The worker runs in the background and handles:
 
 Verify your settings file exists and has valid credentials:
 ```bash
-cat ~/.claude-mem/settings.json
+cat ~/.Codex-mem/settings.json
 ```
 
 ### Worker not starting
 
 Check logs:
 ```bash
-tail -f ~/.claude-mem/logs/worker-$(date +%Y-%m-%d).log
+tail -f ~/.Codex-mem/logs/worker-$(date +%Y-%m-%d).log
 ```
 
 ### Hooks not executing
@@ -190,18 +190,18 @@ If you hit the 1500 requests/day limit:
 
 - Read [README.md](README.md) for detailed hook documentation
 - Check [CONTEXT-INJECTION.md](CONTEXT-INJECTION.md) for context behavior details
-- Visit https://docs.claude-mem.ai for full documentation
+- Visit https://docs.codex-mem.ai for full documentation
 
 ## Quick Reference
 
 | Command | Purpose |
 |---------|---------|
-| `bun run cursor:install -- user` | Install hooks for all projects (recommended) |
-| `bun run cursor:install` | Install hooks for current project only |
-| `bun run cursor:status` | Check installation status |
-| `bun run worker:start` | Start the background worker |
-| `bun run worker:stop` | Stop the background worker |
-| `bun run worker:restart` | Restart the worker |
+| `codex-mem cursor install user` | Install hooks for all projects (recommended) |
+| `codex-mem cursor install` | Install hooks for current project only |
+| `codex-mem cursor status` | Check installation status |
+| `codex-mem worker start` | Start the background worker |
+| `codex-mem worker stop` | Stop the background worker |
+| `codex-mem worker restart` | Restart the worker |
 
 ---
 
@@ -227,7 +227,7 @@ bun install
 bun run build
 
 # Configure provider (Gemini example)
-$settingsDir = "$env:USERPROFILE\.claude-mem"
+$settingsDir = "$env:USERPROFILE\.Codex-mem"
 New-Item -ItemType Directory -Force -Path $settingsDir
 
 @"
@@ -241,8 +241,8 @@ New-Item -ItemType Directory -Force -Path $settingsDir
 bun run cursor:setup
 
 # Or manual installation
-bun run cursor:install
-bun run worker:start
+codex-mem cursor install
+codex-mem worker start
 ```
 
 ### What Gets Installed on Windows

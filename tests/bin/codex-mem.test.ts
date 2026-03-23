@@ -38,6 +38,23 @@ describe('codex-mem CLI', () => {
     expect(workerCalls).toEqual([['status']]);
   });
 
+  it('routes cursor commands through the worker runner', async () => {
+    const workerCalls: string[][] = [];
+
+    const exitCode = await runCodexMemCli(['cursor', 'install', 'user'], {
+      runTranscriptCommand: async () => 99,
+      runWorkerCommand: async (args) => {
+        workerCalls.push(args);
+        return 11;
+      },
+      writeLine: () => undefined,
+      writeError: () => undefined,
+    });
+
+    expect(exitCode).toBe(11);
+    expect(workerCalls).toEqual([['cursor', 'install', 'user']]);
+  });
+
   it('prints help and exits non-zero for unknown commands', async () => {
     const lines: string[] = [];
 

@@ -18,6 +18,7 @@ function getHelpText(): string {
     '  codex <init|watch|validate>   Manage Codex transcript ingestion',
     '  transcript <init|watch|validate>  Alias for codex',
     '  worker <start|stop|restart|status> Manage the worker service',
+    '  cursor <install|uninstall|status|setup> Manage Cursor integration',
   ].join('\n');
 }
 
@@ -103,6 +104,8 @@ export async function runCodexMemCli(
       return await helpers.runTranscriptCommand(args[0], args.slice(1));
     case 'worker':
       return await helpers.runWorkerCommand(args);
+    case 'cursor':
+      return await helpers.runWorkerCommand([command, ...args]);
     default:
       helpers.writeError(getHelpText());
       return 1;

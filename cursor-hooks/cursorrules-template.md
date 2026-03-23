@@ -1,11 +1,11 @@
-# Claude-Mem Rules for Cursor
+# Codex-mem Rules for Cursor
 
 ## Automatic Context Injection
 
 The `context-inject.sh` hook **automatically creates and updates** a rules file at:
 
 ```
-.cursor/rules/claude-mem-context.mdc
+.cursor/rules/codex-mem-context.mdc
 ```
 
 This file:
@@ -17,19 +17,19 @@ This file:
 
 ## Optional: Additional Instructions
 
-If you want to add custom instructions about claude-mem (beyond the auto-injected context), create a separate rules file:
+If you want to add custom instructions about codex-mem (beyond the auto-injected context), create a separate rules file:
 
-### `.cursor/rules/claude-mem-instructions.mdc`
+### `.cursor/rules/codex-mem-instructions.mdc`
 
 ```markdown
 ---
 alwaysApply: true
-description: "Instructions for using claude-mem memory system"
+description: "Instructions for using codex-mem memory system"
 ---
 
 # Memory System Usage
 
-You have access to claude-mem, a persistent memory system. In addition to the auto-injected context above, you can search for more detailed information using MCP tools:
+You have access to codex-mem, a persistent memory system. In addition to the auto-injected context above, you can search for more detailed information using MCP tools:
 
 ## Available MCP Tools
 
@@ -69,8 +69,8 @@ Never fetch full details without filtering first.
 
 | File | Purpose | Created By |
 |------|---------|------------|
-| `.cursor/rules/claude-mem-context.mdc` | Auto-injected context | Hook (automatic) |
-| `.cursor/rules/claude-mem-instructions.mdc` | MCP tool instructions | You (optional) |
+| `.cursor/rules/codex-mem-context.mdc` | Auto-injected context | Hook (automatic) |
+| `.cursor/rules/codex-mem-instructions.mdc` | MCP tool instructions | You (optional) |
 
 ## Git Ignore
 
@@ -78,7 +78,7 @@ If you don't want to commit the auto-generated context file:
 
 ```gitignore
 # .gitignore
-.cursor/rules/claude-mem-context.mdc
+.cursor/rules/codex-mem-context.mdc
 ```
 
 The instructions file can be committed to share with your team.

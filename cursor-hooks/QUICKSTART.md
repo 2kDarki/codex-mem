@@ -1,19 +1,19 @@
-# Quick Start: Claude-Mem + Cursor Integration
+# Quick Start: Codex-mem + Cursor Integration
 
 > **Give your Cursor AI persistent memory in under 5 minutes**
 
 ## What This Does
 
-Connects claude-mem to Cursor so that:
+Connects codex-mem to Cursor so that:
 - **Agent actions** (MCP tools, shell commands, file edits) are automatically saved
 - **Context from past sessions** is automatically injected via `.cursor/rules/`
 - **Sessions are summarized** for future reference
 
 Your AI stops forgetting. It remembers the patterns, decisions, and context from previous sessions.
 
-## Don't Have Claude Code?
+## Using Cursor Without Codex?
 
-If you're using Cursor without Claude Code, see [STANDALONE-SETUP.md](STANDALONE-SETUP.md) for setup with free-tier providers like Gemini or OpenRouter.
+If you're using Cursor without Codex transcripts, see [STANDALONE-SETUP.md](STANDALONE-SETUP.md) for setup with free-tier providers like Gemini or OpenRouter.
 
 ---
 
@@ -21,27 +21,36 @@ If you're using Cursor without Claude Code, see [STANDALONE-SETUP.md](STANDALONE
 
 ```bash
 # Install globally for all projects (recommended)
-claude-mem cursor install user
+codex-mem cursor install user
 
 # Or install for current project only
-claude-mem cursor install
+codex-mem cursor install
 
 # Check installation status
-claude-mem cursor status
+codex-mem cursor status
 ```
 
 ## Configure Provider (Required for Standalone)
 
-If you don't have Claude Code, configure a provider for AI summarization:
+If you're using Cursor without Codex transcripts, configure a provider for AI summarization in `~/.Codex-mem/settings.json`:
 
 ```bash
 # Option A: Gemini (free tier available - recommended)
-claude-mem settings set CLAUDE_MEM_PROVIDER gemini
-claude-mem settings set CLAUDE_MEM_GEMINI_API_KEY your-api-key
+mkdir -p ~/.Codex-mem
+cat > ~/.Codex-mem/settings.json << 'EOF'
+{
+  "CLAUDE_MEM_PROVIDER": "gemini",
+  "CLAUDE_MEM_GEMINI_API_KEY": "your-api-key"
+}
+EOF
 
 # Option B: OpenRouter (free models available)
-claude-mem settings set CLAUDE_MEM_PROVIDER openrouter
-claude-mem settings set CLAUDE_MEM_OPENROUTER_API_KEY your-api-key
+cat > ~/.Codex-mem/settings.json << 'EOF'
+{
+  "CLAUDE_MEM_PROVIDER": "openrouter",
+  "CLAUDE_MEM_OPENROUTER_API_KEY": "your-api-key"
+}
+EOF
 ```
 
 **Get free API keys**:
@@ -51,10 +60,10 @@ claude-mem settings set CLAUDE_MEM_OPENROUTER_API_KEY your-api-key
 ## Start Worker
 
 ```bash
-claude-mem start
+codex-mem worker start
 
 # Verify it's running
-claude-mem status
+codex-mem worker status
 ```
 
 ## Restart Cursor
@@ -84,7 +93,7 @@ Restart Cursor to load the hooks.
 - Search your project history
 
 ### Via MCP Tools (if enabled)
-- claude-mem provides search tools via MCP
+- codex-mem provides search tools via MCP
 - Use `search`, `timeline`, and `get_observations` tools
 
 ## Troubleshooting
@@ -96,8 +105,8 @@ Restart Cursor to load the hooks.
 
 **Worker not responding?**
 - Check if worker is running: `curl http://127.0.0.1:37777/api/readiness`
-- Check logs: `tail -f ~/.claude-mem/logs/worker-$(date +%Y-%m-%d).log`
-- Restart worker: `bun run worker:restart`
+- Check logs: `tail -f ~/.Codex-mem/logs/worker-$(date +%Y-%m-%d).log`
+- Restart worker: `codex-mem worker restart`
 
 **Observations not saving?**
 - Check worker logs for errors
@@ -108,5 +117,5 @@ Restart Cursor to load the hooks.
 
 - Read [README.md](README.md) for detailed documentation
 - Read [INTEGRATION.md](INTEGRATION.md) for architecture details
-- Visit [claude-mem docs](https://docs.claude-mem.ai) for full feature set
+- Visit [codex-mem docs](https://docs.codex-mem.ai) for full feature set
 

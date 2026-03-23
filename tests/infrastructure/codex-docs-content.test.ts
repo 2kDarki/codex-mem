@@ -32,6 +32,43 @@ describe('Codex docs and content surfaces', () => {
     expect(cursorReadme).not.toContain('claude-mem cursor install');
   });
 
+  it('uses codex-mem commands and paths in the remaining Cursor docs bundle', () => {
+    const contextInjection = readProjectFile('cursor-hooks/CONTEXT-INJECTION.md');
+    const quickstart = readProjectFile('cursor-hooks/QUICKSTART.md');
+    const standaloneSetup = readProjectFile('cursor-hooks/STANDALONE-SETUP.md');
+    const cursorRulesTemplate = readProjectFile('cursor-hooks/cursorrules-template.md');
+    const integration = readProjectFile('cursor-hooks/INTEGRATION.md');
+
+    expect(contextInjection).toContain('codex-mem cursor install');
+    expect(contextInjection).toContain('.cursor/rules/codex-mem-context.mdc');
+    expect(contextInjection).toContain('~/.Codex-mem/cursor-projects.json');
+    expect(contextInjection).not.toContain('claude-mem cursor install');
+
+    expect(quickstart).toContain('# Quick Start: Codex-mem + Cursor Integration');
+    expect(quickstart).toContain('codex-mem cursor install user');
+    expect(quickstart).toContain('codex-mem worker start');
+    expect(quickstart).toContain('~/.Codex-mem/logs/');
+    expect(quickstart).toContain('https://docs.codex-mem.ai');
+    expect(quickstart).not.toContain('claude-mem cursor install');
+
+    expect(standaloneSetup).toContain('# Codex-mem for Cursor');
+    expect(standaloneSetup).toContain('~/.Codex-mem/settings.json');
+    expect(standaloneSetup).toContain('codex-mem cursor install');
+    expect(standaloneSetup).toContain('https://docs.codex-mem.ai');
+    expect(standaloneSetup).not.toContain('Use claude-mem');
+
+    expect(cursorRulesTemplate).toContain('# Codex-mem Rules for Cursor');
+    expect(cursorRulesTemplate).toContain('.cursor/rules/codex-mem-context.mdc');
+    expect(cursorRulesTemplate).toContain('.cursor/rules/codex-mem-instructions.mdc');
+    expect(cursorRulesTemplate).not.toContain('.cursor/rules/claude-mem-context.mdc');
+
+    expect(integration).toContain('# Codex-mem ↔ Cursor Integration Architecture');
+    expect(integration).toContain('~/.Codex-mem/settings.json');
+    expect(integration).toContain('Initialize session in codex-mem');
+    expect(integration).toContain('Map to codex-mem observation format');
+    expect(integration).not.toContain('Claude-Mem Worker Service');
+  });
+
   it('uses Codex-first observer wording in the shipped English mode prompts', () => {
     const codeMode = readProjectFile('plugin/modes/code.json');
     const emailInvestigationMode = readProjectFile('plugin/modes/email-investigation.json');

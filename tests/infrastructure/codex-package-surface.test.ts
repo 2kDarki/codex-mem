@@ -51,6 +51,11 @@ describe('Codex build and sync tooling', () => {
   });
 
   it('ships the source CLI entrypoint referenced by the build', () => {
-    expect(existsSync(path.join(projectRoot, 'src/bin/codex-mem.ts'))).toBe(true);
+    const sourceCliPath = path.join(projectRoot, 'src/bin/codex-mem.ts');
+
+    expect(existsSync(sourceCliPath)).toBe(true);
+    expect(readFileSync(sourceCliPath, 'utf-8')).toContain(
+      'cursor <install|uninstall|status|setup> Manage Cursor integration',
+    );
   });
 });
