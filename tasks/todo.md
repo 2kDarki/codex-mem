@@ -14,12 +14,24 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Verify changed tests pass
 - [x] Update this tasklist with implementation notes and follow-up work
 
-## Current Slice: Codex-First Docs Entry Points and Support Templates
+## Remaining Work Queue
 
-- [x] Add failing regression coverage for the main public docs entry points, site metadata, issue templates, and transcript example config
-- [x] Implement the minimal docs/template changes needed to make those entry-point surfaces Codex-first
-- [x] Verify the updated docs/template surfaces with focused tests
-- [x] Record the slice in review notes and commit it with a detailed message
+- [ ] Public docs high-traffic pages: finish Codex-first wording/paths in troubleshooting, modes, provider guides, and Cursor OpenRouter setup
+- [ ] Public docs secondary pages: clean up architecture/overview/history pages where product framing still says Claude-Mem even when describing the current product surface
+- [ ] Cursor ancillary docs: update parity/review/supporting docs that still mention `claude-mem-context.mdc` or Claude-first branding
+- [ ] Support templates and repo hygiene: finish feature request template and any remaining high-signal support copy
+- [ ] Installer polish: rename remaining installer prompts/help copy that still says `claude-mem installer` or `.claude-mem` in user-visible output
+- [ ] Viewer/settings polish: replace remaining visible defaults like OpenRouter app-name placeholders that still show `claude-mem`
+- [ ] Public example/config files: sweep remaining user-copied examples for `.claude-mem` defaults where the runtime is now `.Codex-mem`
+- [ ] Compatibility decision: decide and document whether Claude/Cursor remain supported compatibility hosts or move to a strict Codex-only support stance
+- [ ] Follow-up runtime validation: add any remaining end-to-end coverage needed after the compatibility/support decision lands
+
+## Current Slice: High-Traffic Public Docs Cleanup
+
+- [x] Add failing regression coverage for the next high-traffic public docs pages that still present Claude-first wording
+- [x] Implement the minimal docs changes needed for those pages while preserving historically accurate examples where required
+- [x] Verify the updated docs surfaces with focused tests
+- [ ] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
 
@@ -75,4 +87,6 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Verified the slice with focused Cursor/docs regression tests and a full build of the viewer, worker, MCP server, and `codex-mem` CLI bundle.
 - Updated the public docs site metadata, introduction, installation guide, getting-started guide, Cursor entry docs, issue template log paths, and transcript watch example so new users see Codex-first product wording and `.Codex-mem` defaults at the main entry points.
 - Kept repository URLs and compatibility-sensitive historical architecture docs unchanged in this slice, so the change stays focused on entry-point messaging rather than rewriting technical-history pages.
+- Added a concrete remaining-work queue so the rest of the migration is sequenced into public docs, ancillary docs, installer polish, viewer/settings polish, examples, compatibility policy, and follow-up runtime validation instead of one broad undefined cleanup pass.
+- Updated the next high-traffic public docs pages (`modes`, OpenRouter provider, troubleshooting, and Cursor OpenRouter setup) to use Codex-first descriptions and `.Codex-mem` paths where those pages describe the current product surface.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.

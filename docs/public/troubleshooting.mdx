@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting"
-description: "Common issues and solutions for Claude-Mem"
+description: "Common issues and solutions for Codex-mem"
 ---
 
 # Troubleshooting Guide
@@ -67,7 +67,7 @@ The skill includes comprehensive diagnostics, automated repair sequences, and de
 1. Check browser localStorage is enabled:
    ```javascript
    // In browser console
-   localStorage.getItem('claude-mem-settings')
+   localStorage.getItem('codex-mem-settings')
    ```
 
 2. Verify settings endpoint is working:
@@ -78,7 +78,7 @@ The skill includes comprehensive diagnostics, automated repair sequences, and de
 3. Clear localStorage and try again:
    ```javascript
    // In browser console
-   localStorage.removeItem('claude-mem-settings')
+   localStorage.removeItem('codex-mem-settings')
    ```
 
 4. Check for browser privacy mode (blocks localStorage)
@@ -1006,7 +1006,7 @@ SELECT created_at, tool_name FROM observations ORDER BY created_at DESC LIMIT 10
 
 **Cause**: Database file permissions or missing directory.
 
-**Solution**: Check `~/.claude-mem/` exists and is writable.
+**Solution**: Check `~/.Codex-mem/` exists and is writable.
 
 ### "Module not found"
 
@@ -1032,6 +1032,6 @@ If none of these solutions work:
 
 ## Next Steps
 
-- [Configuration](configuration) - Customize Claude-Mem
+- [Configuration](configuration) - Customize Codex-mem
 - [Development](development) - Build from source
 - [Architecture](architecture/overview) - Understand the system

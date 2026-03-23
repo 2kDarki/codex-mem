@@ -89,6 +89,34 @@ describe('Codex docs and content surfaces', () => {
     expect(transcriptWatchExample).toContain('"stateFile": "~/.Codex-mem/transcript-watch-state.json"');
   });
 
+  it('uses codex-first wording in the next high-traffic docs pages', () => {
+    const modes = readProjectFile('docs/public/modes.mdx');
+    const openRouterProvider = readProjectFile('docs/public/usage/openrouter-provider.mdx');
+    const troubleshooting = readProjectFile('docs/public/troubleshooting.mdx');
+    const cursorOpenRouter = readProjectFile('docs/public/cursor/openrouter-setup.mdx');
+    const featureRequest = readProjectFile('.github/ISSUE_TEMPLATE/feature_request.md');
+
+    expect(modes).toContain('description: "Configure Codex-mem behavior and language with the Mode System"');
+    expect(modes).toContain('Codex-mem uses a flexible **Mode System**');
+    expect(modes).toContain('`~/.Codex-mem/settings.json`');
+
+    expect(openRouterProvider).toContain('Codex-mem supports [OpenRouter]');
+    expect(openRouterProvider).toContain('| `CLAUDE_MEM_OPENROUTER_APP_NAME` | string | `codex-mem` |');
+    expect(openRouterProvider).toContain('Edit `~/.Codex-mem/settings.json`:');
+    expect(openRouterProvider).toContain('X-Title: codex-mem');
+
+    expect(troubleshooting).toContain('description: "Common issues and solutions for Codex-mem"');
+    expect(troubleshooting).toContain('localStorage.getItem(\'codex-mem-settings\')');
+    expect(troubleshooting).toContain('`~/.Codex-mem/` exists and is writable.');
+
+    expect(cursorOpenRouter).toContain('description: "Use Codex-mem in Cursor with OpenRouter\'s 100+ AI models"');
+    expect(cursorOpenRouter).toContain('## Step 2: Clone and Build Codex-mem');
+    expect(cursorOpenRouter).toContain('mkdir -p ~/.Codex-mem');
+    expect(cursorOpenRouter).toContain('cat ~/.Codex-mem/settings.json');
+
+    expect(featureRequest).toContain('https://github.com/thedotmack/claude-mem/issues');
+  });
+
   it('uses codex-mem commands and context file names in the Cursor guide', () => {
     const cursorReadme = readProjectFile('cursor-hooks/README.md');
 

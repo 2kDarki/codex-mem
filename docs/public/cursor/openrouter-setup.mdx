@@ -1,11 +1,11 @@
 ---
 title: "Cursor + OpenRouter Setup"
-description: "Use Claude-Mem in Cursor with OpenRouter's 100+ AI models"
+description: "Use Codex-mem in Cursor with OpenRouter's 100+ AI models"
 ---
 
 # Cursor + OpenRouter Setup
 
-This guide walks you through setting up Claude-Mem in Cursor using OpenRouter. OpenRouter provides access to 100+ AI models from various providers, including several free options.
+This guide walks you through setting up Codex-mem in Cursor using OpenRouter. OpenRouter provides access to 100+ AI models from various providers, including several free options.
 
 <Info>
 **Model variety:** Access Claude, GPT-4, Gemini, Llama, Mistral, and many more through a single API key.
@@ -23,7 +23,7 @@ This guide walks you through setting up Claude-Mem in Cursor using OpenRouter. O
 **Free models available:** OpenRouter offers free versions of several models including Gemini Flash and others. Check the [model list](https://openrouter.ai/models?show_free=true) for current free options.
 </Tip>
 
-## Step 2: Clone and Build Claude-Mem
+## Step 2: Clone and Build Codex-mem
 
 ```bash
 # Clone the repository
@@ -55,10 +55,10 @@ Create the settings file manually:
 
 ```bash
 # Create settings directory
-mkdir -p ~/.claude-mem
+mkdir -p ~/.Codex-mem
 
 # Create settings file with OpenRouter configuration
-cat > ~/.claude-mem/settings.json << 'EOF'
+cat > ~/.Codex-mem/settings.json << 'EOF'
 {
   "CLAUDE_MEM_PROVIDER": "openrouter",
   "CLAUDE_MEM_OPENROUTER_API_KEY": "YOUR_OPENROUTER_API_KEY"
@@ -137,7 +137,7 @@ OpenRouter charges per token. To manage costs:
 Ensure your settings file exists with the correct format:
 
 ```bash
-cat ~/.claude-mem/settings.json
+cat ~/.Codex-mem/settings.json
 ```
 
 Should output something like:

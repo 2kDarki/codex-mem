@@ -5,7 +5,7 @@ description: "Access 100+ AI models through OpenRouter's unified API, including 
 
 # OpenRouter Provider
 
-Claude-mem supports [OpenRouter](https://openrouter.ai) as an alternative provider for observation extraction. OpenRouter provides a unified API to access 100+ models from different providers including Google, Meta, Mistral, DeepSeek, and many others—often with generous free tiers.
+Codex-mem supports [OpenRouter](https://openrouter.ai) as an alternative provider for observation extraction. OpenRouter provides a unified API to access 100+ models from different providers including Google, Meta, Mistral, DeepSeek, and many others—often with generous free tiers.
 
 <Tip>
 **Free Models Available**: OpenRouter offers several completely free models, making it an excellent choice for reducing observation extraction costs to zero while maintaining quality.
@@ -37,7 +37,7 @@ OpenRouter actively supports democratizing AI access by offering free models. Th
 | **Mistral Nemo** | `mistralai/mistral-nemo:free` | 12B | 128K | Efficient performance |
 
 <Note>
-**Default Model**: Claude-mem uses `xiaomi/mimo-v2-flash:free` by default—a 309B parameter mixture-of-experts model that ranks #1 on SWE-bench Verified and excels at coding and reasoning tasks.
+**Default Model**: Codex-mem uses `xiaomi/mimo-v2-flash:free` by default—a 309B parameter mixture-of-experts model that ranks #1 on SWE-bench Verified and excels at coding and reasoning tasks.
 </Note>
 
 ### Free Model Considerations
@@ -77,7 +77,7 @@ All free models support:
 | `CLAUDE_MEM_OPENROUTER_MAX_CONTEXT_MESSAGES` | number | `20` | Max messages in conversation history |
 | `CLAUDE_MEM_OPENROUTER_MAX_TOKENS` | number | `100000` | Token budget safety limit |
 | `CLAUDE_MEM_OPENROUTER_SITE_URL` | string | — | Optional: URL for analytics attribution |
-| `CLAUDE_MEM_OPENROUTER_APP_NAME` | string | `claude-mem` | Optional: App name for analytics |
+| `CLAUDE_MEM_OPENROUTER_APP_NAME` | string | `codex-mem` | Optional: App name for analytics |
 
 ### Using the Settings UI
 
@@ -91,7 +91,7 @@ Settings are applied immediately—no restart required.
 
 ### Manual Configuration
 
-Edit `~/.claude-mem/settings.json`:
+Edit `~/.Codex-mem/settings.json`:
 
 ```json
 {
@@ -189,7 +189,7 @@ You can switch between providers at any time:
 
 ## Fallback Behavior
 
-If OpenRouter encounters errors, claude-mem automatically falls back to the Claude Agent SDK:
+If OpenRouter encounters errors, codex-mem automatically falls back to the Claude Agent SDK:
 
 **Triggers fallback:**
 - Rate limiting (HTTP 429)
@@ -239,13 +239,13 @@ This enables:
 ### "OpenRouter API key not configured"
 
 Either:
-- Set `CLAUDE_MEM_OPENROUTER_API_KEY` in `~/.claude-mem/settings.json`, or
+- Set `CLAUDE_MEM_OPENROUTER_API_KEY` in `~/.Codex-mem/settings.json`, or
 - Set the `OPENROUTER_API_KEY` environment variable
 
 ### Rate Limiting
 
 Free models may have rate limits during peak usage. If you hit rate limits:
-- Claude-mem automatically falls back to Claude SDK
+- Codex-mem automatically falls back to Claude SDK
 - Consider switching to a different free model
 - Add credits for premium model access
 
@@ -280,7 +280,7 @@ OpenRouter uses an OpenAI-compatible REST API:
 ```
 Authorization: Bearer {apiKey}
 HTTP-Referer: https://github.com/thedotmack/claude-mem
-X-Title: claude-mem
+X-Title: codex-mem
 Content-Type: application/json
 ```
 
