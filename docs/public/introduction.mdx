@@ -1,24 +1,25 @@
 ---
 title: "Introduction"
-description: "Persistent memory compression system for Claude Code"
+description: "Persistent memory compression system for Codex"
 ---
 
-# Claude-Mem
+# Codex-mem
 
-**Persistent memory compression system for Claude Code**
+**Persistent memory compression system for Codex**
 
-Claude-Mem seamlessly preserves context across sessions by automatically capturing tool usage observations, generating semantic summaries, and making them available to future sessions. This enables Claude to maintain continuity of knowledge about projects even after sessions end or reconnect.
+Codex-mem preserves context across sessions by automatically capturing tool usage observations, generating semantic summaries, and making them available to future sessions. This lets Codex maintain continuity about your project even after a session ends or reconnects.
 
 ## Quick Start
 
-Start a new Claude Code session in the terminal and enter the following commands:
+Install the CLI and initialize Codex memory for your machine:
 
 ```bash
-/plugin marketplace add thedotmack/claude-mem
-/plugin install claude-mem
+npm install -g codex-mem
+codex-mem codex init
+codex-mem codex watch
 ```
 
-Restart Claude Code. Context from previous sessions will automatically appear in new sessions.
+Start a new Codex session after initialization and context from previous sessions will keep accumulating automatically.
 
 ## Key Features
 

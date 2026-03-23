@@ -43,6 +43,52 @@ describe('Codex docs and content surfaces', () => {
     expect(betaFeaturesDoc).toContain('In standard Codex sessions:');
   });
 
+  it('uses codex-first branding in docs entry points and support templates', () => {
+    const docsConfig = readProjectFile('docs/public/docs.json');
+    const introduction = readProjectFile('docs/public/introduction.mdx');
+    const installation = readProjectFile('docs/public/installation.mdx');
+    const gettingStarted = readProjectFile('docs/public/usage/getting-started.mdx');
+    const cursorIndex = readProjectFile('docs/public/cursor/index.mdx');
+    const cursorGeminiSetup = readProjectFile('docs/public/cursor/gemini-setup.mdx');
+    const bugReport = readProjectFile('.github/ISSUE_TEMPLATE/bug_report.md');
+    const featureRequest = readProjectFile('.github/ISSUE_TEMPLATE/feature_request.md');
+    const transcriptWatchExample = readProjectFile('transcript-watch.example.json');
+
+    expect(docsConfig).toContain('"name": "Codex-mem"');
+    expect(docsConfig).toContain('Codex-mem Documentation');
+    expect(docsConfig).toContain('preserves context across Codex sessions');
+
+    expect(introduction).toContain('# Codex-mem');
+    expect(introduction).toContain('Persistent memory compression system for Codex');
+    expect(introduction).toContain('npm install -g codex-mem');
+    expect(introduction).toContain('codex-mem codex init');
+
+    expect(installation).toContain('Install codex-mem from npm');
+    expect(installation).toContain('codex-mem codex init');
+    expect(installation).toContain('codex-mem codex watch');
+    expect(installation).toContain('`~/.Codex-mem/`');
+
+    expect(gettingStarted).toContain('# Getting Started with Codex-mem');
+    expect(gettingStarted).toContain('Start Codex');
+    expect(gettingStarted).toContain('codex-mem worker start');
+    expect(gettingStarted).toContain('`~/.Codex-mem/claude-mem.db`');
+
+    expect(cursorIndex).toContain('Codex-mem changes that.');
+    expect(cursorIndex).toContain('No Codex subscription required');
+    expect(cursorIndex).toContain('Detect you do not have Codex installed');
+
+    expect(cursorGeminiSetup).toContain('Use Codex-mem in Cursor');
+    expect(cursorGeminiSetup).toContain('## Step 2: Clone and Build Codex-mem');
+    expect(cursorGeminiSetup).toContain('mkdir -p ~/.Codex-mem');
+    expect(cursorGeminiSetup).toContain('cat ~/.Codex-mem/settings.json');
+
+    expect(bugReport).toContain('**Codex version**:');
+    expect(bugReport).toContain('`~/.Codex-mem/logs/worker-YYYY-MM-DD.log`');
+    expect(featureRequest).toContain('https://github.com/thedotmack/claude-mem/issues');
+
+    expect(transcriptWatchExample).toContain('"stateFile": "~/.Codex-mem/transcript-watch-state.json"');
+  });
+
   it('uses codex-mem commands and context file names in the Cursor guide', () => {
     const cursorReadme = readProjectFile('cursor-hooks/README.md');
 

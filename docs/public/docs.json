@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Claude-Mem",
-  "description": "Persistent memory compression system that preserves context across Claude Code sessions",
+  "name": "Codex-mem",
+  "description": "Persistent memory compression system that preserves context across Codex sessions",
   "theme": "mint",
   "favicon": "/claude-mem-logomark.webp",
   "logo": {
@@ -127,8 +127,8 @@
     "indexing": "all",
     "metatags": {
       "og:type": "website",
-      "og:site_name": "Claude-Mem Documentation",
-      "og:description": "Persistent memory compression system that preserves context across Claude Code sessions"
+      "og:site_name": "Codex-mem Documentation",
+      "og:description": "Persistent memory compression system that preserves context across Codex sessions"
     }
   },
   "contextual": {

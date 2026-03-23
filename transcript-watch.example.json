@@ -90,5 +90,5 @@
       }
     }
   ],
-  "stateFile": "~/.claude-mem/transcript-watch-state.json"
+  "stateFile": "~/.Codex-mem/transcript-watch-state.json"
 }

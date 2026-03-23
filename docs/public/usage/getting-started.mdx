@@ -1,24 +1,24 @@
 ---
 title: "Getting Started"
-description: "Learn how Claude-Mem works automatically in the background"
+description: "Learn how Codex-mem works automatically in the background"
 ---
 
-# Getting Started with Claude-Mem
+# Getting Started with Codex-mem
 
 ## Automatic Operation
 
-Claude-Mem works automatically once installed. No manual intervention required!
+Codex-mem works automatically once installed. No manual intervention required!
 
 ### The Full Cycle
 
-1. **Start Claude Code** - Context from last 10 sessions appears automatically
+1. **Start Codex** - Context from recent sessions keeps accumulating automatically
 2. **Work normally** - Every tool execution is captured
-3. **Claude finishes responding** - Stop hook automatically generates and saves a summary
+3. **Codex finishes responding** - The watcher records the completed turn and saves a summary
 4. **Next session** - Previous work appears in context
 
 ### What Gets Captured
 
-Every time Claude uses a tool, claude-mem captures it:
+Every time Codex uses a tool, codex-mem captures it:
 
 - **Read** - File reads and content access
 - **Write** - New file creation
@@ -26,7 +26,7 @@ Every time Claude uses a tool, claude-mem captures it:
 - **Bash** - Command executions
 - **Glob** - File pattern searches
 - **Grep** - Content searches
-- And all other Claude Code tools
+- And other supported Codex tool events
 
 ### What Gets Processed
 
@@ -42,7 +42,7 @@ The worker service processes tool observations and extracts:
 
 ### Session Summaries
 
-When Claude finishes responding (triggering the Stop hook), a summary is automatically generated with:
+When a Codex turn finishes, a summary is automatically generated with:
 
 - **Request** - What you asked for
 - **Investigated** - What Claude explored
@@ -52,13 +52,13 @@ When Claude finishes responding (triggering the Stop hook), a summary is automat
 
 ### Context Injection
 
-When you start a new Claude Code session, the SessionStart hook:
+When you start a new Codex session, the transcript watcher and context pipeline:
 
 1. Queries the database for recent observations in your project (default: 50)
 2. Retrieves recent session summaries for context
 3. Displays observations in a chronological timeline with session markers
 4. Shows full summary details (Investigated, Learned, Completed, Next Steps) **only if the summary was generated after the last observation**
-5. Injects formatted context into Claude's initial context
+5. Inject formatted context into `~/.codex/AGENTS.md`
 
 **Summary Display Logic:**
 
@@ -70,29 +70,29 @@ For example:
 
 This prevents showing stale summaries when new work has been captured but not yet summarized.
 
-This means Claude "remembers" what happened in previous sessions!
+This means Codex "remembers" what happened in previous sessions.
 
 ## Manual Commands (Optional)
 
 ### Worker Management
 
-v4.0+ auto-starts the worker on first session. Manual commands below are optional.
+The worker usually starts automatically once you initialize codex-mem. Manual commands below are optional.
 
 ```bash
 # Start worker service (optional - auto-starts automatically)
-npm run worker:start
+codex-mem worker start
 
 # Stop worker service
-npm run worker:stop
+codex-mem worker stop
 
 # Restart worker service
-npm run worker:restart
+codex-mem worker restart
 
 # View worker logs
-npm run worker:logs
+codex-mem worker logs
 
 # Check worker status
-npm run worker:status
+codex-mem worker status
 ```
 
 ### Testing
@@ -123,13 +123,13 @@ npm run publish:npm
 
 ## Viewing Stored Context
 
-Context is stored in SQLite database at `~/.claude-mem/claude-mem.db`.
+Context is stored in SQLite at `~/.Codex-mem/claude-mem.db`.
 
 Query the database directly:
 
 ```bash
 # Open database
-sqlite3 ~/.claude-mem/claude-mem.db
+sqlite3 ~/.Codex-mem/claude-mem.db
 
 # View recent sessions
 SELECT session_id, project, created_at, status
@@ -177,7 +177,7 @@ This ensures efficient token usage while maintaining access to complete history 
 
 ## Multi-Prompt Sessions & `/clear` Behavior
 
-Claude-Mem supports sessions that span multiple user prompts:
+Codex-mem supports sessions that span multiple user prompts:
 
 - **prompt_counter**: Tracks total prompts in a session
 - **prompt_number**: Identifies specific prompt within session
@@ -195,7 +195,7 @@ The `/clear` command clears the conversation context visible to Claude AND re-in
 
 ## Searching Your History
 
-Claude-Mem provides MCP tools for querying your project history. Simply ask naturally:
+Codex-mem provides MCP tools for querying your project history. Simply ask naturally:
 
 ```
 "What bugs did we fix last session?"

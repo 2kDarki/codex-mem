@@ -14,12 +14,12 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Verify changed tests pass
 - [x] Update this tasklist with implementation notes and follow-up work
 
-## Current Slice: Codex-First Viewer, Cursor Outputs, and Public Docs
+## Current Slice: Codex-First Docs Entry Points and Support Templates
 
-- [x] Add failing regression coverage for the remaining user-visible Codex branding gaps in Cursor-generated files, viewer shell/header, and selected public docs
-- [x] Implement the minimal production changes needed to satisfy those user-visible regressions while preserving legacy cleanup compatibility
-- [x] Verify the updated Cursor, viewer, and docs surfaces with focused tests
-- [x] Record the slice in review notes and commit it with a detailed message
+- [x] Add failing regression coverage for the main public docs entry points, site metadata, issue templates, and transcript example config
+- [x] Implement the minimal docs/template changes needed to make those entry-point surfaces Codex-first
+- [x] Verify the updated docs/template surfaces with focused tests
+- [ ] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
 
@@ -73,4 +73,6 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Cleaned up the selected public docs pages for configuration and beta features so their visible paths, viewer wording, and Codex session guidance align with `.Codex-mem` defaults while preserving the still-current `claude-mem.db` filename where applicable.
 - Corrected Cursor installer guidance so the next-step command matches the shipped CLI (`codex-mem worker start`) and the docs link points at the Codex docs host.
 - Verified the slice with focused Cursor/docs regression tests and a full build of the viewer, worker, MCP server, and `codex-mem` CLI bundle.
+- Updated the public docs site metadata, introduction, installation guide, getting-started guide, Cursor entry docs, issue template log paths, and transcript watch example so new users see Codex-first product wording and `.Codex-mem` defaults at the main entry points.
+- Kept repository URLs and compatibility-sensitive historical architecture docs unchanged in this slice, so the change stays focused on entry-point messaging rather than rewriting technical-history pages.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.

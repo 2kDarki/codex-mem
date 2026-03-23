@@ -1,35 +1,34 @@
 ---
 title: "Installation"
-description: "Install Claude-Mem plugin for persistent memory across sessions"
+description: "Install Codex-mem for persistent memory across sessions"
 ---
 
 # Installation Guide
 
 ## Quick Start
 
-Install Claude-Mem directly from the plugin marketplace:
+Install codex-mem from npm:
 
 ```bash
-/plugin marketplace add thedotmack/claude-mem
-/plugin install claude-mem
+npm install -g codex-mem
+codex-mem codex init
+codex-mem codex watch
 ```
 
-That's it! The plugin will automatically:
-- Download prebuilt binaries (no compilation needed)
-- Install all dependencies (including SQLite binaries)
-- Configure hooks for session lifecycle management
-- Auto-start the worker service on first session
+That's it! The Codex-first runtime will automatically:
+- Create your default configuration under `~/.Codex-mem/`
+- Watch Codex transcript JSONL files for new sessions
+- Update `~/.codex/AGENTS.md` with fresh memory context
+- Keep the worker service available for memory extraction and search
 
-Start a new Claude Code session and you'll see context from previous sessions automatically loaded.
+Start a new Codex session after initialization and memory will begin accumulating automatically.
 
-> **Important:** Claude-Mem is published on npm, but running `npm install -g claude-mem` installs the
-> **SDK/library only**. It does **not** register plugin hooks or start the worker service.
-> To use Claude-Mem as a persistent memory plugin, always install via the `/plugin` commands above.
+> **Compatibility note:** This repository still includes Claude Code and Cursor compatibility paths, but the primary installation flow is now `codex-mem` with Codex transcript watching.
 
 ## System Requirements
 
 - **Node.js**: 18.0.0 or higher
-- **Claude Code**: Latest version with plugin support
+- **Codex**: Current Codex desktop or CLI sessions writing transcripts under `~/.codex/sessions/`
 - **Bun**: JavaScript runtime and process manager (auto-installed if missing)
 - **SQLite 3**: For persistent storage (bundled)
 
@@ -50,12 +49,11 @@ npm install
 # Build hooks and worker service
 npm run build
 
-# Worker service will auto-start on first Claude Code session
-# Or manually start with:
-npm run worker:start
+# Start the worker manually if needed
+codex-mem worker start
 
 # Verify worker is running
-npm run worker:status
+codex-mem worker status
 ```
 
 ### Post-Installation Verification
@@ -66,19 +64,19 @@ Dependencies are installed automatically during plugin installation. The Session
 
 #### 2. Verify Plugin Installation
 
-Check that hooks are configured in Claude Code:
+Check that the transcript watcher configuration exists:
 ```bash
-cat plugin/hooks/hooks.json
+cat ~/.Codex-mem/transcript-watch-state.json
 ```
 
 #### 3. Data Directory Location
 
-Data is stored in `~/.claude-mem/`:
-- Database: `~/.claude-mem/claude-mem.db`
-- PID file: `~/.claude-mem/.worker.pid`
-- Port file: `~/.claude-mem/.worker.port`
-- Logs: `~/.claude-mem/logs/worker-YYYY-MM-DD.log`
-- Settings: `~/.claude-mem/settings.json`
+Data is stored in `~/.Codex-mem/`:
+- Database: `~/.Codex-mem/claude-mem.db`
+- PID file: `~/.Codex-mem/.worker.pid`
+- Port file: `~/.Codex-mem/.worker.port`
+- Logs: `~/.Codex-mem/logs/worker-YYYY-MM-DD.log`
+- Settings: `~/.Codex-mem/settings.json`
 
 Override with environment variable:
 ```bash
@@ -111,6 +109,6 @@ See [CHANGELOG](https://github.com/thedotmack/claude-mem/blob/main/CHANGELOG.md)
 
 ## Next Steps
 
-- [Getting Started Guide](usage/getting-started) - Learn how Claude-Mem works automatically
+- [Getting Started Guide](usage/getting-started) - Learn how Codex-mem works automatically
 - [MCP Search Tools](usage/search-tools) - Query your project history
-- [Configuration](configuration) - Customize Claude-Mem behavior
+- [Configuration](configuration) - Customize Codex-mem behavior

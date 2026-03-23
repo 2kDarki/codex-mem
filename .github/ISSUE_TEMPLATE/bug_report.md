@@ -54,15 +54,15 @@ A clear description of what the bug is.
 What you expected to happen.
 
 ### Environment
-- **Claude-mem version**:
-- **Claude Code version**:
+- **Codex-mem version**:
+- **Codex version**:
 - **OS**:
 - **Platform**:
 
 ### Logs
 Worker logs are located at:
-- **Path**: `~/.claude-mem/logs/worker-YYYY-MM-DD.log`
-- **Example**: `~/.claude-mem/logs/worker-2025-12-14.log`
+- **Path**: `~/.Codex-mem/logs/worker-YYYY-MM-DD.log`
+- **Example**: `~/.Codex-mem/logs/worker-2025-12-14.log`
 
 Please paste relevant log entries (last 50 lines or error messages):
 

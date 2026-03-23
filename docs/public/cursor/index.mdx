@@ -7,7 +7,7 @@ description: "Persistent AI memory for Cursor IDE - free tier options available"
 
 > **Your AI stops forgetting. Give Cursor persistent memory.**
 
-Every Cursor session starts fresh - your AI doesn't remember what it worked on yesterday. Claude-mem changes that. Your agent builds cumulative knowledge about your codebase, decisions, and patterns over time.
+Every Cursor session starts fresh - your AI doesn't remember what it worked on yesterday. Codex-mem changes that. Your agent builds cumulative knowledge about your codebase, decisions, and patterns over time.
 
 <CardGroup cols={2}>
   <Card title="Free to Start" icon="dollar-sign">
@@ -25,12 +25,12 @@ Every Cursor session starts fresh - your AI doesn't remember what it worked on y
 </CardGroup>
 
 <Info>
-**No Claude Code subscription required.** Use Gemini (free tier) or OpenRouter as your AI provider.
+**No Codex subscription required.** Use Gemini (free tier) or OpenRouter as your AI provider.
 </Info>
 
 ## How It Works
 
-Claude-mem integrates with Cursor through native hooks:
+Codex-mem integrates with Cursor through native hooks:
 
 1. **Session hooks** capture tool usage, file edits, and shell commands
 2. **AI extraction** compresses observations into semantic summaries
@@ -41,9 +41,9 @@ Claude-mem integrates with Cursor through native hooks:
 
 Choose the installation method that fits your setup:
 
-### Path A: Cursor-Only Users (No Claude Code)
+### Path A: Cursor-Only Users (No Codex)
 
-If you're using Cursor without a Claude Code subscription:
+If you're using Cursor without Codex installed:
 
 ```bash
 # Clone and build
@@ -55,7 +55,7 @@ bun run cursor:setup
 ```
 
 The setup wizard will:
-- Detect you don't have Claude Code
+- Detect you do not have Codex installed
 - Help you choose and configure a free AI provider (Gemini recommended)
 - Install hooks automatically
 - Start the worker service
@@ -64,9 +64,9 @@ The setup wizard will:
 - [Gemini Setup](/cursor/gemini-setup) - Recommended free option (1500 req/day)
 - [OpenRouter Setup](/cursor/openrouter-setup) - 100+ models including free options
 
-### Path B: Claude Code Users
+### Path B: Codex Users
 
-If you have Claude Code installed:
+If you already use Codex alongside Cursor:
 
 ```bash
 # Install the plugin (if not already)
