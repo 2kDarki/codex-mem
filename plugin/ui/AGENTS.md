@@ -1,4 +1,4 @@
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Nov 5, 2025
@@ -57,4 +57,4 @@
 | #32966 | " | 🔵 | viewer.html contains modal CSS including modal-header and modal-body | ~218 |
 | #32967 | " | 🔵 | ContextSettingsModal.tsx uses CSS classes defined in viewer.html | ~218 |
 | #32968 | " | 🔵 | Need to add CSS for footer to viewer.html | ~223 |
-</claude-mem-context>
+</codex-mem-context>

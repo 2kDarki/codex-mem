@@ -48,12 +48,12 @@ export interface SettingsDefaults {
   CLAUDE_MEM_CONTEXT_SHOW_LAST_SUMMARY: string;
   CLAUDE_MEM_CONTEXT_SHOW_LAST_MESSAGE: string;
   CLAUDE_MEM_CONTEXT_SHOW_TERMINAL_OUTPUT: string;
-  CLAUDE_MEM_FOLDER_CLAUDEMD_ENABLED: string;
+  CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED: string;
   // Process Management
   CLAUDE_MEM_MAX_CONCURRENT_AGENTS: string;  // Max concurrent Claude SDK agent subprocesses (default: 2)
   // Exclusion Settings
   CLAUDE_MEM_EXCLUDED_PROJECTS: string;  // Comma-separated glob patterns for excluded project paths
-  CLAUDE_MEM_FOLDER_MD_EXCLUDE: string;  // JSON array of folder paths to exclude from CLAUDE.md generation
+  CLAUDE_MEM_FOLDER_MD_EXCLUDE: string;  // JSON array of folder paths to exclude from AGENTS.md generation
   // Chroma Vector Database Configuration
   CLAUDE_MEM_CHROMA_ENABLED: string;   // 'true' | 'false' - set to 'false' for SQLite-only mode
   CLAUDE_MEM_CHROMA_MODE: string;      // 'local' | 'remote'
@@ -110,12 +110,12 @@ export class SettingsDefaultsManager {
     CLAUDE_MEM_CONTEXT_SHOW_LAST_SUMMARY: 'true',
     CLAUDE_MEM_CONTEXT_SHOW_LAST_MESSAGE: 'false',
     CLAUDE_MEM_CONTEXT_SHOW_TERMINAL_OUTPUT: 'true',
-    CLAUDE_MEM_FOLDER_CLAUDEMD_ENABLED: 'false',
+    CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED: 'false',
     // Process Management
     CLAUDE_MEM_MAX_CONCURRENT_AGENTS: '2',  // Max concurrent Claude SDK agent subprocesses
     // Exclusion Settings
     CLAUDE_MEM_EXCLUDED_PROJECTS: '',  // Comma-separated glob patterns for excluded project paths
-    CLAUDE_MEM_FOLDER_MD_EXCLUDE: '[]',  // JSON array of folder paths to exclude from CLAUDE.md generation
+    CLAUDE_MEM_FOLDER_MD_EXCLUDE: '[]',  // JSON array of folder paths to exclude from AGENTS.md generation
     // Chroma Vector Database Configuration
     CLAUDE_MEM_CHROMA_ENABLED: 'true',         // Set to 'false' to disable Chroma and use SQLite-only search
     CLAUDE_MEM_CHROMA_MODE: 'local',           // 'local' uses persistent chroma-mcp via uvx, 'remote' connects to existing server
@@ -132,6 +132,17 @@ export class SettingsDefaultsManager {
     return key.replace(this.CLAUDE_PREFIX, this.CODEX_PREFIX);
   }
 
+  private static getLegacyAliasKeys(key: keyof SettingsDefaults): string[] {
+    if (key === 'CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED') {
+      return [
+        'CLAUDE_MEM_FOLDER_CLAUDEMD_ENABLED',
+        'CODEX_MEM_FOLDER_CLAUDEMD_ENABLED',
+      ];
+    }
+
+    return [];
+  }
+
   private static applyAliasMap(input: unknown): Record<string, unknown> {
     if (!input || typeof input !== 'object' || Array.isArray(input)) {
       return {};
@@ -142,6 +153,14 @@ export class SettingsDefaultsManager {
       const aliasKey = this.getCodexAliasKey(key);
       if (result[key] === undefined && result[aliasKey] !== undefined) {
         result[key] = result[aliasKey];
+      }
+      if (result[key] === undefined) {
+        for (const legacyKey of this.getLegacyAliasKeys(key)) {
+          if (result[legacyKey] !== undefined) {
+            result[key] = result[legacyKey];
+            break;
+          }
+        }
       }
     }
 
@@ -165,7 +184,11 @@ export class SettingsDefaultsManager {
    */
   static get(key: keyof SettingsDefaults): string {
     const aliasKey = this.getCodexAliasKey(key);
-    return process.env[key] ?? process.env[aliasKey] ?? this.DEFAULTS[key];
+    const legacyValue = this.getLegacyAliasKeys(key)
+      .map((legacyKey) => process.env[legacyKey])
+      .find((value) => value !== undefined);
+
+    return process.env[key] ?? process.env[aliasKey] ?? legacyValue ?? this.DEFAULTS[key];
   }
 
   /**
@@ -197,6 +220,13 @@ export class SettingsDefaultsManager {
         result[key] = process.env[key]!;
       } else if (process.env[aliasKey] !== undefined) {
         result[key] = process.env[aliasKey]!;
+      } else {
+        const legacyValue = this.getLegacyAliasKeys(key)
+          .map((legacyKey) => process.env[legacyKey])
+          .find((value) => value !== undefined);
+        if (legacyValue !== undefined) {
+          result[key] = legacyValue;
+        }
       }
     }
     return result;

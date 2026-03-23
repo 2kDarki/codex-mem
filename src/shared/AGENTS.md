@@ -1,4 +1,4 @@
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Nov 10, 2025
@@ -110,4 +110,4 @@
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
 | #38175 | 7:26 PM | 🔵 | Complete Claude-Mem Hook Output Architecture Documented | ~530 |
-</claude-mem-context>
+</codex-mem-context>

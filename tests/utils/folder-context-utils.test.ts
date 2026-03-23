@@ -35,10 +35,10 @@ mock.module('../../src/shared/worker-utils.js', () => ({
 // Import after mocks
 import {
   replaceTaggedContent,
-  formatTimelineForClaudeMd,
-  writeClaudeMdToFolder,
-  updateFolderClaudeMdFiles
-} from '../../src/utils/claude-md-utils.js';
+  formatTimelineForAgentsMd,
+  writeAgentsMdToFolder,
+  updateFolderAgentsMdFiles
+} from '../../src/utils/folder-context-utils.js';
 
 let tempDir: string;
 const originalFetch = global.fetch;
@@ -62,16 +62,16 @@ describe('replaceTaggedContent', () => {
   it('should wrap new content in tags when existing content is empty', () => {
     const result = replaceTaggedContent('', 'New content here');
 
-    expect(result).toBe('<claude-mem-context>\nNew content here\n</claude-mem-context>');
+    expect(result).toBe('<codex-mem-context>\nNew content here\n</codex-mem-context>');
   });
 
   it('should replace only tagged section when existing content has tags', () => {
-    const existingContent = 'User content before\n<claude-mem-context>\nOld generated content\n</claude-mem-context>\nUser content after';
+    const existingContent = 'User content before\n<codex-mem-context>\nOld generated content\n</codex-mem-context>\nUser content after';
     const newContent = 'New generated content';
 
     const result = replaceTaggedContent(existingContent, newContent);
 
-    expect(result).toBe('User content before\n<claude-mem-context>\nNew generated content\n</claude-mem-context>\nUser content after');
+    expect(result).toBe('User content before\n<codex-mem-context>\nNew generated content\n</codex-mem-context>\nUser content after');
   });
 
   it('should append tagged content with separator when no tags exist in existing content', () => {
@@ -80,40 +80,40 @@ describe('replaceTaggedContent', () => {
 
     const result = replaceTaggedContent(existingContent, newContent);
 
-    expect(result).toBe('User written documentation\n\n<claude-mem-context>\nGenerated timeline\n</claude-mem-context>');
+    expect(result).toBe('User written documentation\n\n<codex-mem-context>\nGenerated timeline\n</codex-mem-context>');
   });
 
   it('should append when only opening tag exists (no matching end tag)', () => {
-    const existingContent = 'Some content\n<claude-mem-context>\nIncomplete tag section';
+    const existingContent = 'Some content\n<codex-mem-context>\nIncomplete tag section';
     const newContent = 'New content';
 
     const result = replaceTaggedContent(existingContent, newContent);
 
-    expect(result).toBe('Some content\n<claude-mem-context>\nIncomplete tag section\n\n<claude-mem-context>\nNew content\n</claude-mem-context>');
+    expect(result).toBe('Some content\n<codex-mem-context>\nIncomplete tag section\n\n<codex-mem-context>\nNew content\n</codex-mem-context>');
   });
 
   it('should append when only closing tag exists (no matching start tag)', () => {
-    const existingContent = 'Some content\n</claude-mem-context>\nMore content';
+    const existingContent = 'Some content\n</codex-mem-context>\nMore content';
     const newContent = 'New content';
 
     const result = replaceTaggedContent(existingContent, newContent);
 
-    expect(result).toBe('Some content\n</claude-mem-context>\nMore content\n\n<claude-mem-context>\nNew content\n</claude-mem-context>');
+    expect(result).toBe('Some content\n</codex-mem-context>\nMore content\n\n<codex-mem-context>\nNew content\n</codex-mem-context>');
   });
 
   it('should preserve newlines in new content', () => {
-    const existingContent = '<claude-mem-context>\nOld content\n</claude-mem-context>';
+    const existingContent = '<codex-mem-context>\nOld content\n</codex-mem-context>';
     const newContent = 'Line 1\nLine 2\nLine 3';
 
     const result = replaceTaggedContent(existingContent, newContent);
 
-    expect(result).toBe('<claude-mem-context>\nLine 1\nLine 2\nLine 3\n</claude-mem-context>');
+    expect(result).toBe('<codex-mem-context>\nLine 1\nLine 2\nLine 3\n</codex-mem-context>');
   });
 });
 
-describe('formatTimelineForClaudeMd', () => {
+describe('formatTimelineForAgentsMd', () => {
   it('should return empty string for empty input', () => {
-    const result = formatTimelineForClaudeMd('');
+    const result = formatTimelineForAgentsMd('');
 
     expect(result).toBe('');
   });
@@ -121,7 +121,7 @@ describe('formatTimelineForClaudeMd', () => {
   it('should return empty string when no table rows exist', () => {
     const input = 'Just some plain text without table rows';
 
-    const result = formatTimelineForClaudeMd(input);
+    const result = formatTimelineForAgentsMd(input);
 
     expect(result).toBe('');
   });
@@ -129,7 +129,7 @@ describe('formatTimelineForClaudeMd', () => {
   it('should parse single observation row correctly', () => {
     const input = '| #123 | 4:30 PM | 🔵 | User logged in | ~100 |';
 
-    const result = formatTimelineForClaudeMd(input);
+    const result = formatTimelineForAgentsMd(input);
 
     expect(result).toContain('#123');
     expect(result).toContain('4:30 PM');
@@ -142,7 +142,7 @@ describe('formatTimelineForClaudeMd', () => {
     const input = `| #123 | 4:30 PM | 🔵 | First action | ~100 |
 | #124 | ″ | 🔵 | Second action | ~150 |`;
 
-    const result = formatTimelineForClaudeMd(input);
+    const result = formatTimelineForAgentsMd(input);
 
     expect(result).toContain('#123');
     expect(result).toContain('#124');
@@ -155,7 +155,7 @@ describe('formatTimelineForClaudeMd', () => {
   it('should parse session ID format (#S123) correctly', () => {
     const input = '| #S123 | 4:30 PM | 🟣 | Session started | ~200 |';
 
-    const result = formatTimelineForClaudeMd(input);
+    const result = formatTimelineForAgentsMd(input);
 
     expect(result).toContain('#S123');
     expect(result).toContain('4:30 PM');
@@ -164,46 +164,46 @@ describe('formatTimelineForClaudeMd', () => {
   });
 });
 
-describe('writeClaudeMdToFolder', () => {
+describe('writeAgentsMdToFolder', () => {
   it('should skip non-existent folders (fix for spurious directory creation)', () => {
     const folderPath = join(tempDir, 'non-existent-folder');
     const content = '# Recent Activity\n\nTest content';
 
     // Should not throw, should silently skip
-    writeClaudeMdToFolder(folderPath, content);
+    writeAgentsMdToFolder(folderPath, content);
 
-    // Folder and CLAUDE.md should NOT be created
+    // Folder and AGENTS.md should NOT be created
     expect(existsSync(folderPath)).toBe(false);
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
   });
 
-  it('should create CLAUDE.md in existing folder', () => {
+  it('should create AGENTS.md in existing folder', () => {
     const folderPath = join(tempDir, 'existing-folder');
     mkdirSync(folderPath, { recursive: true });
     const content = '# Recent Activity\n\nTest content';
 
-    writeClaudeMdToFolder(folderPath, content);
+    writeAgentsMdToFolder(folderPath, content);
 
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(true);
 
     const fileContent = readFileSync(claudeMdPath, 'utf-8');
-    expect(fileContent).toContain('<claude-mem-context>');
+    expect(fileContent).toContain('<codex-mem-context>');
     expect(fileContent).toContain('Test content');
-    expect(fileContent).toContain('</claude-mem-context>');
+    expect(fileContent).toContain('</codex-mem-context>');
   });
 
   it('should preserve user content outside tags', () => {
     const folderPath = join(tempDir, 'preserve-test');
     mkdirSync(folderPath, { recursive: true });
 
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
-    const userContent = 'User-written docs\n<claude-mem-context>\nOld content\n</claude-mem-context>\nMore user docs';
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
+    const userContent = 'User-written docs\n<codex-mem-context>\nOld content\n</codex-mem-context>\nMore user docs';
     writeFileSync(claudeMdPath, userContent);
 
     const newContent = 'New generated content';
-    writeClaudeMdToFolder(folderPath, newContent);
+    writeAgentsMdToFolder(folderPath, newContent);
 
     const fileContent = readFileSync(claudeMdPath, 'utf-8');
     expect(fileContent).toContain('User-written docs');
@@ -217,10 +217,10 @@ describe('writeClaudeMdToFolder', () => {
     const content = 'Nested content';
 
     // Should not throw, should silently skip
-    writeClaudeMdToFolder(folderPath, content);
+    writeAgentsMdToFolder(folderPath, content);
 
     // Nested directories should NOT be created
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
     expect(existsSync(join(tempDir, 'deep'))).toBe(false);
   });
@@ -230,9 +230,9 @@ describe('writeClaudeMdToFolder', () => {
     mkdirSync(folderPath, { recursive: true });
     const content = 'Atomic write test';
 
-    writeClaudeMdToFolder(folderPath, content);
+    writeAgentsMdToFolder(folderPath, content);
 
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     const tempFilePath = `${claudeMdPath}.tmp`;
 
     expect(existsSync(claudeMdPath)).toBe(true);
@@ -240,59 +240,59 @@ describe('writeClaudeMdToFolder', () => {
   });
 });
 
-describe('issue #1165 - prevent CLAUDE.md inside .git directories', () => {
-  it('should not write CLAUDE.md when folder is inside .git/', () => {
+describe('issue #1165 - prevent AGENTS.md inside .git directories', () => {
+  it('should not write AGENTS.md when folder is inside .git/', () => {
     const gitRefsFolder = join(tempDir, '.git', 'refs');
     mkdirSync(gitRefsFolder, { recursive: true });
 
-    writeClaudeMdToFolder(gitRefsFolder, 'Should not be written');
+    writeAgentsMdToFolder(gitRefsFolder, 'Should not be written');
 
-    const claudeMdPath = join(gitRefsFolder, 'CLAUDE.md');
+    const claudeMdPath = join(gitRefsFolder, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
   });
 
-  it('should not write CLAUDE.md when folder is .git itself', () => {
+  it('should not write AGENTS.md when folder is .git itself', () => {
     const gitFolder = join(tempDir, '.git');
     mkdirSync(gitFolder, { recursive: true });
 
-    writeClaudeMdToFolder(gitFolder, 'Should not be written');
+    writeAgentsMdToFolder(gitFolder, 'Should not be written');
 
-    const claudeMdPath = join(gitFolder, 'CLAUDE.md');
+    const claudeMdPath = join(gitFolder, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
   });
 
-  it('should not write CLAUDE.md to deeply nested .git path', () => {
+  it('should not write AGENTS.md to deeply nested .git path', () => {
     const deepGitPath = join(tempDir, 'project', '.git', 'hooks');
     mkdirSync(deepGitPath, { recursive: true });
 
-    writeClaudeMdToFolder(deepGitPath, 'Should not be written');
+    writeAgentsMdToFolder(deepGitPath, 'Should not be written');
 
-    const claudeMdPath = join(deepGitPath, 'CLAUDE.md');
+    const claudeMdPath = join(deepGitPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
   });
 
-  it('should still write CLAUDE.md to normal folders', () => {
+  it('should still write AGENTS.md to normal folders', () => {
     const normalFolder = join(tempDir, 'src', 'git-utils');
     mkdirSync(normalFolder, { recursive: true });
 
-    writeClaudeMdToFolder(normalFolder, 'Should be written');
+    writeAgentsMdToFolder(normalFolder, 'Should be written');
 
-    const claudeMdPath = join(normalFolder, 'CLAUDE.md');
+    const claudeMdPath = join(normalFolder, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(true);
   });
 });
 
-describe('updateFolderClaudeMdFiles', () => {
+describe('updateFolderAgentsMdFiles', () => {
   it('should skip when filePaths is empty', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles([], 'test-project', 37777);
+    await updateFolderAgentsMdFiles([], 'test-project', 37777);
 
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('should fetch timeline and write CLAUDE.md', async () => {
+  it('should fetch timeline and write AGENTS.md', async () => {
     const folderPath = join(tempDir, 'api-test');
     mkdirSync(folderPath, { recursive: true }); // Folder must exist - we no longer create directories
     const filePath = join(folderPath, 'test.ts');
@@ -308,9 +308,9 @@ describe('updateFolderClaudeMdFiles', () => {
       json: () => Promise.resolve(apiResponse)
     } as Response));
 
-    await updateFolderClaudeMdFiles([filePath], 'test-project', 37777);
+    await updateFolderAgentsMdFiles([filePath], 'test-project', 37777);
 
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(true);
 
     const content = readFileSync(claudeMdPath, 'utf-8');
@@ -336,7 +336,7 @@ describe('updateFolderClaudeMdFiles', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles([file1, file2], 'test-project', 37777);
+    await updateFolderAgentsMdFiles([file1, file2], 'test-project', 37777);
 
     // Should only fetch once for the shared folder
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -352,10 +352,10 @@ describe('updateFolderClaudeMdFiles', () => {
     } as Response));
 
     // Should not throw
-    await expect(updateFolderClaudeMdFiles([filePath], 'test-project', 37777)).resolves.toBeUndefined();
+    await expect(updateFolderAgentsMdFiles([filePath], 'test-project', 37777)).resolves.toBeUndefined();
 
-    // CLAUDE.md should not be created
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    // AGENTS.md should not be created
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
   });
 
@@ -366,10 +366,10 @@ describe('updateFolderClaudeMdFiles', () => {
     global.fetch = mock(() => Promise.reject(new Error('Network error')));
 
     // Should not throw
-    await expect(updateFolderClaudeMdFiles([filePath], 'test-project', 37777)).resolves.toBeUndefined();
+    await expect(updateFolderAgentsMdFiles([filePath], 'test-project', 37777)).resolves.toBeUndefined();
 
-    // CLAUDE.md should not be created
-    const claudeMdPath = join(folderPath, 'CLAUDE.md');
+    // AGENTS.md should not be created
+    const claudeMdPath = join(folderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(false);
   });
 
@@ -386,7 +386,7 @@ describe('updateFolderClaudeMdFiles', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/utils/file.ts'],  // relative path
       'test-project',
       37777,
@@ -415,7 +415,7 @@ describe('updateFolderClaudeMdFiles', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       [filePath],  // absolute path within tempDir
       'test-project',
       37777,
@@ -425,7 +425,7 @@ describe('updateFolderClaudeMdFiles', () => {
     // Should call API with the original absolute path's folder
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const callUrl = (fetchMock.mock.calls[0] as unknown[])[0] as string;
-    expect(callUrl).toContain(encodeURIComponent(folderPath));
+    expect(callUrl).toContain(encodeURIComponent(folderPath.replace(/\\/g, '/')));
   });
 
   it('should work without projectRoot for backward compatibility', async () => {
@@ -444,7 +444,7 @@ describe('updateFolderClaudeMdFiles', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       [filePath],  // absolute path
       'test-project',
       37777
@@ -454,7 +454,7 @@ describe('updateFolderClaudeMdFiles', () => {
     // Should still make API call with the folder path
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const callUrl = (fetchMock.mock.calls[0] as unknown[])[0] as string;
-    expect(callUrl).toContain(encodeURIComponent(folderPath));
+    expect(callUrl).toContain(encodeURIComponent(folderPath.replace(/\\/g, '/')));
   });
 
   it('should handle projectRoot with trailing slash correctly', async () => {
@@ -471,7 +471,7 @@ describe('updateFolderClaudeMdFiles', () => {
     global.fetch = fetchMock;
 
     // projectRoot WITH trailing slash
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/utils/file.ts'],
       'test-project',
       37777,
@@ -487,7 +487,7 @@ describe('updateFolderClaudeMdFiles', () => {
     expect(callUrl.replace('http://', '')).not.toContain('//');
   });
 
-  it('should write CLAUDE.md to resolved projectRoot path', async () => {
+  it('should write AGENTS.md to resolved projectRoot path', async () => {
     const subfolderPath = join(tempDir, 'project-root-write-test', 'src', 'utils');
     mkdirSync(subfolderPath, { recursive: true }); // Folder must exist - we no longer create directories
 
@@ -503,15 +503,15 @@ describe('updateFolderClaudeMdFiles', () => {
     } as Response));
 
     // Use tempDir as projectRoot with relative path src/utils/file.ts
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/utils/file.ts'],
       'test-project',
       37777,
       join(tempDir, 'project-root-write-test')
     );
 
-    // Verify CLAUDE.md was written at the resolved absolute path
-    const claudeMdPath = join(subfolderPath, 'CLAUDE.md');
+    // Verify AGENTS.md was written at the resolved absolute path
+    const claudeMdPath = join(subfolderPath, 'AGENTS.md');
     expect(existsSync(claudeMdPath)).toBe(true);
 
     const content = readFileSync(claudeMdPath, 'utf-8');
@@ -533,7 +533,7 @@ describe('updateFolderClaudeMdFiles', () => {
     global.fetch = fetchMock;
 
     // Multiple files in same folder (relative paths)
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/utils/file1.ts', 'src/utils/file2.ts', 'src/utils/file3.ts'],
       'test-project',
       37777,
@@ -550,7 +550,7 @@ describe('updateFolderClaudeMdFiles', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['', 'src/file.ts', ''],  // includes empty strings
       'test-project',
       37777,
@@ -564,13 +564,13 @@ describe('updateFolderClaudeMdFiles', () => {
   });
 });
 
-describe('path validation in updateFolderClaudeMdFiles', () => {
+describe('path validation in updateFolderAgentsMdFiles', () => {
   it('should reject tilde paths', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
-      ['~/.claude-mem/logs/worker.log'],
+    await updateFolderAgentsMdFiles(
+      ['~/.Codex-mem/logs/worker.log'],
       'test-project',
       37777,
       tempDir
@@ -583,7 +583,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['https://example.com/file.ts'],
       'test-project',
       37777,
@@ -597,8 +597,8 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
-      ['PR #610 on thedotmack/CLAUDE.md'],
+    await updateFolderAgentsMdFiles(
+      ['PR #610 on thedotmack/AGENTS.md'],
       'test-project',
       37777,
       tempDir
@@ -611,7 +611,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['issue#123/file.ts'],
       'test-project',
       37777,
@@ -625,7 +625,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['../../../etc/passwd'],
       'test-project',
       37777,
@@ -639,7 +639,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['/etc/passwd'],
       'test-project',
       37777,
@@ -662,7 +662,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     // Create an absolute path within the temp directory
     const absolutePathInProject = path.join(tempDir, 'src', 'utils', 'file.ts');
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       [absolutePathInProject],
       'test-project',
       37777,
@@ -682,7 +682,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['/home/user/valid/file.ts'],
       'test-project',
       37777
@@ -702,7 +702,7 @@ describe('path validation in updateFolderClaudeMdFiles', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/utils/logger.ts'],
       'test-project',
       37777,
@@ -720,7 +720,7 @@ describe('issue #814 - reject consecutive duplicate path segments', () => {
 
     // Simulate cwd=/project/frontend/ receiving relative path frontend/src/file.ts
     // resolves to /project/frontend/frontend/src/file.ts
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['frontend/src/file.ts'],
       'test-project',
       37777,
@@ -735,7 +735,7 @@ describe('issue #814 - reject consecutive duplicate path segments', () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/components/file.ts'],
       'test-project',
       37777,
@@ -757,7 +757,7 @@ describe('issue #814 - reject consecutive duplicate path segments', () => {
     global.fetch = fetchMock;
 
     // Non-consecutive: src/components/src/utils → allowed
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/components/src/utils/file.ts'],
       'test-project',
       37777,
@@ -769,40 +769,40 @@ describe('issue #814 - reject consecutive duplicate path segments', () => {
   });
 });
 
-describe('issue #859 - skip folders with active CLAUDE.md', () => {
-  it('should skip folder when CLAUDE.md was read in observation', async () => {
+describe('issue #859 - skip folders with active AGENTS.md', () => {
+  it('should skip folder when AGENTS.md was read in observation', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    // Simulate reading CLAUDE.md - should skip that folder
-    await updateFolderClaudeMdFiles(
-      ['/project/src/utils/CLAUDE.md'],
+    // Simulate reading AGENTS.md - should skip that folder
+    await updateFolderAgentsMdFiles(
+      ['/project/src/utils/AGENTS.md'],
       'test-project',
       37777,
       '/project'
     );
 
-    // Should NOT make API call since the CLAUDE.md file was read
+    // Should NOT make API call since the AGENTS.md file was read
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('should skip folder when CLAUDE.md was modified in observation', async () => {
+  it('should skip folder when AGENTS.md was modified in observation', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    // Simulate modifying CLAUDE.md - should skip that folder
-    await updateFolderClaudeMdFiles(
-      ['/project/src/CLAUDE.md'],
+    // Simulate modifying AGENTS.md - should skip that folder
+    await updateFolderAgentsMdFiles(
+      ['/project/src/AGENTS.md'],
       'test-project',
       37777,
       '/project'
     );
 
-    // Should NOT make API call since the CLAUDE.md file was modified
+    // Should NOT make API call since the AGENTS.md file was modified
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('should process other folders even when one has active CLAUDE.md', async () => {
+  it('should process other folders even when one has active AGENTS.md', async () => {
     const apiResponse = {
       content: [{ text: '| #123 | 4:30 PM | 🔵 | Test | ~100 |' }]
     };
@@ -812,10 +812,10 @@ describe('issue #859 - skip folders with active CLAUDE.md', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    // Mix of CLAUDE.md read and other files
-    await updateFolderClaudeMdFiles(
+    // Mix of AGENTS.md read and other files
+    await updateFolderAgentsMdFiles(
       [
-        '/project/src/utils/CLAUDE.md',  // Should skip /project/src/utils
+        '/project/src/utils/AGENTS.md',  // Should skip /project/src/utils
         '/project/src/services/api.ts'   // Should process /project/src/services
       ],
       'test-project',
@@ -830,23 +830,23 @@ describe('issue #859 - skip folders with active CLAUDE.md', () => {
     expect(callUrl).not.toContain(encodeURIComponent('/project/src/utils'));
   });
 
-  it('should handle relative CLAUDE.md paths with projectRoot', async () => {
+  it('should handle relative AGENTS.md paths with projectRoot', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    // Relative path to CLAUDE.md
-    await updateFolderClaudeMdFiles(
-      ['src/components/CLAUDE.md'],
+    // Relative path to AGENTS.md
+    await updateFolderAgentsMdFiles(
+      ['src/components/AGENTS.md'],
       'test-project',
       37777,
       '/project'
     );
 
-    // Should NOT make API call since CLAUDE.md was accessed
+    // Should NOT make API call since AGENTS.md was accessed
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('should skip only the specific folder containing active CLAUDE.md', async () => {
+  it('should skip only the specific folder containing active AGENTS.md', async () => {
     const apiResponse = {
       content: [{ text: '| #123 | 4:30 PM | 🔵 | Test | ~100 |' }]
     };
@@ -856,11 +856,11 @@ describe('issue #859 - skip folders with active CLAUDE.md', () => {
     } as Response));
     global.fetch = fetchMock;
 
-    // Two CLAUDE.md files in different folders, plus a regular file
-    await updateFolderClaudeMdFiles(
+    // Two AGENTS.md files in different folders, plus a regular file
+    await updateFolderAgentsMdFiles(
       [
-        '/project/src/a/CLAUDE.md',
-        '/project/src/b/CLAUDE.md',
+        '/project/src/a/AGENTS.md',
+        '/project/src/b/AGENTS.md',
         '/project/src/c/file.ts'
       ],
       'test-project',
@@ -874,7 +874,7 @@ describe('issue #859 - skip folders with active CLAUDE.md', () => {
     expect(callUrl).toContain(encodeURIComponent('/project/src/c'));
   });
 
-  it('should still exclude project root even when CLAUDE.md filter would allow it', async () => {
+  it('should still exclude project root even when AGENTS.md filter would allow it', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
@@ -884,7 +884,7 @@ describe('issue #859 - skip folders with active CLAUDE.md', () => {
     mkdirSync(gitDir, { recursive: true });
 
     // File at project root
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       [join(projectRoot, 'file.ts')],
       'test-project',
       37777,
@@ -896,12 +896,12 @@ describe('issue #859 - skip folders with active CLAUDE.md', () => {
   });
 });
 
-describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => {
+describe('issue #912 - skip unsafe directories for AGENTS.md generation', () => {
   it('should skip node_modules directories', async () => {
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['node_modules/lodash/index.js'],
       'test-project',
       37777,
@@ -915,7 +915,7 @@ describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => 
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['.git/refs/heads/main'],
       'test-project',
       37777,
@@ -929,7 +929,7 @@ describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => 
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['app/src/main/res/layout/activity_main.xml'],
       'test-project',
       37777,
@@ -943,7 +943,7 @@ describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => 
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['build/outputs/apk/debug/app-debug.apk'],
       'test-project',
       37777,
@@ -957,7 +957,7 @@ describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => 
     const fetchMock = mock(() => Promise.resolve({ ok: true } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/__pycache__/module.cpython-311.pyc'],
       'test-project',
       37777,
@@ -977,7 +977,7 @@ describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => 
     } as Response));
     global.fetch = fetchMock;
 
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['src/utils/file.ts'],
       'test-project',
       37777,
@@ -992,7 +992,7 @@ describe('issue #912 - skip unsafe directories for CLAUDE.md generation', () => 
     global.fetch = fetchMock;
 
     // node_modules nested deep inside project
-    await updateFolderClaudeMdFiles(
+    await updateFolderAgentsMdFiles(
       ['packages/frontend/node_modules/react/index.js'],
       'test-project',
       37777,

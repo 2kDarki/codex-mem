@@ -1,10 +1,10 @@
 /**
- * Shared path utilities for CLAUDE.md file generation
+ * Shared path utilities for AGENTS.md file generation
  *
  * These utilities handle path normalization and matching, particularly
- * for comparing absolute and relative paths in folder CLAUDE.md generation.
+ * for comparing absolute and relative paths in folder AGENTS.md generation.
  *
- * @see Issue #794 - Path format mismatch causes folder CLAUDE.md files to show "No recent activity"
+ * @see Issue #794 - Path format mismatch causes folder AGENTS.md files to show "No recent activity"
  */
 
 /**

@@ -9,7 +9,7 @@ assignees: ''
 
 ## Before submitting
 
-- [ ] I searched [existing issues](https://github.com/thedotmack/claude-mem/issues) and confirmed this is not a duplicate
+- [ ] I searched [existing issues](https://github.com/2kDarki/codex-mem/issues) and confirmed this is not a duplicate
 
 ---
 
@@ -18,16 +18,9 @@ assignees: ''
 **Use the automated Codex-mem bug report generator** for comprehensive diagnostics:
 
 ```bash
-# Navigate to the plugin directory
-cd ~/.claude/plugins/marketplaces/thedotmack
-
-# Run the bug report tool
+# From the repo root
 npm run bug-report
 ```
-
-**Plugin Paths:**
-- **macOS/Linux**: `~/.claude/plugins/marketplaces/thedotmack`
-- **Windows**: `%USERPROFILE%\.claude\plugins\marketplaces\thedotmack`
 
 **Features:**
 - 🌎 Auto-translates any language to English
@@ -40,7 +33,7 @@ npm run bug-report
 
 ## 📝 Manual Bug Report
 
-If you prefer to file manually or can't access the plugin directory:
+If you prefer to file manually or do not have the repo checked out locally:
 
 ### Bug Description
 A clear description of what the bug is.

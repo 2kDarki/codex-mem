@@ -1197,16 +1197,16 @@ async function main() {
 
     case 'generate': {
       const dryRun = process.argv.includes('--dry-run');
-      const { generateClaudeMd } = await import('../cli/claude-md-commands.js');
-      const result = await generateClaudeMd(dryRun);
+      const { generateAgentsMd } = await import('../cli/agents-md-commands.js');
+      const result = await generateAgentsMd(dryRun);
       process.exit(result);
       break;
     }
 
     case 'clean': {
       const dryRun = process.argv.includes('--dry-run');
-      const { cleanClaudeMd } = await import('../cli/claude-md-commands.js');
-      const result = await cleanClaudeMd(dryRun);
+      const { cleanAgentsMd } = await import('../cli/agents-md-commands.js');
+      const result = await cleanAgentsMd(dryRun);
       process.exit(result);
       break;
     }

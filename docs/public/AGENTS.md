@@ -63,7 +63,7 @@ Files that belong in `/docs/context/` (NOT here):
 ## Development Workflow
 
 **For contributors working on claude-mem:**
-- Read `/CLAUDE.md` in the project root for development instructions
+- Read `/AGENTS.md` in the project root for development instructions
 - Place planning/design docs in `/docs/context/`
 - Only add user-facing documentation to `/docs/public/`
 - Test documentation locally with Mintlify CLI before committing

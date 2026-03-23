@@ -1,9 +1,9 @@
 /**
- * CLAUDE.md File Utilities
+ * AGENTS.md File Utilities
  *
- * Shared utilities for writing folder-level CLAUDE.md files with
+ * Shared utilities for writing folder-level AGENTS.md files with
  * auto-generated context sections. Preserves user content outside
- * <claude-mem-context> tags.
+ * <codex-mem-context> tags.
  */
 
 import { existsSync, readFileSync, writeFileSync, renameSync } from 'fs';
@@ -14,7 +14,15 @@ import { formatDate, groupByDate } from '../shared/timeline-formatting.js';
 import { SettingsDefaultsManager } from '../shared/SettingsDefaultsManager.js';
 import { workerHttpRequest } from '../shared/worker-utils.js';
 
-const SETTINGS_PATH = path.join(os.homedir(), '.claude-mem', 'settings.json');
+const SETTINGS_PATH = path.join(os.homedir(), '.Codex-mem', 'settings.json');
+
+function normalizeInputPath(filePath: string): string {
+  return filePath.replace(/[\\/]+/g, path.sep);
+}
+
+function normalizePathForApi(filePath: string): string {
+  return filePath.replace(/\\/g, '/');
+}
 
 /**
  * Check for consecutive duplicate path segments like frontend/frontend/ or src/src/.
@@ -32,34 +40,39 @@ function hasConsecutiveDuplicateSegments(resolvedPath: string): boolean {
 }
 
 /**
- * Validate that a file path is safe for CLAUDE.md generation.
+ * Validate that a file path is safe for AGENTS.md generation.
  * Rejects tilde paths, URLs, command-like strings, and paths with invalid chars.
  *
  * @param filePath - The file path to validate
  * @param projectRoot - Optional project root for boundary checking
- * @returns true if path is valid for CLAUDE.md processing
+ * @returns true if path is valid for AGENTS.md processing
  */
-function isValidPathForClaudeMd(filePath: string, projectRoot?: string): boolean {
-  // Reject empty or whitespace-only
-  if (!filePath || !filePath.trim()) return false;
-
-  // Reject tilde paths (Node.js doesn't expand ~)
-  if (filePath.startsWith('~')) return false;
-
-  // Reject URLs
+function isValidPathForAgentsMd(filePath: string, projectRoot?: string): boolean {
+  // Reject URLs before normalizing path separators
   if (filePath.startsWith('http://') || filePath.startsWith('https://')) return false;
 
+  const normalizedFilePath = normalizeInputPath(filePath);
+  const normalizedProjectRoot = projectRoot ? normalizeInputPath(projectRoot) : projectRoot;
+
+  // Reject empty or whitespace-only
+  if (!normalizedFilePath || !normalizedFilePath.trim()) return false;
+
+  // Reject tilde paths (Node.js doesn't expand ~)
+  if (normalizedFilePath.startsWith('~')) return false;
+
   // Reject paths with spaces (likely command text or PR references)
-  if (filePath.includes(' ')) return false;
+  if (normalizedFilePath.includes(' ')) return false;
 
   // Reject paths with # (GitHub issue/PR references)
-  if (filePath.includes('#')) return false;
+  if (normalizedFilePath.includes('#')) return false;
 
   // If projectRoot provided, ensure path stays within project boundaries
-  if (projectRoot) {
+  if (normalizedProjectRoot) {
     // For relative paths, resolve against projectRoot; for absolute paths, use directly
-    const resolved = path.isAbsolute(filePath) ? filePath : path.resolve(projectRoot, filePath);
-    const normalizedRoot = path.resolve(projectRoot);
+    const resolved = path.isAbsolute(normalizedFilePath)
+      ? path.resolve(normalizedFilePath)
+      : path.resolve(normalizedProjectRoot, normalizedFilePath);
+    const normalizedRoot = path.resolve(normalizedProjectRoot);
     if (!resolved.startsWith(normalizedRoot + path.sep) && resolved !== normalizedRoot) {
       return false;
     }
@@ -83,8 +96,8 @@ function isValidPathForClaudeMd(filePath: string, projectRoot?: string): boolean
  * 3. No tags in existing content → appends tagged content at end
  */
 export function replaceTaggedContent(existingContent: string, newContent: string): string {
-  const startTag = '<claude-mem-context>';
-  const endTag = '</claude-mem-context>';
+  const startTag = '<codex-mem-context>';
+  const endTag = '</codex-mem-context>';
 
   // If no existing content, wrap new content in tags
   if (!existingContent) {
@@ -106,21 +119,21 @@ export function replaceTaggedContent(existingContent: string, newContent: string
 }
 
 /**
- * Write CLAUDE.md file to folder with atomic writes.
+ * Write AGENTS.md file to folder with atomic writes.
  * Only writes to existing folders; skips non-existent paths to prevent
  * creating spurious directory structures from malformed paths.
  *
  * @param folderPath - Absolute path to the folder (must already exist)
  * @param newContent - Content to write inside tags
  */
-export function writeClaudeMdToFolder(folderPath: string, newContent: string): void {
+export function writeAgentsMdToFolder(folderPath: string, newContent: string): void {
   const resolvedPath = path.resolve(folderPath);
 
   // Never write inside .git directories — corrupts refs (#1165)
   if (resolvedPath.includes('/.git/') || resolvedPath.includes('\\.git\\') || resolvedPath.endsWith('/.git') || resolvedPath.endsWith('\\.git')) return;
 
-  const claudeMdPath = path.join(folderPath, 'CLAUDE.md');
-  const tempFile = `${claudeMdPath}.tmp`;
+  const agentsMdPath = path.join(folderPath, 'AGENTS.md');
+  const tempFile = `${agentsMdPath}.tmp`;
 
   // Only write to folders that already exist - never create new directories
   // This prevents creating spurious folder structures from malformed paths
@@ -131,8 +144,8 @@ export function writeClaudeMdToFolder(folderPath: string, newContent: string): v
 
   // Read existing content if file exists
   let existingContent = '';
-  if (existsSync(claudeMdPath)) {
-    existingContent = readFileSync(claudeMdPath, 'utf-8');
+  if (existsSync(agentsMdPath)) {
+    existingContent = readFileSync(agentsMdPath, 'utf-8');
   }
 
   // Replace only tagged content, preserve user content
@@ -140,7 +153,7 @@ export function writeClaudeMdToFolder(folderPath: string, newContent: string): v
 
   // Atomic write: temp file + rename
   writeFileSync(tempFile, finalContent);
-  renameSync(tempFile, claudeMdPath);
+  renameSync(tempFile, agentsMdPath);
 }
 
 /**
@@ -167,7 +180,7 @@ interface ParsedObservation {
  * @param timelineText - Raw API response text
  * @returns Formatted markdown with date/file grouping
  */
-export function formatTimelineForClaudeMd(timelineText: string): string {
+export function formatTimelineForAgentsMd(timelineText: string): string {
   const lines: string[] = [];
   lines.push('# Recent Activity');
   lines.push('');
@@ -263,7 +276,7 @@ export function formatTimelineForClaudeMd(timelineText: string): string {
 }
 
 /**
- * Built-in directory names where CLAUDE.md generation is unsafe or undesirable.
+ * Built-in directory names where AGENTS.md generation is unsafe or undesirable.
  * e.g. Android res/ is compiler-strict (non-XML breaks build); .git, build, node_modules are tooling-owned.
  */
 const EXCLUDED_UNSAFE_DIRECTORIES = new Set([
@@ -285,7 +298,7 @@ function isExcludedUnsafeDirectory(folderPath: string): boolean {
 
 /**
  * Check if a folder is a project root (contains .git directory).
- * Project root CLAUDE.md files should remain user-managed, not auto-updated.
+ * Project root AGENTS.md files should remain user-managed, not auto-updated.
  */
 function isProjectRoot(folderPath: string): boolean {
   const gitPath = path.join(folderPath, '.git');
@@ -293,7 +306,7 @@ function isProjectRoot(folderPath: string): boolean {
 }
 
 /**
- * Check if a folder path is excluded from CLAUDE.md generation.
+ * Check if a folder path is excluded from AGENTS.md generation.
  * A folder is excluded if it matches or is within any path in the exclude list.
  *
  * @param folderPath - Absolute path to check
@@ -313,17 +326,17 @@ function isExcludedFolder(folderPath: string, excludePaths: string[]): boolean {
 }
 
 /**
- * Update CLAUDE.md files for folders containing the given files.
+ * Update AGENTS.md files for folders containing the given files.
  * Fetches timeline from worker API and writes formatted content.
  *
  * NOTE: Project root folders (containing .git) are excluded to preserve
- * user-managed root CLAUDE.md files. Only subfolder CLAUDE.md files are auto-updated.
+ * user-managed root AGENTS.md files. Only subfolder AGENTS.md files are auto-updated.
  *
  * @param filePaths - Array of absolute file paths (modified or read)
  * @param project - Project identifier for API query
  * @param _port - Worker API port (legacy, now resolved automatically via socket/TCP)
  */
-export async function updateFolderClaudeMdFiles(
+export async function updateFolderAgentsMdFiles(
   filePaths: string[],
   project: string,
   _port: number,
@@ -344,23 +357,24 @@ export async function updateFolderClaudeMdFiles(
     logger.warn('FOLDER_INDEX', 'Failed to parse CLAUDE_MEM_FOLDER_MD_EXCLUDE setting');
   }
 
-  // Track folders containing CLAUDE.md files that were read/modified in this observation.
+  // Track folders containing AGENTS.md files that were read/modified in this observation.
   // We must NOT update these - it would cause "file modified since read" errors in Claude Code.
   // See: https://github.com/thedotmack/claude-mem/issues/859
-  const foldersWithActiveClaudeMd = new Set<string>();
+  const foldersWithActiveAgentsMd = new Set<string>();
 
-  // First pass: identify folders with actively-used CLAUDE.md files
+  // First pass: identify folders with actively-used AGENTS.md files
   for (const filePath of filePaths) {
     if (!filePath) continue;
-    const basename = path.basename(filePath);
-    if (basename === 'CLAUDE.md') {
-      let absoluteFilePath = filePath;
-      if (projectRoot && !path.isAbsolute(filePath)) {
-        absoluteFilePath = path.join(projectRoot, filePath);
+    const normalizedFilePath = normalizeInputPath(filePath);
+    const basename = path.basename(normalizedFilePath);
+    if (basename === 'AGENTS.md') {
+      let absoluteFilePath = normalizedFilePath;
+      if (projectRoot && !path.isAbsolute(normalizedFilePath)) {
+        absoluteFilePath = path.join(normalizeInputPath(projectRoot), normalizedFilePath);
       }
-      const folderPath = path.dirname(absoluteFilePath);
-      foldersWithActiveClaudeMd.add(folderPath);
-      logger.debug('FOLDER_INDEX', 'Detected active CLAUDE.md, will skip folder', { folderPath });
+      const folderPath = path.resolve(path.dirname(absoluteFilePath));
+      foldersWithActiveAgentsMd.add(folderPath);
+      logger.debug('FOLDER_INDEX', 'Detected active AGENTS.md, will skip folder', { folderPath });
     }
   }
 
@@ -369,7 +383,7 @@ export async function updateFolderClaudeMdFiles(
   for (const filePath of filePaths) {
     if (!filePath || filePath === '') continue;
     // VALIDATE PATH BEFORE PROCESSING
-    if (!isValidPathForClaudeMd(filePath, projectRoot)) {
+    if (!isValidPathForAgentsMd(filePath, projectRoot)) {
       logger.debug('FOLDER_INDEX', 'Skipping invalid file path', {
         filePath,
         reason: 'Failed path validation'
@@ -377,25 +391,26 @@ export async function updateFolderClaudeMdFiles(
       continue;
     }
     // Resolve relative paths to absolute using projectRoot
-    let absoluteFilePath = filePath;
-    if (projectRoot && !path.isAbsolute(filePath)) {
-      absoluteFilePath = path.join(projectRoot, filePath);
+    const normalizedFilePath = normalizeInputPath(filePath);
+    let absoluteFilePath = normalizedFilePath;
+    if (projectRoot && !path.isAbsolute(normalizedFilePath)) {
+      absoluteFilePath = path.join(normalizeInputPath(projectRoot), normalizedFilePath);
     }
-    const folderPath = path.dirname(absoluteFilePath);
+    const folderPath = path.resolve(path.dirname(absoluteFilePath));
     if (folderPath && folderPath !== '.' && folderPath !== '/') {
-      // Skip project root - root CLAUDE.md should remain user-managed
+      // Skip project root - root AGENTS.md should remain user-managed
       if (isProjectRoot(folderPath)) {
-        logger.debug('FOLDER_INDEX', 'Skipping project root CLAUDE.md', { folderPath });
+        logger.debug('FOLDER_INDEX', 'Skipping project root AGENTS.md', { folderPath });
         continue;
       }
       // Skip known-unsafe directories (e.g. Android res/, .git, build, node_modules)
       if (isExcludedUnsafeDirectory(folderPath)) {
-        logger.debug('FOLDER_INDEX', 'Skipping unsafe directory for CLAUDE.md', { folderPath });
+        logger.debug('FOLDER_INDEX', 'Skipping unsafe directory for AGENTS.md', { folderPath });
         continue;
       }
-      // Skip folders where CLAUDE.md was read/modified in this observation (issue #859)
-      if (foldersWithActiveClaudeMd.has(folderPath)) {
-        logger.debug('FOLDER_INDEX', 'Skipping folder with active CLAUDE.md to avoid race condition', { folderPath });
+      // Skip folders where AGENTS.md was read/modified in this observation (issue #859)
+      if (foldersWithActiveAgentsMd.has(folderPath)) {
+        logger.debug('FOLDER_INDEX', 'Skipping folder with active AGENTS.md to avoid race condition', { folderPath });
         continue;
       }
       // Skip folders in user-configured exclude list
@@ -409,7 +424,7 @@ export async function updateFolderClaudeMdFiles(
 
   if (folderPaths.size === 0) return;
 
-  logger.debug('FOLDER_INDEX', 'Updating CLAUDE.md files', {
+  logger.debug('FOLDER_INDEX', 'Updating AGENTS.md files', {
     project,
     folderCount: folderPaths.size
   });
@@ -419,7 +434,7 @@ export async function updateFolderClaudeMdFiles(
     try {
       // Fetch timeline via existing API (uses socket or TCP automatically)
       const response = await workerHttpRequest(
-        `/api/search/by-file?filePath=${encodeURIComponent(folderPath)}&limit=${limit}&project=${encodeURIComponent(project)}&isFolder=true`
+        `/api/search/by-file?filePath=${encodeURIComponent(normalizePathForApi(folderPath))}&limit=${limit}&project=${encodeURIComponent(project)}&isFolder=true`
       );
 
       if (!response.ok) {
@@ -433,26 +448,26 @@ export async function updateFolderClaudeMdFiles(
         continue;
       }
 
-      const formatted = formatTimelineForClaudeMd(result.content[0].text);
+      const formatted = formatTimelineForAgentsMd(result.content[0].text);
 
-      // Fix for #794: Don't create new CLAUDE.md files if there's no activity
+      // Fix for #794: Don't create new AGENTS.md files if there's no activity
       // But update existing ones to show "No recent activity" if they already exist
-      const claudeMdPath = path.join(folderPath, 'CLAUDE.md');
+      const agentsMdPath = path.join(folderPath, 'AGENTS.md');
       const hasNoActivity = formatted.includes('*No recent activity*');
-      const fileExists = existsSync(claudeMdPath);
+      const fileExists = existsSync(agentsMdPath);
 
       if (hasNoActivity && !fileExists) {
-        logger.debug('FOLDER_INDEX', 'Skipping empty CLAUDE.md creation', { folderPath });
+        logger.debug('FOLDER_INDEX', 'Skipping empty AGENTS.md creation', { folderPath });
         continue;
       }
 
-      writeClaudeMdToFolder(folderPath, formatted);
+      writeAgentsMdToFolder(folderPath, formatted);
 
-      logger.debug('FOLDER_INDEX', 'Updated CLAUDE.md', { folderPath });
+      logger.debug('FOLDER_INDEX', 'Updated AGENTS.md', { folderPath });
     } catch (error) {
       // Fire-and-forget: log warning but don't fail
       const err = error as Error;
-      logger.error('FOLDER_INDEX', 'Failed to update CLAUDE.md', {
+      logger.error('FOLDER_INDEX', 'Failed to update AGENTS.md', {
         folderPath,
         errorMessage: err.message,
         errorStack: err.stack

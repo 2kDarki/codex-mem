@@ -32,6 +32,11 @@ describe('Codex product manifests', () => {
   it('does not keep the stale claude-mem bundled executable around', () => {
     expect(() => readProjectFile('plugin/scripts/claude-mem')).toThrow();
   });
+
+  it('does not keep Claude-only GitHub workflow helpers around', () => {
+    expect(() => readProjectFile('.github/workflows/claude.yml')).toThrow();
+    expect(() => readProjectFile('.github/workflows/claude-code-review.yml')).toThrow();
+  });
 });
 
 describe('Codex product help surfaces', () => {
@@ -75,5 +80,17 @@ describe('Codex product help surfaces', () => {
     expect(contextSettingsModal).toContain('placeholder=\"codex-mem\"');
     expect(contextSettingsModal).not.toContain("CLAUDE_MEM_OPENROUTER_APP_NAME || 'claude-mem'");
     expect(defaultSettings).toContain("CLAUDE_MEM_OPENROUTER_APP_NAME: 'codex-mem'");
+  });
+
+  it('removes repo-local Claude setup references from support and dev surfaces', () => {
+    const bugReport = readProjectFile('.github/ISSUE_TEMPLATE/bug_report.md');
+    const conductor = readProjectFile('conductor.json');
+    const gitignore = readProjectFile('.gitignore');
+
+    expect(bugReport).not.toContain('~/.claude/plugins/marketplaces/thedotmack');
+    expect(bugReport).not.toContain('%USERPROFILE%\\.claude\\plugins\\marketplaces\\thedotmack');
+    expect(conductor).not.toContain('.claude/settings.local.json');
+    expect(gitignore).not.toContain('.claude/settings.local.json');
+    expect(gitignore).not.toContain('.claude/session-intent.md');
   });
 });

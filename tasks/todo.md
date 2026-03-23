@@ -47,9 +47,9 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Add failing coverage for the removal/rename of `.claude`, `.claude-plugin`, and stale `plugin/scripts/claude-mem`
 - [x] Remove `.claude` developer artifacts and the stale `plugin/scripts/claude-mem` binary
 - [x] Rename root and bundled `.claude-plugin` manifests to Codex-named equivalents or remove them if no longer required
-- [ ] Delete tracked `CLAUDE.md` files and decide whether remaining folder-context code should be renamed to `AGENTS.md` or removed
+- [x] Delete tracked `CLAUDE.md` files and decide whether remaining folder-context code should be renamed to `AGENTS.md` or removed
 - [x] Update docs/tests/build references to the new Codex-only artifact layout
-- [ ] Verify the cleanup pivot and commit it with a detailed message
+- [x] Verify the cleanup pivot and commit it with a detailed message
 
 ## Phase Breakdown
 
@@ -119,3 +119,5 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Switched the npm publish surface from the unscoped `codex-mem` package name to the scoped package `@2kdarki/codex-mem` while keeping the installed CLI command as `codex-mem`, and updated the main npm install snippets so users install the correct registry package.
 - Began a Codex-only cleanup pivot after the user requested removal of `.claude`, `.claude-plugin`, and `CLAUDE.md` artifacts; the next slices will remove stale Claude-era directories/files and either rename or drop the remaining repo structures that still depend on them.
 - Completed the artifact-layout half of the Codex-only cleanup pivot by renaming the tracked plugin manifests to `.codex-plugin`, removing the stale `plugin/scripts/claude-mem` binary, deleting the repo-local `.claude` directory, and updating build, installer, docs, and infrastructure checks to the new manifest paths.
+- Completed the folder-context half of the Codex-only cleanup pivot by renaming tracked `CLAUDE.md` files to `AGENTS.md`, renaming the folder-context utilities/commands/scripts, switching generated tags to `<codex-mem-context>` while preserving legacy stripping support, and adding settings aliases so older `*_FOLDER_CLAUDEMD_ENABLED` configs still map onto the new AGENTS toggle.
+- Removed extra repo-only Claude leftovers that were no longer required after the Codex-first cutover: deleted the Claude Code GitHub workflows, updated issue templates and package metadata to the `2kDarki/codex-mem` repository, and swapped repo-local dev setup/ignore paths from `.claude` to `.codex`.

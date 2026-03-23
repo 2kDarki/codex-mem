@@ -14,7 +14,7 @@
 import { logger } from '../../../utils/logger.js';
 import { parseObservations, parseSummary, type ParsedObservation, type ParsedSummary } from '../../../sdk/parser.js';
 import { updateCursorContextForProject } from '../../integrations/CursorHooksInstaller.js';
-import { updateFolderClaudeMdFiles } from '../../../utils/claude-md-utils.js';
+import { updateFolderAgentsMdFiles } from '../../../utils/folder-context-utils.js';
 import { getWorkerPort } from '../../../shared/worker-utils.js';
 import { SettingsDefaultsManager } from '../../../shared/SettingsDefaultsManager.js';
 import { USER_SETTINGS_PATH } from '../../../shared/paths.js';
@@ -238,15 +238,15 @@ async function syncAndBroadcastObservations(
     });
   }
 
-  // Update folder CLAUDE.md files for touched folders (fire-and-forget)
+  // Update folder AGENTS.md files for touched folders (fire-and-forget)
   // This runs per-observation batch to ensure folders are updated as work happens
-  // Only runs if CLAUDE_MEM_FOLDER_CLAUDEMD_ENABLED is true (default: false)
+  // Only runs if CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED is true (default: false)
   const settings = SettingsDefaultsManager.loadFromFile(USER_SETTINGS_PATH);
   // Handle both string 'true' and boolean true from JSON settings
-  const settingValue = settings.CLAUDE_MEM_FOLDER_CLAUDEMD_ENABLED;
-  const folderClaudeMdEnabled = settingValue === 'true' || settingValue === true;
+  const settingValue = settings.CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED;
+  const folderAgentsMdEnabled = settingValue === 'true' || settingValue === true;
 
-  if (folderClaudeMdEnabled) {
+  if (folderAgentsMdEnabled) {
     const allFilePaths: string[] = [];
     for (const obs of observations) {
       allFilePaths.push(...(obs.files_modified || []));
@@ -254,13 +254,13 @@ async function syncAndBroadcastObservations(
     }
 
     if (allFilePaths.length > 0) {
-      updateFolderClaudeMdFiles(
+      updateFolderAgentsMdFiles(
         allFilePaths,
         session.project,
         getWorkerPort(),
         projectRoot
       ).catch(error => {
-        logger.warn('FOLDER_INDEX', 'CLAUDE.md update failed (non-critical)', { project: session.project }, error as Error);
+        logger.warn('FOLDER_INDEX', 'AGENTS.md update failed (non-critical)', { project: session.project }, error as Error);
       });
     }
   }

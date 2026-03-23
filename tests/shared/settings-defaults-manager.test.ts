@@ -304,6 +304,7 @@ describe('SettingsDefaultsManager', () => {
       // System settings
       expect(defaults.CLAUDE_MEM_DATA_DIR).toBeDefined();
       expect(defaults.CLAUDE_MEM_LOG_LEVEL).toBeDefined();
+      expect(defaults.CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED).toBeDefined();
     });
 
     it('should default data storage to the Codex-mem directory', () => {
@@ -484,6 +485,16 @@ describe('SettingsDefaultsManager', () => {
 
       expect(result.CLAUDE_MEM_WORKER_PORT).toBe('46789');
       expect(result.CLAUDE_MEM_DATA_DIR).toBe(join(tempDir, 'codex-file-data'));
+    });
+
+    it('should map legacy folder CLAUDE.md settings onto the AGENTS.md toggle', () => {
+      writeFileSync(settingsPath, JSON.stringify({
+        CLAUDE_MEM_FOLDER_CLAUDEMD_ENABLED: 'true',
+      }));
+
+      const result = SettingsDefaultsManager.loadFromFile(settingsPath);
+
+      expect(result.CLAUDE_MEM_FOLDER_AGENTSMD_ENABLED).toBe('true');
     });
   });
 });

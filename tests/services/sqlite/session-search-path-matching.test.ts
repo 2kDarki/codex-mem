@@ -3,11 +3,11 @@ import { isDirectChild, normalizePath } from '../../../src/shared/path-utils.js'
 
 /**
  * Tests for path matching logic, specifically the isDirectChild() algorithm
- * Covers fix for issue #794: Path format mismatch causes folder CLAUDE.md files to show "No recent activity"
+ * Covers fix for issue #794: Path format mismatch causes folder AGENTS.md files to show "No recent activity"
  *
  * These tests validate the shared path-utils module which is used by:
- * - SessionSearch.ts (runtime folder CLAUDE.md generation)
- * - regenerate-claude-md.ts (CLI regeneration tool)
+ * - SessionSearch.ts (runtime folder AGENTS.md generation)
+ * - regenerate-agents-md.ts (CLI regeneration tool)
  */
 
 describe('isDirectChild path matching', () => {

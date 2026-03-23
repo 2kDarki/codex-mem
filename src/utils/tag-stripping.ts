@@ -2,8 +2,9 @@
  * Tag Stripping Utilities
  *
  * Implements the tag system for meta-observation control:
- * 1. <claude-mem-context> - System-level tag for auto-injected observations
+ * 1. <codex-mem-context> - System-level tag for auto-injected observations
  *    (prevents recursive storage when context injection is active)
+ *    Legacy <claude-mem-context> tags are also stripped for compatibility.
  * 2. <private> - User-level tag for manual privacy control
  *    (allows users to mark content they don't want persisted)
  * 3. <system_instruction> / <system-instruction> - Conductor-injected system instructions
@@ -28,10 +29,11 @@ const MAX_TAG_COUNT = 100;
  */
 function countTags(content: string): number {
   const privateCount = (content.match(/<private>/g) || []).length;
-  const contextCount = (content.match(/<claude-mem-context>/g) || []).length;
+  const contextCount = (content.match(/<codex-mem-context>/g) || []).length;
+  const legacyContextCount = (content.match(/<claude-mem-context>/g) || []).length;
   const systemInstructionCount = (content.match(/<system_instruction>/g) || []).length;
   const systemInstructionHyphenCount = (content.match(/<system-instruction>/g) || []).length;
-  return privateCount + contextCount + systemInstructionCount + systemInstructionHyphenCount;
+  return privateCount + contextCount + legacyContextCount + systemInstructionCount + systemInstructionHyphenCount;
 }
 
 /**
@@ -51,6 +53,7 @@ function stripTagsInternal(content: string): string {
   }
 
   return content
+    .replace(/<codex-mem-context>[\s\S]*?<\/codex-mem-context>/g, '')
     .replace(/<claude-mem-context>[\s\S]*?<\/claude-mem-context>/g, '')
     .replace(/<private>[\s\S]*?<\/private>/g, '')
     .replace(/<system_instruction>[\s\S]*?<\/system_instruction>/g, '')

@@ -10,11 +10,11 @@ dist/
 *.tmp
 *.temp
 .install-version
-.claude/settings.local.json
-.claude/agents/
-.claude/skills/
-.claude/plans/
-.claude/worktrees/
+.codex/settings.local.json
+.codex/agents/
+.codex/skills/
+.codex/plans/
+.codex/worktrees/
 plugin/data/
 plugin/data.backup/
 package-lock.json
@@ -32,7 +32,7 @@ src/ui/viewer.html
 # Ignore WebStorm project files (for dinosaur IDE users)
 .idea/
 
-.claude-octopus/
-.claude/session-intent.md
-.claude/session-plan.md
+.codex-octopus/
+.codex/session-intent.md
+.codex/session-plan.md
 .octo/

@@ -185,7 +185,7 @@ export class GeminiAgent {
       }
 
       // Process pending messages
-      // Track cwd from messages for CLAUDE.md generation
+      // Track cwd from messages for AGENTS.md generation
       let lastCwd: string | undefined;
 
       for await (const message of this.sessionManager.getMessageIterator(session.sessionDbId)) {

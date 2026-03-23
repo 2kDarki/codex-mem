@@ -1,10 +1,10 @@
 import { existsSync, readFileSync, writeFileSync, renameSync, mkdirSync } from 'fs';
 import { dirname, resolve } from 'path';
-import { replaceTaggedContent } from './claude-md-utils.js';
+import { replaceTaggedContent } from './folder-context-utils.js';
 import { logger } from './logger.js';
 
 /**
- * Write AGENTS.md with claude-mem context, preserving user content outside tags.
+ * Write AGENTS.md with codex-mem context, preserving user content outside tags.
  * Uses atomic write to prevent partial writes.
  */
 export function writeAgentsMd(agentsPath: string, context: string): void {

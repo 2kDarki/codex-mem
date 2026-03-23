@@ -1,4 +1,4 @@
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Dec 10, 2025
@@ -58,4 +58,4 @@
 | #35647 | " | ✅ | Added APPROVED OVERRIDE annotation for port availability probe error handling | ~327 |
 | #35646 | " | ✅ | Added APPROVED OVERRIDE annotation for Cursor context file update error handling | ~342 |
 | #35643 | 11:27 PM | ✅ | Added APPROVED OVERRIDE annotation for PID file cleanup error handling | ~320 |
-</claude-mem-context>
+</codex-mem-context>

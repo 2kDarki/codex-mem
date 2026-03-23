@@ -19,11 +19,11 @@
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/thedotmack/claude-mem.git"
+    "url": "https://github.com/2kDarki/codex-mem.git"
   },
-  "homepage": "https://github.com/thedotmack/claude-mem#readme",
+  "homepage": "https://github.com/2kDarki/codex-mem#readme",
   "bugs": {
-    "url": "https://github.com/thedotmack/claude-mem/issues"
+    "url": "https://github.com/2kDarki/codex-mem/issues"
   },
   "type": "module",
   "bin": {
@@ -69,8 +69,8 @@
     "queue": "bun scripts/check-pending-queue.ts",
     "queue:process": "bun scripts/check-pending-queue.ts --process",
     "queue:clear": "bun scripts/clear-failed-queue.ts --all --force",
-    "claude-md:regenerate": "bun scripts/regenerate-claude-md.ts",
-    "claude-md:dry-run": "bun scripts/regenerate-claude-md.ts --dry-run",
+    "agents-md:regenerate": "bun scripts/regenerate-agents-md.ts",
+    "agents-md:dry-run": "bun scripts/regenerate-agents-md.ts --dry-run",
     "translate-readme": "bun scripts/translate-readme/cli.ts -v -o docs/i18n README.md",
     "translate:tier1": "npm run translate-readme -- zh zh-tw ja pt-br ko es de fr",
     "translate:tier2": "npm run translate-readme -- he ar ru pl cs nl tr uk",

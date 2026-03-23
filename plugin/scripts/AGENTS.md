@@ -1,6 +1,6 @@
 Never read built source files in this directory. These are compiled outputs — read the source files in `src/` instead.
 
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Dec 4, 2025
@@ -122,4 +122,4 @@ Never read built source files in this directory. These are compiled outputs — 
 | #38162 | " | 🔵 | Smart-Install Script Auto-Installs Bun and UV Dependencies | ~495 |
 | #38161 | " | 🔵 | User-Message-Hook Outputs to stderr and Exits with Code 1 | ~211 |
 | #38160 | 7:18 PM | 🔵 | Context-Hook Returns JSON with hookSpecificOutput Structure | ~470 |
-</claude-mem-context>
+</codex-mem-context>

@@ -42,7 +42,7 @@ export class SDKAgent {
    * @param worker WorkerService reference for spinner control (optional)
    */
   async startSession(session: ActiveSession, worker?: WorkerRef): Promise<void> {
-    // Track cwd from messages for CLAUDE.md generation (worktree support)
+    // Track cwd from messages for AGENTS.md generation (worktree support)
     // Uses mutable object so generator updates are visible in response processing
     const cwdTracker = { lastCwd: undefined as string | undefined };
 
@@ -328,7 +328,7 @@ export class SDKAgent {
    * CWD TRACKING:
    * - cwdTracker is a mutable object shared with startSession
    * - As messages with cwd are processed, cwdTracker.lastCwd is updated
-   * - This enables processAgentResponse to use the correct cwd for CLAUDE.md
+   * - This enables processAgentResponse to use the correct cwd for AGENTS.md
    */
   private async *createMessageGenerator(
     session: ActiveSession,

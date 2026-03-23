@@ -305,7 +305,7 @@ describe('Codex transcript watcher end-to-end', () => {
       expect(contextCalls[0]?.url).toContain('projects=demo-project');
 
       const agentsContent = readFileSync(agentsPath, 'utf-8');
-      expect(agentsContent).toContain('<claude-mem-context>');
+      expect(agentsContent).toContain('<codex-mem-context>');
       expect(agentsContent).toContain('# Memory Context');
       expect(agentsContent).toContain('Recovered context block');
 

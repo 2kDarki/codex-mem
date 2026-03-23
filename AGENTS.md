@@ -1,6 +1,6 @@
-# Claude-Mem: AI Development Instructions
+# Codex-Mem: AI Development Instructions
 
-Claude-mem is a Claude Code plugin providing persistent memory across sessions. It captures tool usage, compresses observations using the Claude Agent SDK, and injects relevant context into future sessions.
+Codex-mem is a Codex plugin providing persistent memory across sessions. It captures tool usage, compresses observations using the Codex Agent SDK, and injects relevant context into future sessions.
 
 ## Architecture
 
@@ -10,7 +10,7 @@ Claude-mem is a Claude Code plugin providing persistent memory across sessions. 
 
 **Worker Service** (`src/services/worker-service.ts`) - Express API on port 37777, Bun-managed, handles AI processing asynchronously
 
-**Database** (`src/services/sqlite/`) - SQLite3 at `~/.claude-mem/claude-mem.db`
+**Database** (`src/services/sqlite/`) - SQLite3 at `~/.Codex-mem/Codex-mem.db`
 
 **Search Skill** (`plugin/skills/mem-search/SKILL.md`) - HTTP API for searching past work, auto-invoked when users ask about history
 
@@ -35,27 +35,27 @@ npm run build-and-sync        # Build, sync to marketplace, restart worker
 
 ## Configuration
 
-Settings are managed in `~/.claude-mem/settings.json`. The file is auto-created with defaults on first run.
+Settings are managed in `~/.Codex-mem/settings.json`. The file is auto-created with defaults on first run.
 
 ## File Locations
 
 - **Source**: `<project-root>/src/`
 - **Built Plugin**: `<project-root>/plugin/`
-- **Installed Plugin**: `~/.claude/plugins/marketplaces/thedotmack/`
-- **Database**: `~/.claude-mem/claude-mem.db`
-- **Chroma**: `~/.claude-mem/chroma/`
+- **Installed Plugin**: `~/.Codex/plugins/marketplaces/thedotmack/`
+- **Database**: `~/.Codex-mem/Codex-mem.db`
+- **Chroma**: `~/.Codex-mem/chroma/`
 
 ## Exit Code Strategy
 
-Claude-mem hooks use specific exit codes per Claude Code's hook contract:
+Codex-mem hooks use specific exit codes per Codex's hook contract:
 
 - **Exit 0**: Success or graceful shutdown (Windows Terminal closes tabs)
 - **Exit 1**: Non-blocking error (stderr shown to user, continues)
-- **Exit 2**: Blocking error (stderr fed to Claude for processing)
+- **Exit 2**: Blocking error (stderr fed to Codex for processing)
 
 **Philosophy**: Worker/hook errors exit with code 0 to prevent Windows Terminal tab accumulation. The wrapper/plugin layer handles restart logic. ERROR-level logging is maintained for diagnostics.
 
-See `private/context/claude-code/exit-codes.md` for full hook behavior matrix.
+See `private/context/Codex/exit-codes.md` for full hook behavior matrix.
 
 ## Requirements
 
@@ -65,13 +65,13 @@ See `private/context/claude-code/exit-codes.md` for full hook behavior matrix.
 
 ## Documentation
 
-**Public Docs**: https://docs.claude-mem.ai (Mintlify)
+**Public Docs**: https://docs.Codex-mem.ai (Mintlify)
 **Source**: `docs/public/` - MDX files, edit `docs.json` for navigation
 **Deploy**: Auto-deploys from GitHub on push to main
 
 ## Pro Features Architecture
 
-Claude-mem is designed with a clean separation between open-source core functionality and optional Pro features.
+Codex-mem is designed with a clean separation between open-source core functionality and optional Pro features.
 
 **Open-Source Core** (this repository):
 

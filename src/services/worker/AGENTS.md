@@ -1,4 +1,4 @@
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Dec 10, 2025
@@ -120,4 +120,4 @@
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
 | #36853 | 1:49 AM | 🔵 | GeminiAgent Implementation Reviewed for Model Support | ~555 |
-</claude-mem-context>
+</codex-mem-context>

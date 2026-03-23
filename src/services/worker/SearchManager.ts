@@ -1215,7 +1215,7 @@ export class SearchManager {
     // Group by date for proper timeline rendering
     const resultsByDate = groupByDate(combined, item => item.created_at);
 
-    // Format with date headers for proper date parsing by folder CLAUDE.md generator
+    // Format with date headers for proper date parsing by folder AGENTS.md generator
     const lines: string[] = [];
     lines.push(`Found ${totalResults} result(s) for file "${filePath}"`);
     lines.push('');

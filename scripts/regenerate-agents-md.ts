@@ -1,13 +1,13 @@
 #!/usr/bin/env bun
 /**
- * Regenerate CLAUDE.md files for folders in the current project
+ * Regenerate AGENTS.md files for folders in the current project
  *
  * Usage:
- *   bun scripts/regenerate-claude-md.ts [--dry-run] [--clean]
+ *   bun scripts/regenerate-agents-md.ts [--dry-run] [--clean]
  *
  * Options:
  *   --dry-run  Show what would be done without writing files
- *   --clean    Remove auto-generated CLAUDE.md files instead of regenerating
+ *   --clean    Remove auto-generated AGENTS.md files instead of regenerating
  *
  * Behavior:
  *   - Scopes to current working directory (not entire database history)
@@ -23,8 +23,8 @@ import { existsSync, mkdirSync, writeFileSync, readFileSync, renameSync, unlinkS
 import { execSync } from 'child_process';
 import { SettingsDefaultsManager } from '../src/shared/SettingsDefaultsManager.js';
 
-const DB_PATH = path.join(os.homedir(), '.claude-mem', 'claude-mem.db');
-const SETTINGS_PATH = path.join(os.homedir(), '.claude-mem', 'settings.json');
+const DB_PATH = path.join(os.homedir(), '.Codex-mem', 'claude-mem.db');
+const SETTINGS_PATH = path.join(os.homedir(), '.Codex-mem', 'settings.json');
 const settings = SettingsDefaultsManager.loadFromFile(SETTINGS_PATH);
 const OBSERVATION_LIMIT = parseInt(settings.CLAUDE_MEM_CONTEXT_OBSERVATIONS, 10) || 50;
 
@@ -46,7 +46,7 @@ interface ObservationRow {
 // Import shared utilities
 import { formatTime, groupByDate } from '../src/shared/timeline-formatting.js';
 import { isDirectChild } from '../src/shared/path-utils.js';
-import { replaceTaggedContent } from '../src/utils/claude-md-utils.js';
+import { replaceTaggedContent } from '../src/utils/folder-context-utils.js';
 
 // Type icon map (matches ModeManager)
 const TYPE_ICONS: Record<string, string> = {
@@ -118,7 +118,7 @@ function walkDirectoriesWithIgnore(dir: string, folders: Set<string>, depth: num
   const ignorePatterns = [
     'node_modules', '.git', '.next', 'dist', 'build', '.cache',
     '__pycache__', '.venv', 'venv', '.idea', '.vscode', 'coverage',
-    '.claude-mem', '.open-next', '.turbo'
+    '.Codex-mem', '.open-next', '.turbo'
   ];
 
   try {
@@ -126,7 +126,7 @@ function walkDirectoriesWithIgnore(dir: string, folders: Set<string>, depth: num
     for (const entry of entries) {
       if (!entry.isDirectory()) continue;
       if (ignorePatterns.includes(entry.name)) continue;
-      if (entry.name.startsWith('.') && entry.name !== '.claude') continue;
+      if (entry.name.startsWith('.') && entry.name !== '.codex') continue;
 
       const fullPath = path.join(dir, entry.name);
       folders.add(fullPath);
@@ -222,9 +222,9 @@ function extractRelevantFile(obs: ObservationRow, relativeFolder: string): strin
 }
 
 /**
- * Format observations for CLAUDE.md content
+ * Format observations for AGENTS.md content
  */
-function formatObservationsForClaudeMd(observations: ObservationRow[], folderPath: string): string {
+function formatObservationsForAgentsMd(observations: ObservationRow[], folderPath: string): string {
   const lines: string[] = [];
   lines.push('# Recent Activity');
   lines.push('');
@@ -273,27 +273,27 @@ function formatObservationsForClaudeMd(observations: ObservationRow[], folderPat
 
 
 /**
- * Write CLAUDE.md file with tagged content preservation
+ * Write AGENTS.md file with tagged content preservation
  * Note: For the CLI regenerate tool, we DO create directories since the user
  * explicitly requested regeneration. This differs from the runtime behavior
  * which only writes to existing folders.
  */
-function writeClaudeMdToFolderForRegenerate(folderPath: string, newContent: string): void {
+function writeAgentsMdToFolderForRegenerate(folderPath: string, newContent: string): void {
   const resolvedPath = path.resolve(folderPath);
 
   // Never write inside .git directories — corrupts refs (#1165)
   if (resolvedPath.includes('/.git/') || resolvedPath.includes('\\.git\\') || resolvedPath.endsWith('/.git') || resolvedPath.endsWith('\\.git')) return;
 
-  const claudeMdPath = path.join(folderPath, 'CLAUDE.md');
-  const tempFile = `${claudeMdPath}.tmp`;
+  const agentsMdPath = path.join(folderPath, 'AGENTS.md');
+  const tempFile = `${agentsMdPath}.tmp`;
 
   // For regenerate CLI, we create the folder if needed
   mkdirSync(folderPath, { recursive: true });
 
   // Read existing content if file exists
   let existingContent = '';
-  if (existsSync(claudeMdPath)) {
-    existingContent = readFileSync(claudeMdPath, 'utf-8');
+  if (existsSync(agentsMdPath)) {
+    existingContent = readFileSync(agentsMdPath, 'utf-8');
   }
 
   // Use shared utility to preserve user content outside tags
@@ -301,25 +301,25 @@ function writeClaudeMdToFolderForRegenerate(folderPath: string, newContent: stri
 
   // Atomic write: temp file + rename
   writeFileSync(tempFile, finalContent);
-  renameSync(tempFile, claudeMdPath);
+  renameSync(tempFile, agentsMdPath);
 }
 
 /**
- * Clean up auto-generated CLAUDE.md files
+ * Clean up auto-generated AGENTS.md files
  *
- * For each file with <claude-mem-context> tags:
+ * For each file with <codex-mem-context> tags:
  * - Strip the tagged section
  * - If empty after stripping → delete the file
  * - If has remaining content → save the stripped version
  */
 function cleanupAutoGeneratedFiles(workingDir: string, dryRun: boolean): void {
-  console.log('=== CLAUDE.md Cleanup Mode ===\n');
-  console.log(`Scanning ${workingDir} for CLAUDE.md files with auto-generated content...\n`);
+  console.log('=== AGENTS.md Cleanup Mode ===\n');
+  console.log(`Scanning ${workingDir} for AGENTS.md files with auto-generated content...\n`);
 
   const filesToProcess: string[] = [];
 
-  // Walk directories to find CLAUDE.md files
-  function walkForClaudeMd(dir: string): void {
+  // Walk directories to find AGENTS.md files
+  function walkForAgentsMd(dir: string): void {
     const ignorePatterns = ['node_modules', '.git', '.next', 'dist', 'build'];
 
     try {
@@ -329,13 +329,13 @@ function cleanupAutoGeneratedFiles(workingDir: string, dryRun: boolean): void {
 
         if (entry.isDirectory()) {
           if (!ignorePatterns.includes(entry.name)) {
-            walkForClaudeMd(fullPath);
+            walkForAgentsMd(fullPath);
           }
-        } else if (entry.name === 'CLAUDE.md') {
+        } else if (entry.name === 'AGENTS.md') {
           // Check if file contains auto-generated content
           try {
             const content = readFileSync(fullPath, 'utf-8');
-            if (content.includes('<claude-mem-context>')) {
+            if (content.includes('<codex-mem-context>')) {
               filesToProcess.push(fullPath);
             }
           } catch {
@@ -348,14 +348,14 @@ function cleanupAutoGeneratedFiles(workingDir: string, dryRun: boolean): void {
     }
   }
 
-  walkForClaudeMd(workingDir);
+  walkForAgentsMd(workingDir);
 
   if (filesToProcess.length === 0) {
-    console.log('No CLAUDE.md files with auto-generated content found.');
+    console.log('No AGENTS.md files with auto-generated content found.');
     return;
   }
 
-  console.log(`Found ${filesToProcess.length} CLAUDE.md files with auto-generated content:\n`);
+  console.log(`Found ${filesToProcess.length} AGENTS.md files with auto-generated content:\n`);
 
   let deletedCount = 0;
   let cleanedCount = 0;
@@ -367,8 +367,8 @@ function cleanupAutoGeneratedFiles(workingDir: string, dryRun: boolean): void {
     try {
       const content = readFileSync(file, 'utf-8');
 
-      // Strip the claude-mem-context tagged section
-      const stripped = content.replace(/<claude-mem-context>[\s\S]*?<\/claude-mem-context>/g, '').trim();
+      // Strip the codex-mem-context tagged section
+      const stripped = content.replace(/<codex-mem-context>[\s\S]*?<\/codex-mem-context>/g, '').trim();
 
       if (stripped === '') {
         // Empty after stripping → delete
@@ -406,7 +406,7 @@ function cleanupAutoGeneratedFiles(workingDir: string, dryRun: boolean): void {
 }
 
 /**
- * Regenerate CLAUDE.md for a single folder
+ * Regenerate AGENTS.md for a single folder
  * @param absoluteFolder - Absolute path for writing files
  * @param relativeFolder - Relative path for DB queries (matches storage format)
  */
@@ -430,8 +430,8 @@ function regenerateFolder(
     }
 
     // Format using relative path for display, write to absolute path
-    const formatted = formatObservationsForClaudeMd(observations, relativeFolder);
-    writeClaudeMdToFolderForRegenerate(absoluteFolder, formatted);
+    const formatted = formatObservationsForAgentsMd(observations, relativeFolder);
+    writeAgentsMdToFolderForRegenerate(absoluteFolder, formatted);
 
     return { success: true, observationCount: observations.length };
   } catch (error) {
@@ -455,7 +455,7 @@ async function main() {
     return;
   }
 
-  console.log('=== CLAUDE.md Regeneration Script ===\n');
+  console.log('=== AGENTS.md Regeneration Script ===\n');
   console.log(`Working directory: ${workingDir}`);
 
   // Determine project identifier (matches how hooks determine project - uses folder name)

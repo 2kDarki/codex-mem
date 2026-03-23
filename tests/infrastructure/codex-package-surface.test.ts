@@ -16,6 +16,9 @@ describe('Codex package surface', () => {
 
     expect(packageJson.name).toBe('@2kdarki/codex-mem');
     expect(packageJson.description).toContain('Codex');
+    expect(packageJson.repository.url).toBe('https://github.com/2kDarki/codex-mem.git');
+    expect(packageJson.homepage).toBe('https://github.com/2kDarki/codex-mem#readme');
+    expect(packageJson.bugs.url).toBe('https://github.com/2kDarki/codex-mem/issues');
     expect(packageJson.bin).toEqual({
       'codex-mem': './plugin/scripts/codex-mem.cjs',
     });

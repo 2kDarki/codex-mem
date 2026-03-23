@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "setup": "cp ../settings.local.json .claude/settings.local.json && npm install",
+        "setup": "mkdir -p .codex && cp ../settings.local.json .codex/settings.local.json && npm install",
         "run": "npm run build-and-sync"
     }
 }

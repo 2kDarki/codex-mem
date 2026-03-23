@@ -1,4 +1,4 @@
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Dec 19, 2025
@@ -19,4 +19,4 @@
 | #30336 | 3:40 PM | 🔵 | Ragtime Email Corpus Processor Architecture | ~495 |
 | #30335 | " | 🔵 | Ragtime Uses Separate Noncommercial License | ~259 |
 | #30252 | 3:17 PM | 🟣 | Multi-Format Email Corpus Loader | ~436 |
-</claude-mem-context>
+</codex-mem-context>

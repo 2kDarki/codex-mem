@@ -167,7 +167,7 @@ Content-Type: application/json
 
 <Info>
 **Privacy Check:** Skips if user prompt was entirely wrapped in `<private>` tags.
-**Tag Stripping:** Removes `<private>` and `<claude-mem-context>` tags before storage.
+**Tag Stripping:** Removes `<private>` and `<codex-mem-context>` tags before storage.
 **Auto-Start:** Ensures SDK agent generator is running to process the queue.
 </Info>
 
@@ -990,7 +990,7 @@ async function isWorkerHealthy(): Promise<boolean> {
 <Info>
 The worker automatically strips privacy tags before storage:
 - `<private>content</private>` - User-level privacy control
-- `<claude-mem-context>content</claude-mem-context>` - System-level tag (prevents recursive storage)
+- `<codex-mem-context>content</codex-mem-context>` - System-level tag (prevents recursive storage)
 
 **Privacy Check:** Observations/summaries are skipped if the entire user prompt was wrapped in `<private>` tags.
 </Info>

@@ -85,7 +85,7 @@ describe('Codex docs and content surfaces', () => {
 
     expect(bugReport).toContain('**Codex version**:');
     expect(bugReport).toContain('`~/.Codex-mem/logs/worker-YYYY-MM-DD.log`');
-    expect(featureRequest).toContain('https://github.com/thedotmack/claude-mem/issues');
+    expect(featureRequest).toContain('https://github.com/2kDarki/codex-mem/issues');
 
     expect(transcriptWatchExample).toContain('"stateFile": "~/.Codex-mem/transcript-watch-state.json"');
   });
@@ -139,7 +139,7 @@ describe('Codex docs and content surfaces', () => {
     expect(cursorOpenRouter).toContain('mkdir -p ~/.Codex-mem');
     expect(cursorOpenRouter).toContain('cat ~/.Codex-mem/settings.json');
 
-    expect(featureRequest).toContain('https://github.com/thedotmack/claude-mem/issues');
+    expect(featureRequest).toContain('https://github.com/2kDarki/codex-mem/issues');
   });
 
   it('uses codex-first framing in secondary architecture docs', () => {

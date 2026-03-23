@@ -140,7 +140,7 @@ export class OpenRouterAgent {
         });
       }
 
-      // Track lastCwd from messages for CLAUDE.md generation
+      // Track lastCwd from messages for AGENTS.md generation
       let lastCwd: string | undefined;
 
       // Process pending messages

@@ -19,7 +19,7 @@ function getDirname(): string {
 const _dirname = getDirname();
 
 /**
- * Simple path configuration for claude-mem
+ * Simple path configuration for codex-mem
  * Standard paths based on Claude Code conventions
  */
 
@@ -35,7 +35,7 @@ function resolveDataDir(): string {
   }
 
   // 2. Settings file at the default location
-  const defaultDataDir = join(homedir(), '.claude-mem');
+  const defaultDataDir = join(homedir(), '.Codex-mem');
   const settingsPath = join(defaultDataDir, 'settings.json');
   try {
     if (existsSync(settingsPath)) {
@@ -55,7 +55,7 @@ function resolveDataDir(): string {
 }
 
 export const DATA_DIR = resolveDataDir();
-// Note: CLAUDE_CONFIG_DIR is a Claude Code setting, not claude-mem, so leave as env var
+// Note: CLAUDE_CONFIG_DIR is a Claude Code setting, not codex-mem, so leave as env var
 export const CLAUDE_CONFIG_DIR = process.env.CLAUDE_CONFIG_DIR || join(homedir(), '.claude');
 
 // Plugin installation directory - respects CLAUDE_CONFIG_DIR for users with custom Claude locations
@@ -78,7 +78,7 @@ export const OBSERVER_SESSIONS_DIR = join(DATA_DIR, 'observer-sessions');
 // Claude integration paths
 export const CLAUDE_SETTINGS_PATH = join(CLAUDE_CONFIG_DIR, 'settings.json');
 export const CLAUDE_COMMANDS_DIR = join(CLAUDE_CONFIG_DIR, 'commands');
-export const CLAUDE_MD_PATH = join(CLAUDE_CONFIG_DIR, 'CLAUDE.md');
+export const AGENTS_MD_PATH = join(CLAUDE_CONFIG_DIR, 'AGENTS.md');
 
 /**
  * Get project-specific archive directory

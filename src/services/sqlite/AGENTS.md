@@ -1,4 +1,4 @@
-<claude-mem-context>
+<codex-mem-context>
 # Recent Activity
 
 ### Dec 8, 2025
@@ -90,4 +90,4 @@
 | #36172 | " | 🔵 | Migrations.ts Contains Legacy Migration System | ~650 |
 | #36163 | 6:48 PM | 🔵 | SessionStore Method Inventory and Extraction Boundaries | ~692 |
 | #36162 | 6:47 PM | 🔵 | SessionStore Architecture and Migration History | ~593 |
-</claude-mem-context>
+</codex-mem-context>
