@@ -12,7 +12,7 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Expose Codex-facing product/install surface instead of Claude-only surface
 - [x] Add tests that lock in Codex defaults, transcript config, and installer behavior
 - [x] Verify changed tests pass
-- [ ] Update this tasklist with implementation notes and follow-up work
+- [x] Update this tasklist with implementation notes and follow-up work
 
 ## Phase Breakdown
 
@@ -37,7 +37,10 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 
 ### Phase 4: Product Surface Follow-Up
 
-- [ ] Introduce a real public `codex-mem` command surface
+- [x] Introduce a real public `codex-mem` command surface
+- [x] Wire published package metadata and `bin` output to Codex-first names
+- [x] Build and ship a `codex-mem` executable alongside existing worker artifacts
+- [x] Move marketplace sync/build defaults from Claude plugin paths to Codex plugin paths
 - [ ] Rename remaining Claude-first user-facing copy, docs, and assets
 - [ ] Decide whether to keep Claude/Cursor as compatibility hosts or make Codex-only the primary supported mode
 - [ ] Add end-to-end Codex transcript ingestion coverage
@@ -49,4 +52,6 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Added `CODEX_MEM_*` alias support in `SettingsDefaultsManager` for env vars and settings files.
 - Default settings now prefer `.Codex-mem` storage and `codex-mem` app naming.
 - Added installer product-surface helpers so Codex appears as a first-class target, default installer data goes to `~/.Codex-mem`, and completion messaging points users toward `codex-mem codex init`.
-- Remaining work is mostly installer, packaging, docs, and broader user-facing rename coverage.
+- Renamed the root package surface to `codex-mem`, added a real published `bin`, and introduced a bundled `plugin/scripts/codex-mem.cjs` CLI artifact through the existing build pipeline.
+- Switched package-level sync/log scripts and marketplace sync defaults to Codex plugin/data directories while keeping the underlying Claude plugin manifests untouched for now.
+- Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.

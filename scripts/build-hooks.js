@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * Build script for claude-mem hooks
- * Bundles TypeScript hooks into individual standalone executables using esbuild
+ * Build script for codex-mem hooks
+ * Bundles TypeScript hooks and CLIs into standalone executables using esbuild
  */
 
 import { build } from 'esbuild';
@@ -27,8 +27,13 @@ const CONTEXT_GENERATOR = {
   source: 'src/services/context-generator.ts'
 };
 
+const CODEX_MEM_CLI = {
+  name: 'codex-mem',
+  source: 'src/bin/codex-mem-cli.ts'
+};
+
 async function buildHooks() {
-  console.log('🔨 Building claude-mem hooks and worker service...\n');
+  console.log('🔨 Building codex-mem hooks, worker service, and CLI...\n');
 
   try {
     // Read version from package.json
@@ -53,10 +58,10 @@ async function buildHooks() {
     // Note: bun:sqlite is a Bun built-in, no external dependencies needed for SQLite
     console.log('\n📦 Generating plugin package.json...');
     const pluginPackageJson = {
-      name: 'claude-mem-plugin',
+      name: 'codex-mem-plugin',
       version: version,
       private: true,
-      description: 'Runtime dependencies for claude-mem bundled hooks',
+      description: 'Runtime dependencies for codex-mem bundled hooks',
       type: 'module',
       dependencies: {
         'tree-sitter-cli': '^0.26.5',
@@ -162,6 +167,39 @@ async function buildHooks() {
     const mcpServerStats = fs.statSync(`${hooksDir}/${MCP_SERVER.name}.cjs`);
     console.log(`✓ mcp-server built (${(mcpServerStats.size / 1024).toFixed(2)} KB)`);
 
+    // Build codex-mem CLI
+    console.log(`\n🔧 Building codex-mem CLI...`);
+    await build({
+      entryPoints: [CODEX_MEM_CLI.source],
+      bundle: true,
+      platform: 'node',
+      target: 'node18',
+      format: 'cjs',
+      outfile: `${hooksDir}/${CODEX_MEM_CLI.name}.cjs`,
+      minify: true,
+      logLevel: 'error',
+      external: [
+        'bun:sqlite',
+        'tree-sitter-cli',
+        'tree-sitter-javascript',
+        'tree-sitter-typescript',
+        'tree-sitter-python',
+        'tree-sitter-go',
+        'tree-sitter-rust',
+        'tree-sitter-ruby',
+        'tree-sitter-java',
+        'tree-sitter-c',
+        'tree-sitter-cpp',
+      ],
+      banner: {
+        js: '#!/usr/bin/env node'
+      }
+    });
+
+    fs.chmodSync(`${hooksDir}/${CODEX_MEM_CLI.name}.cjs`, 0o755);
+    const codexMemCliStats = fs.statSync(`${hooksDir}/${CODEX_MEM_CLI.name}.cjs`);
+    console.log(`✓ codex-mem CLI built (${(codexMemCliStats.size / 1024).toFixed(2)} KB)`);
+
     // Build context generator
     console.log(`\n🔧 Building context generator...`);
     await build({
@@ -197,10 +235,11 @@ async function buildHooks() {
     }
     console.log('✓ All required distribution files present');
 
-    console.log('\n✅ Worker service, MCP server, and context generator built successfully!');
+    console.log('\n✅ Worker service, MCP server, codex-mem CLI, and context generator built successfully!');
     console.log(`   Output: ${hooksDir}/`);
     console.log(`   - Worker: worker-service.cjs`);
     console.log(`   - MCP Server: mcp-server.cjs`);
+    console.log(`   - CLI: codex-mem.cjs`);
     console.log(`   - Context Generator: context-generator.cjs`);
 
   } catch (error) {

@@ -108,8 +108,3 @@ export async function runCodexMemCli(
       return 1;
   }
 }
-
-if (import.meta.main) {
-  const exitCode = await runCodexMemCli(process.argv.slice(2));
-  process.exit(exitCode);
-}

@@ -1,8 +1,8 @@
 {
-  "name": "claude-mem-plugin",
+  "name": "codex-mem-plugin",
   "version": "10.6.2",
   "private": true,
-  "description": "Runtime dependencies for claude-mem bundled hooks",
+  "description": "Runtime dependencies for codex-mem bundled hooks",
   "type": "module",
   "dependencies": {
     "tree-sitter-cli": "^0.26.5",

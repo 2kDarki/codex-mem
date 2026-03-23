@@ -59,7 +59,7 @@ export async function runTranscriptCommand(subcommand: string | undefined, args:
       return 0;
     }
     default:
-      console.log('Usage: claude-mem transcript <init|watch|validate> [--config <path>]');
+      console.log('Usage: codex-mem transcript <init|watch|validate> [--config <path>]');
       return 1;
   }
 }
