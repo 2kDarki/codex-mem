@@ -14,6 +14,8 @@ function getHelpText(): string {
   return [
     'Usage: codex-mem <command> [args]',
     '',
+    'Codex is the primary runtime. Cursor is a supported compatibility host.',
+    '',
     'Commands:',
     '  codex <init|watch|validate>   Manage Codex transcript ingestion',
     '  transcript <init|watch|validate>  Alias for codex',

@@ -67,5 +67,6 @@ describe('codex-mem CLI', () => {
 
     expect(exitCode).toBe(1);
     expect(lines.join('\n')).toContain('Usage: codex-mem');
+    expect(lines.join('\n')).toContain('Codex is the primary runtime. Cursor is a supported compatibility host.');
   });
 });
