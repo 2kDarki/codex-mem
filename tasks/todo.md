@@ -14,6 +14,13 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Verify changed tests pass
 - [x] Update this tasklist with implementation notes and follow-up work
 
+## Current Slice: End-to-End Codex Transcript Coverage
+
+- [x] Add watcher-level failing tests for Codex transcript ingestion and state resume behavior
+- [x] Implement the minimal production changes needed for the new end-to-end tests
+- [x] Verify transcript watcher ingestion, AGENTS updates, and state resume behavior with focused tests
+- [x] Record the slice in review notes and commit it with a detailed message
+
 ## Phase Breakdown
 
 ### Phase 1: Foundational Codex Defaults
@@ -43,7 +50,7 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Move marketplace sync/build defaults from Claude plugin paths to Codex plugin paths
 - [ ] Rename remaining Claude-first user-facing copy, docs, and assets
 - [ ] Decide whether to keep Claude/Cursor as compatibility hosts or make Codex-only the primary supported mode
-- [ ] Add end-to-end Codex transcript ingestion coverage
+- [x] Add end-to-end Codex transcript ingestion coverage
 
 ## Review Notes
 
@@ -59,4 +66,6 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - Added docs/content regression coverage that locks the README, Cursor guide, and English mode prompts to Codex-first product wording.
 - Added public `codex-mem cursor ...` routing to the shipped CLI so the documented Cursor install/status commands are actually supported by the published bin.
 - Updated the remaining user-facing Cursor docs bundle to Codex-first commands, paths, and rules filenames, and expanded regression coverage across those setup guides.
+- Added watcher-level end-to-end Codex transcript tests that exercise JSONL ingestion, worker HTTP calls, AGENTS.md updates, and saved-state resume behavior.
+- Fixed a transcript watcher race where overlapping file watch callbacks could re-read the same appended range and replay session-end processing.
 - Remaining work is mostly broader docs/UI copy cleanup, manifest/plugin rename coverage, and Codex end-to-end runtime validation.

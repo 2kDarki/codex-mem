@@ -15,6 +15,8 @@ interface TailState {
 class FileTailer {
   private watcher: ReturnType<typeof fsWatch> | null = null;
   private tailState: TailState;
+  private readInProgress = false;
+  private pendingRead = false;
 
   constructor(
     private filePath: string,
@@ -26,15 +28,36 @@ class FileTailer {
   }
 
   start(): void {
-    this.readNewData().catch(() => undefined);
+    this.scheduleRead();
     this.watcher = fsWatch(this.filePath, { persistent: true }, () => {
-      this.readNewData().catch(() => undefined);
+      this.scheduleRead();
     });
   }
 
   close(): void {
     this.watcher?.close();
     this.watcher = null;
+  }
+
+  private scheduleRead(): void {
+    if (this.readInProgress) {
+      this.pendingRead = true;
+      return;
+    }
+
+    this.readInProgress = true;
+    void this.runReadLoop();
+  }
+
+  private async runReadLoop(): Promise<void> {
+    try {
+      do {
+        this.pendingRead = false;
+        await this.readNewData();
+      } while (this.pendingRead);
+    } finally {
+      this.readInProgress = false;
+    }
   }
 
   private async readNewData(): Promise<void> {
