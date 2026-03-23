@@ -1952,7 +1952,7 @@ function enablePluginInClaudeSettings() {
   writeJsonFile(CLAUDE_SETTINGS_PATH, settings);
 }
 function getPluginVersion() {
-  const pluginJsonPath = join3(MARKETPLACE_DIR, "plugin", ".claude-plugin", "plugin.json");
+  const pluginJsonPath = join3(MARKETPLACE_DIR, "plugin", ".codex-plugin", "plugin.json");
   if (existsSync4(pluginJsonPath)) {
     const pluginJson = JSON.parse(readFileSync2(pluginJsonPath, "utf-8"));
     return pluginJson.version ?? "1.0.0";

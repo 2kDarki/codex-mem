@@ -48,7 +48,7 @@ describe('Plugin Distribution - Skills', () => {
 describe('Plugin Distribution - Required Files', () => {
   const requiredFiles = [
     'plugin/hooks/hooks.json',
-    'plugin/.claude-plugin/plugin.json',
+    'plugin/.codex-plugin/plugin.json',
     'plugin/skills/mem-search/SKILL.md',
   ];
 
@@ -117,6 +117,11 @@ describe('Plugin Distribution - Build Script Verification', () => {
     // Build script must check for critical distribution files
     expect(content).toContain('plugin/skills/mem-search/SKILL.md');
     expect(content).toContain('plugin/hooks/hooks.json');
-    expect(content).toContain('plugin/.claude-plugin/plugin.json');
+    expect(content).toContain('plugin/.codex-plugin/plugin.json');
+  });
+
+  it('should not ship the stale claude-mem binary artifact', () => {
+    const staleBinaryPath = path.join(projectRoot, 'plugin/scripts/claude-mem');
+    expect(existsSync(staleBinaryPath)).toBe(false);
   });
 });

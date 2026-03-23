@@ -12,9 +12,9 @@ function readProjectFile(relativePath: string): string {
 
 describe('Codex product manifests', () => {
   it('uses codex-mem names in plugin manifests', () => {
-    const rootPlugin = JSON.parse(readProjectFile('.claude-plugin/plugin.json'));
-    const bundledPlugin = JSON.parse(readProjectFile('plugin/.claude-plugin/plugin.json'));
-    const marketplace = JSON.parse(readProjectFile('.claude-plugin/marketplace.json'));
+    const rootPlugin = JSON.parse(readProjectFile('.codex-plugin/plugin.json'));
+    const bundledPlugin = JSON.parse(readProjectFile('plugin/.codex-plugin/plugin.json'));
+    const marketplace = JSON.parse(readProjectFile('.codex-plugin/marketplace.json'));
 
     expect(rootPlugin.name).toBe('codex-mem');
     expect(rootPlugin.description).toContain('Codex');
@@ -27,6 +27,10 @@ describe('Codex product manifests', () => {
   it('describes hook distribution as codex-mem', () => {
     const hooks = JSON.parse(readProjectFile('plugin/hooks/hooks.json'));
     expect(hooks.description).toContain('codex-mem');
+  });
+
+  it('does not keep the stale claude-mem bundled executable around', () => {
+    expect(() => readProjectFile('plugin/scripts/claude-mem')).toThrow();
   });
 });
 

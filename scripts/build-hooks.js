@@ -226,7 +226,7 @@ async function buildHooks() {
       'plugin/skills/mem-search/SKILL.md',
       'plugin/skills/smart-explore/SKILL.md',
       'plugin/hooks/hooks.json',
-      'plugin/.claude-plugin/plugin.json',
+      'plugin/.codex-plugin/plugin.json',
     ];
     for (const filePath of requiredDistributionFiles) {
       if (!fs.existsSync(filePath)) {

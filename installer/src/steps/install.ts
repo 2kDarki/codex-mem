@@ -84,7 +84,7 @@ function enablePluginInClaudeSettings(): void {
 }
 
 function getPluginVersion(): string {
-  const pluginJsonPath = join(MARKETPLACE_DIR, 'plugin', '.claude-plugin', 'plugin.json');
+  const pluginJsonPath = join(MARKETPLACE_DIR, 'plugin', '.codex-plugin', 'plugin.json');
   if (existsSync(pluginJsonPath)) {
     const pluginJson = JSON.parse(readFileSync(pluginJsonPath, 'utf-8'));
     return pluginJson.version ?? '1.0.0';

@@ -60,7 +60,7 @@ if (branch && branch !== 'main' && !isForce) {
 // Get version from plugin.json
 function getPluginVersion() {
   try {
-    const pluginJsonPath = path.join(__dirname, '..', 'plugin', '.claude-plugin', 'plugin.json');
+    const pluginJsonPath = path.join(__dirname, '..', 'plugin', '.codex-plugin', 'plugin.json');
     const pluginJson = JSON.parse(readFileSync(pluginJsonPath, 'utf-8'));
     return pluginJson.version;
   } catch (error) {

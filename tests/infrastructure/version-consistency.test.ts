@@ -37,16 +37,16 @@ describe('Version Consistency', () => {
     expect(pluginPackageJson.version).toBe(rootVersion);
   });
 
-  it('should have matching version in plugin/.claude-plugin/plugin.json', () => {
-    const pluginJsonPath = path.join(projectRoot, 'plugin/.claude-plugin/plugin.json');
+  it('should have matching version in plugin/.codex-plugin/plugin.json', () => {
+    const pluginJsonPath = path.join(projectRoot, 'plugin/.codex-plugin/plugin.json');
     expect(existsSync(pluginJsonPath)).toBe(true);
     
     const pluginJson = JSON.parse(readFileSync(pluginJsonPath, 'utf-8'));
     expect(pluginJson.version).toBe(rootVersion);
   });
 
-  it('should have matching version in .claude-plugin/marketplace.json', () => {
-    const marketplaceJsonPath = path.join(projectRoot, '.claude-plugin/marketplace.json');
+  it('should have matching version in .codex-plugin/marketplace.json', () => {
+    const marketplaceJsonPath = path.join(projectRoot, '.codex-plugin/marketplace.json');
     expect(existsSync(marketplaceJsonPath)).toBe(true);
     
     const marketplaceJson = JSON.parse(readFileSync(marketplaceJsonPath, 'utf-8'));
