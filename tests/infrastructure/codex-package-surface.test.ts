@@ -11,10 +11,10 @@ function readProjectFile(relativePath: string): string {
 }
 
 describe('Codex package surface', () => {
-  it('publishes the package as codex-mem with a real CLI bin', () => {
+  it('publishes the package as @2kDarki/codex-mem with a real CLI bin', () => {
     const packageJson = JSON.parse(readProjectFile('package.json'));
 
-    expect(packageJson.name).toBe('codex-mem');
+    expect(packageJson.name).toBe('@2kDarki/codex-mem');
     expect(packageJson.description).toContain('Codex');
     expect(packageJson.bin).toEqual({
       'codex-mem': './plugin/scripts/codex-mem.cjs',

@@ -1,5 +1,5 @@
 {
-  "name": "codex-mem",
+  "name": "@2kDarki/codex-mem",
   "version": "10.6.2",
   "description": "Persistent memory for Codex - persist context across sessions",
   "keywords": [
