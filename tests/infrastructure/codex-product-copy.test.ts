@@ -62,4 +62,14 @@ describe('Codex product help surfaces', () => {
     expect(cursorInstaller).toContain('Usage: codex-mem cursor <command> [options]');
     expect(cursorInstaller).toContain('https://docs.codex-mem.ai/cursor');
   });
+
+  it('uses codex-mem as the visible OpenRouter app-name default in viewer settings', () => {
+    const contextSettingsModal = readProjectFile('src/ui/viewer/components/ContextSettingsModal.tsx');
+    const defaultSettings = readProjectFile('src/ui/viewer/constants/settings.ts');
+
+    expect(contextSettingsModal).toContain("CLAUDE_MEM_OPENROUTER_APP_NAME || 'codex-mem'");
+    expect(contextSettingsModal).toContain('placeholder=\"codex-mem\"');
+    expect(contextSettingsModal).not.toContain("CLAUDE_MEM_OPENROUTER_APP_NAME || 'claude-mem'");
+    expect(defaultSettings).toContain("CLAUDE_MEM_OPENROUTER_APP_NAME: 'codex-mem'");
+  });
 });
