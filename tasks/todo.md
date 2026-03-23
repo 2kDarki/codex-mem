@@ -19,7 +19,7 @@ Turn this repository from a Claude-first memory plugin into a full-fledged Codex
 - [x] Add failing regression coverage for the main public docs entry points, site metadata, issue templates, and transcript example config
 - [x] Implement the minimal docs/template changes needed to make those entry-point surfaces Codex-first
 - [x] Verify the updated docs/template surfaces with focused tests
-- [ ] Record the slice in review notes and commit it with a detailed message
+- [x] Record the slice in review notes and commit it with a detailed message
 
 ## Phase Breakdown
 
