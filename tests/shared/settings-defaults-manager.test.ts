@@ -305,6 +305,12 @@ describe('SettingsDefaultsManager', () => {
       expect(defaults.CLAUDE_MEM_DATA_DIR).toBeDefined();
       expect(defaults.CLAUDE_MEM_LOG_LEVEL).toBeDefined();
     });
+
+    it('should default data storage to the Codex-mem directory', () => {
+      const defaults = SettingsDefaultsManager.getAllDefaults();
+
+      expect(defaults.CLAUDE_MEM_DATA_DIR).toContain('.Codex-mem');
+    });
   });
 
   describe('get', () => {
@@ -336,6 +342,8 @@ describe('SettingsDefaultsManager', () => {
 
     beforeEach(() => {
       // Save original env values
+      originalEnv.CODEX_MEM_WORKER_PORT = process.env.CODEX_MEM_WORKER_PORT;
+      originalEnv.CODEX_MEM_DATA_DIR = process.env.CODEX_MEM_DATA_DIR;
       originalEnv.CLAUDE_MEM_WORKER_PORT = process.env.CLAUDE_MEM_WORKER_PORT;
       originalEnv.CLAUDE_MEM_MODEL = process.env.CLAUDE_MEM_MODEL;
       originalEnv.CLAUDE_MEM_LOG_LEVEL = process.env.CLAUDE_MEM_LOG_LEVEL;
@@ -343,6 +351,16 @@ describe('SettingsDefaultsManager', () => {
 
     afterEach(() => {
       // Restore original env values
+      if (originalEnv.CODEX_MEM_WORKER_PORT === undefined) {
+        delete process.env.CODEX_MEM_WORKER_PORT;
+      } else {
+        process.env.CODEX_MEM_WORKER_PORT = originalEnv.CODEX_MEM_WORKER_PORT;
+      }
+      if (originalEnv.CODEX_MEM_DATA_DIR === undefined) {
+        delete process.env.CODEX_MEM_DATA_DIR;
+      } else {
+        process.env.CODEX_MEM_DATA_DIR = originalEnv.CODEX_MEM_DATA_DIR;
+      }
       if (originalEnv.CLAUDE_MEM_WORKER_PORT === undefined) {
         delete process.env.CLAUDE_MEM_WORKER_PORT;
       } else {
@@ -371,6 +389,16 @@ describe('SettingsDefaultsManager', () => {
       const result = SettingsDefaultsManager.loadFromFile(settingsPath);
 
       expect(result.CLAUDE_MEM_WORKER_PORT).toBe('54321');
+    });
+
+    it('should accept CODEX_MEM env aliases for compatibility', () => {
+      process.env.CODEX_MEM_WORKER_PORT = '45678';
+      process.env.CODEX_MEM_DATA_DIR = join(tempDir, 'codex-data');
+
+      const result = SettingsDefaultsManager.loadFromFile(settingsPath);
+
+      expect(result.CLAUDE_MEM_WORKER_PORT).toBe('45678');
+      expect(result.CLAUDE_MEM_DATA_DIR).toBe(join(tempDir, 'codex-data'));
     });
 
     it('should prioritize env var over default', () => {
@@ -442,6 +470,20 @@ describe('SettingsDefaultsManager', () => {
       // Result should be env (33333) because env > file > default
       expect(defaults.CLAUDE_MEM_WORKER_PORT).toBe('37777'); // Confirm default
       expect(result.CLAUDE_MEM_WORKER_PORT).toBe('33333'); // Env wins
+    });
+  });
+
+  describe('Codex-prefixed settings file keys', () => {
+    it('should read CODEX_MEM file keys as aliases for CLAUDE_MEM keys', () => {
+      writeFileSync(settingsPath, JSON.stringify({
+        CODEX_MEM_WORKER_PORT: '46789',
+        CODEX_MEM_DATA_DIR: join(tempDir, 'codex-file-data'),
+      }));
+
+      const result = SettingsDefaultsManager.loadFromFile(settingsPath);
+
+      expect(result.CLAUDE_MEM_WORKER_PORT).toBe('46789');
+      expect(result.CLAUDE_MEM_DATA_DIR).toBe(join(tempDir, 'codex-file-data'));
     });
   });
 });

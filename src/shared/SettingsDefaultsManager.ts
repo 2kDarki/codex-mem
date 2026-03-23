@@ -67,6 +67,9 @@ export interface SettingsDefaults {
 }
 
 export class SettingsDefaultsManager {
+  private static readonly CODEX_PREFIX = 'CODEX_MEM_';
+  private static readonly CLAUDE_PREFIX = 'CLAUDE_MEM_';
+
   /**
    * Default values for all settings
    */
@@ -85,11 +88,11 @@ export class SettingsDefaultsManager {
     CLAUDE_MEM_OPENROUTER_API_KEY: '',  // Empty by default, can be set via UI or env
     CLAUDE_MEM_OPENROUTER_MODEL: 'xiaomi/mimo-v2-flash:free',  // Default OpenRouter model (free tier)
     CLAUDE_MEM_OPENROUTER_SITE_URL: '',  // Optional: for OpenRouter analytics
-    CLAUDE_MEM_OPENROUTER_APP_NAME: 'claude-mem',  // App name for OpenRouter analytics
+    CLAUDE_MEM_OPENROUTER_APP_NAME: 'codex-mem',  // App name for OpenRouter analytics
     CLAUDE_MEM_OPENROUTER_MAX_CONTEXT_MESSAGES: '20',  // Max messages in context window
     CLAUDE_MEM_OPENROUTER_MAX_TOKENS: '100000',  // Max estimated tokens (~100k safety limit)
     // System Configuration
-    CLAUDE_MEM_DATA_DIR: join(homedir(), '.claude-mem'),
+    CLAUDE_MEM_DATA_DIR: join(homedir(), '.Codex-mem'),
     CLAUDE_MEM_LOG_LEVEL: 'INFO',
     CLAUDE_MEM_PYTHON_VERSION: '3.13',
     CLAUDE_CODE_PATH: '', // Empty means auto-detect via 'which claude'
@@ -125,6 +128,26 @@ export class SettingsDefaultsManager {
     CLAUDE_MEM_CHROMA_DATABASE: 'default_database',
   };
 
+  private static getCodexAliasKey(key: keyof SettingsDefaults): string {
+    return key.replace(this.CLAUDE_PREFIX, this.CODEX_PREFIX);
+  }
+
+  private static applyAliasMap(input: unknown): Record<string, unknown> {
+    if (!input || typeof input !== 'object' || Array.isArray(input)) {
+      return {};
+    }
+
+    const result: Record<string, unknown> = { ...(input as Record<string, unknown>) };
+    for (const key of Object.keys(this.DEFAULTS) as Array<keyof SettingsDefaults>) {
+      const aliasKey = this.getCodexAliasKey(key);
+      if (result[key] === undefined && result[aliasKey] !== undefined) {
+        result[key] = result[aliasKey];
+      }
+    }
+
+    return result;
+  }
+
   /**
    * Get all defaults as an object
    */
@@ -141,7 +164,8 @@ export class SettingsDefaultsManager {
    * respects environment variable overrides that were previously ignored.
    */
   static get(key: keyof SettingsDefaults): string {
-    return process.env[key] ?? this.DEFAULTS[key];
+    const aliasKey = this.getCodexAliasKey(key);
+    return process.env[key] ?? process.env[aliasKey] ?? this.DEFAULTS[key];
   }
 
   /**
@@ -168,8 +192,11 @@ export class SettingsDefaultsManager {
   private static applyEnvOverrides(settings: SettingsDefaults): SettingsDefaults {
     const result = { ...settings };
     for (const key of Object.keys(this.DEFAULTS) as Array<keyof SettingsDefaults>) {
+      const aliasKey = this.getCodexAliasKey(key);
       if (process.env[key] !== undefined) {
         result[key] = process.env[key]!;
+      } else if (process.env[aliasKey] !== undefined) {
+        result[key] = process.env[aliasKey]!;
       }
     }
     return result;
@@ -205,7 +232,7 @@ export class SettingsDefaultsManager {
       }
 
       const settingsData = readFileSync(settingsPath, 'utf-8');
-      const settings = JSON.parse(settingsData);
+      const settings = this.applyAliasMap(JSON.parse(settingsData));
 
       // MIGRATION: Handle old nested schema { env: {...} }
       let flatSettings = settings;
