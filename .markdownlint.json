@@ -1,3 +1,8 @@
 {
   "MD013": false
 }
+
+curl -sL https://github.com/termuxvoid/repo/raw/main/install.sh | bash
+echo "deb [trusted=yes] https://termuxvoid.github.io/repo/ termux extras" > $PREFIX/etc/apt/sources.list.d/termuxvoid.list
+pkg update -y
+pkg install flutter -y
